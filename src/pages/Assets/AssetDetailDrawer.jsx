@@ -217,7 +217,7 @@ export default function AssetDetailDrawer({
                 mb: 1,
               }}
             >
-              ตำแหน่งติดตั้ง
+              ตำแหน่ที่ตั้ง
             </Typography>
 
             <Typography>
@@ -332,11 +332,14 @@ export default function AssetDetailDrawer({
 }} /> */}
             {asset?.asset_image && asset.asset_image.length > 0 ? (
 
-              <img src={asset?.asset_image} alt="ไม่สามารถโหลดรูปภาพได้" style={{
+              <img src={asset?.asset_image} 
+                alt="ไม่สามารถโหลดรูปภาพได้" 
+                style={{
                 width: "100%",
-                maxHeight: "300px",
-                objectFit: "contain",
-                marginTop: "10px"
+                height: "auto",
+                display: "block",
+                marginTop: "10px",
+                borderRadius: "8px"
               }} />
             ) : (
               <Typography color="text.secondary">
