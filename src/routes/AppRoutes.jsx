@@ -8,7 +8,7 @@ export default function AppRoutes() {
     <BrowserRouter>
       <Routes>
         <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
+          <Route path="/nstda-asset-dashboard" element={<Home />} />
         </Route>
       </Routes>
     </BrowserRouter>
