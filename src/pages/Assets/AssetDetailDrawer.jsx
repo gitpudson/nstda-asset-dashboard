@@ -331,17 +331,17 @@ console.log("length =", asset?.asset_image?.length);
   marginTop: "10px"
 }} /> */}
 
-{/* <img src={asset?.asset_image} alt="asset" style={{
+<img src={asset?.asset_image} alt="asset" style={{
   width: "100%",
   maxHeight: "350px",
   objectFit: "contain",
   marginTop: "10px"
-}} /> */}
+}} />
 
-<img
+{/* <img
   src="https://lh3.googleusercontent.com/d/1jsk3Tc2-zLhD3rAIkGPtGciNNF2ZBuR_=w1000"
   alt="test"
-/>
+/> */}
 
 </Paper>
 
