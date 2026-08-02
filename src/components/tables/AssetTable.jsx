@@ -664,7 +664,7 @@ console.log(Object.keys(assetIndex[0] || {}));
           <MenuItem value="สก.">สก.</MenuItem>
           <MenuItem value="ศช.">ศช.</MenuItem>
           <MenuItem value="ศว.">ศว.</MenuItem>
-          <MenuItem value="ศส.">ศส.</MenuItem>
+          <MenuItem value="ศล.">ศล.</MenuItem>
           <MenuItem value="ศน.">ศน.</MenuItem>
           <MenuItem value="ศอ.">ศอ.</MenuItem>
         </TextField>
