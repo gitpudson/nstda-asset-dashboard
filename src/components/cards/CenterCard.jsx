@@ -11,7 +11,6 @@ export default function CenterCard({
   active = false,
 }) {
 
-  console.log("CenterCard logo =", logo);
   return (
     <Card
       sx={{

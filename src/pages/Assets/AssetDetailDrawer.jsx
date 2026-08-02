@@ -333,7 +333,7 @@ console.log("length =", asset?.asset_image?.length);
 
 <img src={asset?.asset_image} alt="asset" style={{
   width: "100%",
-  maxHeight: "350px",
+  maxHeight: "300px",
   objectFit: "contain",
   marginTop: "10px"
 }} />

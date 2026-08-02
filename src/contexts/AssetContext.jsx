@@ -116,7 +116,7 @@ export function AssetProvider({
 
         }
 
-      }, 60000); // ทำงานทุก 60 วินาที (1 นาที)
+      }, 10000); // ทำงานทุก 60 วินาที (1 นาที)
 
     return () =>
       clearInterval(timer);
