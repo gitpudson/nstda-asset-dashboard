@@ -63,7 +63,7 @@ export default function AssetDetailDrawer({
   // console.log("asset", asset);
   // console.log(" asset?.asset_image", asset?.asset_image);
   console.log("asset_image =", asset?.asset_image);
-console.log("length =", asset?.asset_image?.length);
+  console.log("length =", asset?.asset_image?.length);
 
   return (
     <Drawer
@@ -258,32 +258,32 @@ console.log("length =", asset?.asset_image?.length);
                   : "success"
               }
             />
-            
+
           </Paper>
 
           <Paper
-  elevation={0}
-  sx={{
-    p: 2,
-    mt: 2,
-    borderRadius: 3,
-    background: "#FFF8F3",
-    border: "1px solid #FCE7D6",
-  }}
->
-  <Typography
-    variant="caption"
-    sx={{
-      color: "#D97706",
-      fontWeight: 700,
-      display: "block",
-      mb: 1,
-    }}
-  >
-    รูปภาพครุภัณฑ์
-  </Typography>
+            elevation={0}
+            sx={{
+              p: 2,
+              mt: 2,
+              borderRadius: 3,
+              background: "#FFF8F3",
+              border: "1px solid #FCE7D6",
+            }}
+          >
+            <Typography
+              variant="caption"
+              sx={{
+                color: "#D97706",
+                fontWeight: 700,
+                display: "block",
+                mb: 1,
+              }}
+            >
+              รูปภาพครุภัณฑ์
+            </Typography>
 
-{/* <img
+            {/* <img
   // src="https://lh3.googleusercontent.com/d/1jsk3Tc2-zLhD3rAIkGPtGciNNF2ZBuR_=w1000"
   src={asset.asset_image}
   alt="test"
@@ -296,7 +296,7 @@ console.log("length =", asset?.asset_image?.length);
   onError={() => console.log("ERROR",asset)}
 /> */}
 
-  {/* {asset?.asset_image ? (
+            {/* {asset?.asset_image ? (
     <Box
       component="img"
       src={asset.asset_image}
@@ -314,7 +314,7 @@ console.log("length =", asset?.asset_image?.length);
       ไม่มีรูปภาพครุภัณฑ์
     </Typography>
   )} */}
-  {/* <img
+            {/* <img
   src="https://drive.google.com/thumbnail?id=1jsk3Tc2-zLhD3rAIkGPtGciNNF2ZBuR_&sz=w400-h300"
   alt="asset"
   style={{
@@ -324,28 +324,34 @@ console.log("length =", asset?.asset_image?.length);
   }}
 /> */}
 
-{/* <img src="https://drive.google.com/thumbnail?id=0B6wwyazyzml-OGQ3VUo0Z2thdmc&sz=w1000" alt="asset" style={{
+            {/* <img src="https://drive.google.com/thumbnail?id=0B6wwyazyzml-OGQ3VUo0Z2thdmc&sz=w1000" alt="asset" style={{
   width: "100%",
   maxHeight: "350px",
   objectFit: "contain",
   marginTop: "10px"
 }} /> */}
+            {asset?.asset_image && asset.asset_image.length > 0 ? (
 
-<img src={asset?.asset_image} alt="asset" style={{
-  width: "100%",
-  maxHeight: "300px",
-  objectFit: "contain",
-  marginTop: "10px"
-}} />
+              <img src={asset?.asset_image} alt="ไม่สามารถโหลดรูปภาพได้" style={{
+                width: "100%",
+                maxHeight: "300px",
+                objectFit: "contain",
+                marginTop: "10px"
+              }} />
+            ) : (
+              <Typography color="text.secondary">
+                ไม่มีรูปภาพครุภัณฑ์
+              </Typography>
+            )}
 
-{/* <img
+            {/* <img
   src="https://lh3.googleusercontent.com/d/1jsk3Tc2-zLhD3rAIkGPtGciNNF2ZBuR_=w1000"
   alt="test"
 /> */}
 
-</Paper>
+          </Paper>
 
-            
+
         </Stack>
       </Box>
 
