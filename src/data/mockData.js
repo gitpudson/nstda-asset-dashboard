@@ -86,3 +86,10 @@ export const assetRows = [
     verifyDate: "22 พ.ค. 2569",
   },
 ];
+
+export const dashboardSummary = {
+  totalAssets: 12450,
+  checkedAssets: 10980,
+  pendingAssets: 1250,
+  damagedAssets: 220,
+};

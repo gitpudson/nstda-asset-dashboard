@@ -8,6 +8,9 @@ import {
 
 import RefreshIcon from "@mui/icons-material/Refresh";
 
+import { useEffect, useState } from "react";
+import { getDashboardSummary } from "../../services/dashboardService";
+
 import {
   Inventory2,
   CheckCircle,
@@ -26,12 +29,63 @@ import AssetTable from "../../components/tables/AssetTable";
 import {
   centers,
   assetRows,
+  dashboardSummary
 } from "../../data/mockData";
 
 export default function Home() {
   const handleRefresh = () => {
     console.log("refresh");
   };
+
+  const [summary, setSummary] = useState({
+    totalAssets: 0,
+    checkedAssets: 0,
+    pendingAssets: 0,
+    damagedAssets: 0,
+  });
+
+  useEffect(() => {
+    loadDashboardSummary();
+  }, []);
+
+  const loadDashboardSummary = async () => {
+    try {
+      const data = await getDashboardSummary();
+
+      console.log("Dashboard Summary:", data);
+
+      setSummary(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const checkedPercent =
+    summary.totalAssets > 0
+      ? (
+        (summary.checkedAssets /
+          summary.totalAssets) *
+        100
+      ).toFixed(2)
+      : "0.00";
+
+  const pendingPercent =
+    summary.totalAssets > 0
+      ? (
+        (summary.pendingAssets /
+          summary.totalAssets) *
+        100
+      ).toFixed(2)
+      : "0.00";
+
+  const damagedPercent =
+    summary.totalAssets > 0
+      ? (
+        (summary.damagedAssets /
+          summary.totalAssets) *
+        100
+      ).toFixed(2)
+      : "0.00";
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -53,11 +107,11 @@ export default function Home() {
           </Typography>
 
           <Typography color="text.secondary">
-            ประจำปี 2569
+            {`ปีงบประมาณ ${new Date().getFullYear() + 543}`}
           </Typography>
         </Box>
 
-        <Box
+        {/* <Box
           sx={{
             display: "flex",
             alignItems: "center",
@@ -80,11 +134,14 @@ export default function Home() {
               <RefreshIcon />
             </IconButton>
           </Tooltip>
-        </Box>
+        </Box> */}
+
       </Box>
 
+      
       {/* KPI */}
-      <Box
+
+      {/* <Box
         sx={{
           display: "grid",
           gridTemplateColumns:
@@ -95,7 +152,7 @@ export default function Home() {
       >
         <SummaryCard
           title="ครุภัณฑ์ทั้งหมด"
-          value="12,450"
+          value={summary.totalAssets.toLocaleString()}
           subtitle="รายการ"
           bgColor="#1976D2"
           icon={<Inventory2 />}
@@ -103,31 +160,32 @@ export default function Home() {
 
         <SummaryCard
           title="ตรวจสอบแล้ว"
-          value="10,980"
-          subtitle="88.20%"
+          value={summary.checkedAssets.toLocaleString()}
+          subtitle={`${checkedPercent}%`}
           bgColor="#22C55E"
           icon={<CheckCircle />}
         />
 
         <SummaryCard
           title="รอการตรวจสอบ"
-          value="1,250"
-          subtitle="10.04%"
+          value={summary.pendingAssets.toLocaleString()}
+          subtitle={`${pendingPercent}%`}
           bgColor="#F59E0B"
           icon={<Warning />}
         />
 
         <SummaryCard
           title="ชำรุด / เสียหาย"
-          value="220"
-          subtitle="1.76%"
+          value={summary.damagedAssets.toLocaleString()}
+          subtitle={`${damagedPercent}%`}
           bgColor="#EF4444"
           icon={<Error />}
         />
-      </Box>
+      </Box> */}
 
       {/* Cards + Charts */}
-      <Box
+      
+      {/* <Box
         sx={{
           display: "flex",
           gap: 2,
@@ -138,16 +196,16 @@ export default function Home() {
         {centers.map((center, index) => {
           // console.log("logo", center);
 
-            return (
-              <CenterCard
-                key={center.name}
-                title={center.name}
-                logo={center.logo}
-                total={center.total}
-                active={index === 0}
-              />
-            );
-          })}
+          return (
+            <CenterCard
+              key={center.name}
+              title={center.name}
+              logo={center.logo}
+              total={center.total}
+              active={index === 0}
+            />
+          );
+        })}
 
         <Paper
           sx={{
@@ -186,7 +244,8 @@ export default function Home() {
 
           <VerifyPieChart />
         </Paper>
-      </Box>
+      </Box> */}
+      
 
       {/* Table */}
       <AssetTable rows={assetRows} />

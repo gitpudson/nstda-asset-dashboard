@@ -44,7 +44,8 @@ export default function Topbar() {
         <Box sx={{ flexGrow: 1 }} />
 
         {/* Right */}
-        <Box
+
+        {/* <Box
           sx={{
             display: "flex",
             alignItems: "center",
@@ -60,7 +61,8 @@ export default function Topbar() {
           <Typography>
             Admin User
           </Typography>
-        </Box>
+        </Box> */}
+
       </Toolbar>
     </AppBar>
   );

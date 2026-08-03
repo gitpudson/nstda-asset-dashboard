@@ -578,7 +578,7 @@ console.log(Object.keys(assetIndex[0] || {}));
       </Box>
 
       {/* Summary Status */}
-      <Box
+      {/* <Box
         sx={{
           display: "flex",
           gap: 1,
@@ -600,7 +600,7 @@ console.log(Object.keys(assetIndex[0] || {}));
           color="error"
           label="ชำรุด 220"
         />
-      </Box>
+      </Box> */}
 
       {/* Filters */}
       <Box

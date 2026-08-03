@@ -1,12 +1,25 @@
 import axios from "axios";
+import { assets } from "../assets/assets";
 
-const API_URL =
-  "http://localhost:8080/api";
+export const getDashboardSummary =
+    async () => {
 
-export const getDashboard = async () => {
-  const response = await axios.get(
-    `${API_URL}/dashboard`
-  );
+        const post = {
+            function: "getDashboardSummary",
+            payload: {},
+        };
 
-  return response.data;
-};
+        const response =
+            await axios.post(
+                assets.API_URL,
+                post,
+                {
+                    headers: {
+                        "Content-Type":
+                            "text/plain",
+                    },
+                }
+            );
+
+        return response.data.data;
+    };

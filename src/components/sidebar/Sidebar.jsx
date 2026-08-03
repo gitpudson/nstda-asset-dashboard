@@ -22,30 +22,30 @@ const menus = [
     text: "หน้าหลัก",
     icon: <Home />,
   },
-  {
-    text: "ครุภัณฑ์",
-    icon: <Inventory2 />,
-  },
-  {
-    text: "ตรวจสอบครุภัณฑ์",
-    icon: <FactCheck />,
-  },
-  {
-    text: "รายงาน",
-    icon: <Assessment />,
-  },
-  {
-    text: "ผู้ใช้งาน",
-    icon: <People />,
-  },
-  {
-    text: "ตั้งค่า",
-    icon: <Settings />,
-  },
-  {
-    text: "ช่วยเหลือ",
-    icon: <Help />,
-  },
+  // {
+  //   text: "ครุภัณฑ์",
+  //   icon: <Inventory2 />,
+  // },
+  // {
+  //   text: "ตรวจสอบครุภัณฑ์",
+  //   icon: <FactCheck />,
+  // },
+  // {
+  //   text: "รายงาน",
+  //   icon: <Assessment />,
+  // },
+  // {
+  //   text: "ผู้ใช้งาน",
+  //   icon: <People />,
+  // },
+  // {
+  //   text: "ตั้งค่า",
+  //   icon: <Settings />,
+  // },
+  // {
+  //   text: "ช่วยเหลือ",
+  //   icon: <Help />,
+  // },
 ];
 
 export default function Sidebar() {
