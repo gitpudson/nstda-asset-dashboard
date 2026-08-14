@@ -109,10 +109,10 @@ export const exportAssetExcel = async (
     rows
 ) => {
 
-    console.log(
-        "******rows******",
-        rows
-    );
+    // console.log(
+    //     "******rows******",
+    //     rows
+    // );
 
     const post = {
         function: "exportAssetExcel",
@@ -133,10 +133,10 @@ export const exportAssetExcel = async (
             }
         );
 
-    console.log(
-        "****exportAssetExcel response******",
-        response.data.data
-    );
+    // console.log(
+    //     "****exportAssetExcel response******",
+    //     response.data.data
+    // );
 
     return response.data.data;
 };

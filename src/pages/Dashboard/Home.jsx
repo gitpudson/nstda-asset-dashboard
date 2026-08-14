@@ -11,11 +11,12 @@ import {
 import RefreshIcon from "@mui/icons-material/Refresh";
 
 import { useEffect, useState } from "react";
-import { getDashboardSummary, getCenterSummary } from "../../services/dashboardService";
+import { getDashboardSummary, getCenterSummary, refreshDashboardSummary } from "../../services/dashboardService";
 
 import {
   Inventory2,
   CheckCircle,
+  Update,
   Warning,
   Error,
 } from "@mui/icons-material";
@@ -58,6 +59,9 @@ export default function Home({
     try {
 
       setLoadingSummary(true);
+
+      // Rebuild Dashboard_Summary
+      await refreshDashboardSummary();
 
       await loadCenterSummary();
 
@@ -373,7 +377,9 @@ export default function Home({
           }
           subtitle="รายการ"
           bgColor="#1976D2"
-          icon={<Inventory2 />}
+          icon={<Inventory2 sx={{
+            fontSize: 40
+          }}/>}
         />
 
 
@@ -396,7 +402,9 @@ export default function Home({
           }
           subtitle={`${checkedPercent}%`}
           bgColor="#22C55E"
-          icon={<CheckCircle />}
+          icon={<CheckCircle sx={{
+            fontSize: 40
+          }} />}
         />
 
         <SummaryCard
@@ -418,7 +426,9 @@ export default function Home({
           }
           subtitle={`${pendingPercent}%`}
           bgColor="#F59E0B"
-          icon={<Warning />}
+          icon={<Update sx={{
+            fontSize: 40
+          }} />}
         />
 
         <SummaryCard
@@ -440,7 +450,9 @@ export default function Home({
           }
           subtitle={`${damagedPercent}%`}
           bgColor="#EF4444"
-          icon={<Error />}
+          icon={<Error sx={{
+            fontSize: 40
+          }} />}
         />
       </Box>
 

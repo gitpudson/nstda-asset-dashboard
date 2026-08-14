@@ -1030,6 +1030,49 @@ export default function AssetTable({
 
       },
     },
+    // {
+    //   field: "verify_status",
+    //   headerName: "สถานะการตรวจสอบ",
+    //   flex: 1.2,
+    //   align: "center",
+    //   headerAlign: "center",
+
+    //   renderCell: (params) => {
+
+    //     const isChecked =
+    //       !!params.row.updated_at;
+
+    //     return (
+    //       <Chip
+    //         label={
+    //           isChecked
+    //             ? "ตรวจสอบแล้ว"
+    //             : "ยังไม่ตรวจ"
+    //         }
+    //         size="small"
+    //         sx={{
+    //           backgroundColor:
+    //             isChecked
+    //               ? "#E8F5E9"
+    //               : "#F3F4F6",
+
+    //           color:
+    //             isChecked
+    //               ? "#2E7D32"
+    //               : "#6B7280",
+
+    //           border:
+    //             isChecked
+    //               ? "1px solid #2E7D32"
+    //               : "1px solid #9CA3AF",
+
+    //           fontWeight: 600,
+    //         }}
+    //       />
+    //     );
+
+    //   },
+    // },
     {
       field: "updated_at",
       headerName: "อัปเดตสถานะ",
