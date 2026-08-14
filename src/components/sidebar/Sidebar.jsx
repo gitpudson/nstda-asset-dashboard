@@ -18,10 +18,10 @@ import {
   ListItemText,
 } from "@mui/material";
 
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { useAsset } from "../../contexts/AssetContext";
-
-
+import { Link, useLocation } from "react-router-dom";
+import { assets } from "../../assets/assets";
 
 
 const menus = [
@@ -33,32 +33,32 @@ const menus = [
   {
     text: "NSTDA",
     path: "/nstda-asset-dashboard/org/NSTDA",
-    icon: <Domain htmlColor="#2B7FFF"/>,
+    icon: <Domain htmlColor="#2B7FFF" />,
   },
   {
     text: "NECTEC",
     path: "/nstda-asset-dashboard/org/NECTEC",
-    icon: <Domain htmlColor="#FB2C36"/>,
+    icon: <Domain htmlColor="#FB2C36" />,
   },
   {
     text: "BIOTEC",
     path: "/nstda-asset-dashboard/org/BIOTEC",
-    icon: <Domain htmlColor="#31C950"/>,
+    icon: <Domain htmlColor="#31C950" />,
   },
   {
     text: "MTEC",
     path: "/nstda-asset-dashboard/org/MTEC",
-    icon: <Domain htmlColor="#FFF085"/>,
+    icon: <Domain htmlColor="#FFF085" />,
   },
   {
     text: "NANOTEC",
     path: "/nstda-asset-dashboard/org/NANOTEC",
-    icon: <Domain htmlColor="orange"/>,
+    icon: <Domain htmlColor="orange" />,
   },
   {
     text: "ENTEC",
     path: "/nstda-asset-dashboard/org/ENTEC",
-    icon: <Domain htmlColor="#36BBA7"/>,
+    icon: <Domain htmlColor="#36BBA7" />,
   },
   // {
   //   text: "ตรวจสอบครุภัณฑ์",
@@ -83,7 +83,9 @@ const menus = [
 ];
 
 export default function Sidebar() {
-  const { loading: assetLoading} = useAsset();
+  const { loading: assetLoading } = useAsset();
+  const location = useLocation();
+
   return (
     <Box
       sx={{
@@ -94,15 +96,45 @@ export default function Sidebar() {
         minHeight: "100vh",
       }}
     >
-      <Typography
+      {/* <Typography
         variant="h5"
         fontWeight="bold"
         sx={{ p: 3 }}
       >
-        NSTDA
-      </Typography>
+        
+        <img
+          src={assets.nstda}
+          alt=""
+          style={{
+            height: 70,
+            objectFit: "contain",
+            marginBottom: -5,
+          }}
+        />
+      </Typography> */}
 
-      <List>
+      <Box
+        sx={{
+          py: 3,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <img
+          src={assets.nstda}
+          alt="NSTDA"
+          style={{
+            width: 120,
+            maxWidth: "100%",
+            objectFit: "contain",
+            marginBottom: -5,
+          }}
+        />
+
+      </Box>
+
+      {/* <List>
         {menus.map((item) => (
           <ListItemButton key={item.text}
             component={Link}
@@ -120,7 +152,82 @@ export default function Sidebar() {
             />
           </ListItemButton>
         ))}
+      </List> */}
+      <List>
+        {menus.map((item) => {
+
+          const isActive =
+            location.pathname ===
+            item.path;
+
+          return (
+            <ListItemButton
+              key={item.text}
+              component={Link}
+              to={item.path}
+              disabled={assetLoading}
+              selected={isActive}
+              sx={{
+                mx: 1,
+                my: 0.5,
+                borderRadius: 2,
+                color: "#fff",
+
+                "&.Mui-selected": {
+                  backgroundColor: "#3A79B8",
+                  borderLeft: "4px solid #FFD54F",
+
+                  "& .MuiListItemIcon-root": {
+                    color: "#FFD54F",
+                  },
+
+                  "& .MuiTypography-root": {
+                    fontWeight: 700,
+                  },
+                },
+
+                "&.Mui-selected:hover": {
+                  backgroundColor: "#4B89C7",
+                },
+
+                "&:hover": {
+                  backgroundColor: "rgba(255,255,255,0.08)",
+                },
+              }}
+
+            >
+              {/* <ListItemIcon
+                sx={{
+                  color: "#fff",
+                  minWidth: 40,
+                }}
+              >
+                {item.icon}
+              </ListItemIcon> */}
+              <ListItemIcon
+                sx={{
+                  color: "#fff",
+                  minWidth: 40,
+                }}
+              >
+                {item.icon}
+              </ListItemIcon>
+
+              <ListItemText
+                primary={item.text}
+                primaryTypographyProps={{
+                  fontWeight:
+                    isActive
+                      ? 700
+                      : 400,
+                }}
+              />
+            </ListItemButton>
+          );
+
+        })}
       </List>
+
     </Box>
   );
 }
