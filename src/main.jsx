@@ -10,9 +10,9 @@ import { AssetProvider }
 ReactDOM.createRoot(
   document.getElementById("root")
 ).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <AssetProvider>
       <App />
     </AssetProvider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

@@ -3,32 +3,38 @@ import {assets} from "../assets/assets";
 export const centers = [
   {
     name: "NSTDA",
+    initial_name: "สก.",
      logo: assets.nstda,
     total: 3450,
   },
   {
     name: "NECTEC",
+    initial_name: "ศอ.",
     logo: assets.nectec,
     total: 2450,
   },
   {
     name: "BIOTEC",
-    logo: assets.nanotec,
+    initial_name: "ศช.",
+    logo: assets.biotec,
     total: 1860,
   },
   {
     name: "MTEC",
+    initial_name: "ศว.",
     logo: assets.mtec,
     total: 2210,
   },
   {
     name: "NANOTEC",
+    initial_name: "ศน.",
     logo: assets.nanotec,
     total: 2480,
   },
   ,
   {
     name: "ENTEC",
+    initial_name: "ศล.",
     logo: assets.entec,
     total: 1480,
   },

@@ -8,18 +8,42 @@ import {
 import {
     Box,
     Typography,
+    Skeleton
 } from "@mui/material";
 
-const data = [
-    { name: "NSTDA", value: 3450, color: "#2F80ED" },
-    { name: "NECTEC", value: 2450, color: "#EB5757" },
-    { name: "BIOTEC", value: 1860, color: "#27AE60" },
-    { name: "MTEC", value: 2210, color: "#F2C94C" },
-    { name: "NANOTEC", value: 2480, color: "#F2994A" },
-];
+const COLORS = {
+    NSTDA: "#2F80ED",
+    NECTEC: "#EB5757",
+    BIOTEC: "#27AE60",
+    MTEC: "#F2C94C",
+    NANOTEC: "#F2994A",
+    ENTEC: "#56CCF2",
+};
 
-export default function AssetPieChart() {
-    const total = data.reduce(
+export default function AssetPieChart({
+    data = [],
+    loading,
+}) {
+
+    if (loading) {
+        return (
+            <Skeleton
+                variant="rounded"
+                width="100%"
+                height={170}
+                
+            />
+        );
+    }
+
+    const chartData = data.map(item => ({
+        name: item.org,
+        value: item.total,
+        color:
+            COLORS[item.org] || "#999999",
+    }));
+
+    const total = chartData.reduce(
         (sum, item) => sum + item.value,
         0
     );
@@ -47,12 +71,12 @@ export default function AssetPieChart() {
                 >
                     <PieChart>
                         <Pie
-                            data={data}
+                            data={chartData}
                             dataKey="value"
                             innerRadius={45}
                             outerRadius={75}
                         >
-                            {data.map((item) => (
+                            {chartData.map(item => (
                                 <Cell
                                     key={item.name}
                                     fill={item.color}
@@ -94,12 +118,13 @@ export default function AssetPieChart() {
                     ml: -1,
                 }}
             >
-                {data.map((item) => (
+                {chartData.map(item => (
                     <Box
                         key={item.name}
                         sx={{
                             display: "grid",
-                            gridTemplateColumns: "1fr 55px",
+                            gridTemplateColumns:
+                                "1fr 55px",
                             alignItems: "center",
                             mb: 1,
                             columnGap: 2,
@@ -132,12 +157,17 @@ export default function AssetPieChart() {
                         <Typography
                             variant="body2"
                             color="text.secondary"
-                            textAlign="right"
+                            sx={{
+                                textAlign: "right",
+                            }}
                         >
-                            {(
-                                (item.value / total) *
-                                100
-                            ).toFixed(1)}
+                            {total > 0
+                                ? (
+                                    (item.value /
+                                        total) *
+                                    100
+                                ).toFixed(2)
+                                : 0}
                             %
                         </Typography>
                     </Box>

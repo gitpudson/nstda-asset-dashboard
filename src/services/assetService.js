@@ -80,31 +80,91 @@ export const getAssetLastUpdate =
     };
 
 export const getAssetByRows = async (
-  rowNumbers
+    rowNumbers
 ) => {
 
-  const post = {
-    function: "getAssetByRows",
-    payload: {
-      rowNumbers,
-    },
-  };
-
-  const response =
-    await axios.post(
-      assets.API_URL,
-      post,
-      {
-        headers: {
-          "Content-Type":
-            "text/plain",
+    const post = {
+        function: "getAssetByRows",
+        payload: {
+            rowNumbers,
         },
-      }
-    );
+    };
+
+    const response =
+        await axios.post(
+            assets.API_URL,
+            post,
+            {
+                headers: {
+                    "Content-Type":
+                        "text/plain",
+                },
+            }
+        );
+
+    return response.data.data;
+};
+
+export const exportAssetExcel = async (
+    rows
+) => {
 
     console.log(
-"getAssetByRows response"
-);
+        "******rows******",
+        rows
+    );
 
-  return response.data.data;
+    const post = {
+        function: "exportAssetExcel",
+        payload: {
+            rows,
+        },
+    };
+
+    const response =
+        await axios.post(
+            assets.API_URL,
+            post,
+            {
+                headers: {
+                    "Content-Type":
+                        "text/plain",
+                },
+            }
+        );
+
+    console.log(
+        "****exportAssetExcel response******",
+        response.data.data
+    );
+
+    return response.data.data;
 };
+
+
+// export const getAssets = async ({
+//     page,
+//     pageSize,
+//     org,
+//     keyword,
+//     status,
+// }) => {
+
+//     const response =
+//         await axios.post(
+//             API_URL,
+//             {
+//                 function: "getAssets",
+//                 payload: {
+//                     page,
+//                     pageSize,
+//                     org,
+//                     keyword,
+//                     status,
+//                 },
+//             }
+//         );
+
+//     return response.data.data;
+
+// };

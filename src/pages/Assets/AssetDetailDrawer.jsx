@@ -62,8 +62,8 @@ export default function AssetDetailDrawer({
 
   // console.log("asset", asset);
   // console.log(" asset?.asset_image", asset?.asset_image);
-  console.log("asset_image =", asset?.asset_image);
-  console.log("length =", asset?.asset_image?.length);
+  // console.log("asset_image =", asset?.asset_image);
+  // console.log("length =", asset?.asset_image?.length);
 
   return (
     <Drawer
@@ -103,6 +103,17 @@ export default function AssetDetailDrawer({
                 boxShadow: "0 2px 6px"
               }}
             />
+            {/* <Avatar
+              src={asset?.image_person || ""}
+              sx={{
+                width: 90,
+                height: 90,
+                border: "1px solid #FCE7D6",
+                boxShadow: "0 2px 6px"
+              }}
+            >
+              {asset?.person_name?.charAt(0) || "?"}
+            </Avatar> */}
 
             <Box
               sx={{
@@ -330,7 +341,8 @@ export default function AssetDetailDrawer({
   objectFit: "contain",
   marginTop: "10px"
 }} /> */}
-            {asset?.asset_image && asset.asset_image.length > 0 ? (
+
+            {/* {asset?.asset_image && asset.asset_image.length > 0 ? (
 
               <img src={asset?.asset_image} 
                 alt="ไม่สามารถโหลดรูปภาพได้" 
@@ -345,7 +357,35 @@ export default function AssetDetailDrawer({
               <Typography color="text.secondary">
                 ไม่มีรูปภาพครุภัณฑ์
               </Typography>
+            )} */}
+
+            {asset?.asset_image?.trim() ? (
+
+              <img
+                src={asset.asset_image}
+                alt={asset?.asset_name || "Asset Image"}
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  // maxHeight: "350px",
+                  objectFit: "contain",
+                  display: "block",
+                  marginTop: "10px",
+                  borderRadius: "8px",
+                  border: "1px solid #E5E7EB",
+                }}
+                onError={(e) => {
+                  e.target.style.display = "none";
+                }}
+              />
+
+            ) : (
+              <Typography color="text.secondary">
+                ไม่มีรูปภาพครุภัณฑ์
+              </Typography>
             )}
+
+
 
             {/* <img
   src="https://lh3.googleusercontent.com/d/1jsk3Tc2-zLhD3rAIkGPtGciNNF2ZBuR_=w1000"

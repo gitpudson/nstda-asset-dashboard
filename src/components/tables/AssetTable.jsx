@@ -1,6 +1,7 @@
-import { useMemo, useState, useEffect } from "react";
-import { getAssetByRows } from "../../services/assetService";
+import { useMemo, useState, useEffect, useRef } from "react";
+import { getAssetByRows, exportAssetExcel } from "../../services/assetService";
 import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import AssetDetailDrawer from "../../pages/Assets/AssetDetailDrawer";
 
@@ -28,14 +29,17 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 import { useAsset } from "../../contexts/AssetContext";
 
-export default function AssetTable() {
+export default function AssetTable({
+  org = "",
+}) {
+  const requestRef = useRef(0);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("ALL");
   const [orgOwner, setOrgOwner] = useState("ALL");
-  const [tableLoading, setTableLoading] =  useState(false);
+  const [tableLoading, setTableLoading] = useState(false);
   const [exportLoading, setExportLoading] = useState(false);
 
-  const { assetIndex,loading } = useAsset();
+  const { assetIndex, loading } = useAsset();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedAsset, setSelectedAsset] = useState(null);
@@ -47,292 +51,546 @@ export default function AssetTable() {
       pageSize: 50,
     });
 
-    const handleExportExcel = async () => {
-      try {
-        setTableLoading(true);
-        setExportLoading(true);
+  const handleExportExcel1 = async () => {
+    try {
+      setTableLoading(true);
+      setExportLoading(true);
 
-        const result = await getAssetByRows(filteredIds);
+      const result = await getAssetByRows(filteredIds);
 
-        const exportData = result.map((item) => ({
-          "รหัสครุภัณฑ์": item.asset_code,
-          "ชื่อครุภัณฑ์": item.asset_name,
-          "หน่วยงาน": item.org_owner,
-          "ผู้รับผิดชอบ": item.person_name,
-          "อาคาร": item.build,
-          "ชั้น": item.floor,
-          "ห้อง": item.room,
-          "สถานะ": item.asset_status,
-        }));
+      const exportData = result.map((item) => ({
+        "รหัสครุภัณฑ์": item.asset_code,
+        "ชื่อครุภัณฑ์": item.asset_name,
+        "หน่วยงาน": item.org_owner,
+        "ผู้รับผิดชอบ": item.person_name,
+        "อาคาร": item.build,
+        "ชั้น": item.floor,
+        "ห้อง": item.room,
+        "สถานะ": item.asset_status,
+      }));
 
-        const worksheet =
-          XLSX.utils.json_to_sheet(exportData);
-          // กำหนดความกว้างคอลัมน์
-          worksheet["!cols"] = [
-          { wch: 25 }, // รหัสครุภัณฑ์
-          { wch: 50 }, // ชื่อครุภัณฑ์
-          { wch: 15 }, // หน่วยงาน
-          { wch: 30 }, // ผู้รับผิดชอบ
-          { wch: 20 }, // อาคาร
-          { wch: 10 }, // ชั้น
-          { wch: 15 }, // ห้อง
-          { wch: 15 }, // สถานะ
-          ];
+      const worksheet =
+        XLSX.utils.json_to_sheet(exportData);
+      // กำหนดความกว้างคอลัมน์
+      worksheet["!cols"] = [
+        { wch: 25 }, // รหัสครุภัณฑ์
+        { wch: 50 }, // ชื่อครุภัณฑ์
+        { wch: 15 }, // หน่วยงาน
+        { wch: 30 }, // ผู้รับผิดชอบ
+        { wch: 20 }, // อาคาร
+        { wch: 10 }, // ชั้น
+        { wch: 15 }, // ห้อง
+        { wch: 15 }, // สถานะ
+      ];
 
-        const workbook =
-          XLSX.utils.book_new();
+      const workbook =
+        XLSX.utils.book_new();
 
-        XLSX.utils.book_append_sheet(
-          workbook,
-          worksheet,
-          "Assets"
+      XLSX.utils.book_append_sheet(
+        workbook,
+        worksheet,
+        "Assets"
+      );
+
+
+      const excelBuffer =
+        XLSX.write(workbook, {
+          bookType: "xlsx",
+          type: "array",
+        });
+
+      const file = new Blob(
+        [excelBuffer],
+        {
+          type:
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        }
+      );
+
+      // saveAs(
+      //   file,
+      //   `Asset_${new Date()
+      //     .toISOString()
+      //     .slice(0, 10)}.xlsx`
+      // );
+
+      const today = new Date();
+
+      const fileName =
+        `Asset_${orgOwner}_${status}_${today.getFullYear()
+        }-${String(today.getMonth() + 1)
+          .padStart(2, "0")
+        }-${String(today.getDate())
+          .padStart(2, "0")
+        }.xlsx`;
+
+      saveAs(file, fileName);
+
+    } catch (error) {
+      console.error(
+        "Export Excel Error",
+        error
+      );
+    } finally {
+      setTableLoading(false);
+      setExportLoading(false);
+    }
+  };
+
+  const handleExportExcel = async () => {
+
+    try {
+
+      setTableLoading(true);
+      setExportLoading(true);
+
+      const result =
+        await exportAssetExcel(
+          filteredIds
         );
 
+      console.log(result);
+      console.log(
+        JSON.stringify(
+          result.debug,
+          null,
+          2
+        )
+      );
 
-        const excelBuffer =
-          XLSX.write(workbook, {
-            bookType: "xlsx",
-            type: "array",
-          });
 
-        const file = new Blob(
-          [excelBuffer],
-          {
-            type:
-              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-          }
-        );
+      if (
+        result?.downloadUrl
+      ) {
 
-        // saveAs(
-        //   file,
-        //   `Asset_${new Date()
-        //     .toISOString()
-        //     .slice(0, 10)}.xlsx`
+        // window.open(
+        //   result.downloadUrl,
+        //   "_blank"
         // );
 
-        const today = new Date();
+        window.location.href =  result.downloadUrl;
 
-        const fileName =
-          `Asset_${orgOwner}_${status}_${
-            today.getFullYear()
-          }-${
-            String(today.getMonth() + 1)
-              .padStart(2, "0")
-          }-${
-            String(today.getDate())
-              .padStart(2, "0")
-          }.xlsx`;
-
-        saveAs(file, fileName);
-
-      } catch (error) {
-        console.error(
-          "Export Excel Error",
-          error
-        );
-      } finally {
-        setTableLoading(false);
-        setExportLoading(false);
       }
-};
 
+    } catch (error) {
 
-const filteredIds = useMemo(() => {
-
-  const keyword =
-    search.trim().toLowerCase();
-
-  return assetIndex
-    .filter(item => {
-
-      const matchSearch =
-        keyword === ""
-          ? true
-          : item.search_text
-              .toLowerCase()
-              .includes(keyword);
-
-      const matchStatus =
-        status === "ALL"
-          ? true
-          : item.asset_status === status;
-
-      const matchOrg =
-        orgOwner === "ALL"
-        ? true
-        : item.org_owner === orgOwner;
-
-      return (
-        matchSearch &&
-        matchStatus &&
-        matchOrg
+      console.error(
+        "Export Excel Error",
+        error
       );
 
-    })
-    .map(item => item.row_number);
+    } finally {
 
-}, [
-  assetIndex,
-  search,
-  status,
-  orgOwner,
-]);
+      setTableLoading(false);
+      setExportLoading(false);
 
-/*
-const filteredIds = useMemo(() => {
+    }
 
-  const keyword =
-    search.trim().toLowerCase();
+  };
 
-  return assetIndex
-    .filter(item => {
 
-      const matchSearch =
-        keyword === ""
-          ? true
-          : item.search_text
-              .toLowerCase()
-              .includes(keyword);
+  const ORG_MAP = {
+    NSTDA: "สก.",
+    NECTEC: "ศอ.",
+    MTEC: "ศว.",
+    BIOTEC: "ศช.",
+    NANOTEC: "ศน.",
+    ENTEC: "ศล.",
+  };
 
-      const matchStatus =
-        status === "ALL"
-          ? true
-          : item.asset_status === status;
+  // const filteredIds = useMemo(() => {
 
-      const matchOrg =
-        orgOwner === "ALL"
-          ? true
-          : item.org_owner === orgOwner;
+  //   const keyword = search.trim().toLowerCase();
 
-      return (
-        matchSearch &&
-        matchStatus &&
-        matchOrg
-      );
+  //   const keywordParts = keyword.split(/\s+/);
+  //   const matchSearch =
+  //     keyword === ""
+  //       ? true
+  //       : keywordParts.every(part =>
+  //         item.search_text
+  //           .toLowerCase()
+  //           .includes(part)
+  //       );
 
-    })
-    .map(item => item.row_number);
+  //   return assetIndex
+  //     .filter(item => {
+  //       const matchSidebarOrg =
+  //         !org
+  //           ? true
+  //           : item.org_owner === ORG_MAP[org];
 
-}, [
-  assetIndex,
-  search,
-  status,
-  orgOwner,
-]);
-*/
+  //       const matchSearch =
+  //         keyword === ""
+  //           ? true
+  //           : item.search_text
+  //             .toLowerCase()
+  //             .includes(keyword);
 
-const pageRows = useMemo(() => {
+  //       if (
+  //         keyword &&
+  //         matchSearch
+  //       ) {
+  //         console.log(
+  //           "MATCH",
+  //           item.row_number,
+  //           item.search_text
+  //         );
+  //       }
 
-  const start =
-    paginationModel.page *
-    paginationModel.pageSize;
+  //       const matchStatus =
+  //         status === "ALL"
+  //           ? true
+  //           : item.asset_status === status;
 
-  return filteredIds.slice(
-    start,
-    start +
-    paginationModel.pageSize
-  );
+  //       const matchOrg =
+  //         orgOwner === "ALL"
+  //           ? true
+  //           : item.org_owner === orgOwner;
 
-}, [
-  filteredIds,
-  paginationModel,
-]);
+  //       return (
+  //         matchSearch &&
+  //         matchStatus &&
+  //         matchOrg &&
+  //         matchSidebarOrg
+  //       );
 
-/*
-useEffect(() => {
+  //     })
+  //     .map(item => item.row_number);
 
-setPaginationModel(prev => ({
-...prev,
-page: 0,
-}));
+  // }, [
+  //   assetIndex,
+  //   search,
+  //   status,
+  //   orgOwner,
+  //   org
+  // ]);
 
-}, [search, status]);
-*/
+  const filteredIds = useMemo(() => {
 
-// useEffect(() => {
-//   setRows([]);
-//   setPaginationModel(prev => {
-//     console.log("before reset", prev.page);
-//     if (prev.page === 0) {
-//       return prev;
-//     }
+    const keyword =
+      search.trim().toLowerCase();
 
-//     return {
-//       ...prev,
-//       page: 0,
-//     };
+    const keywordParts =
+      keyword.split(/\s+/);
 
-//   });
+    return assetIndex
+      .filter(item => {
 
-// }, [search, status]);
-// useEffect(() => {
-//   setPaginationModel((prev) => ({
-//     ...prev,
-//     page: 0,
-//   }));
-// }, [filteredIds.length]);
+        const matchSidebarOrg =
+          !org
+            ? true
+            : item.org_owner === ORG_MAP[org];
 
-useEffect(() => {
+        const matchSearch =
+          keyword === ""
+            ? true
+            : keywordParts.every(part =>
+              item.search_text
+                .toLowerCase()
+                .includes(part)
+            );
 
-  loadPageData();
+        const matchStatus =
+          status === "ALL"
+            ? true
+            : item.asset_status === status;
 
-}, [pageRows]);
+        const matchOrg =
+          orgOwner === "ALL"
+            ? true
+            : item.org_owner === orgOwner;
 
-// const loadPageData =
-//   async () => {
+        return (
+          matchSearch &&
+          matchStatus &&
+          matchOrg &&
+          matchSidebarOrg
+        );
 
-//     if (pageRows.length === 0) {
+      })
+      .map(item => item.row_number);
 
-//       setRows([]);
-//       return;
+  }, [
+    assetIndex,
+    search,
+    status,
+    orgOwner,
+    org,
+  ]);
 
-//     }
+  const pageRows = useMemo(() => {
 
-//     const result =
-//       await getAssetByRows(
-//         pageRows
-//       );
+    const start =
+      paginationModel.page *
+      paginationModel.pageSize;
 
-//     setRows(result);
-
-// };
-
-const loadPageData = async () => {
-
-  if (pageRows.length === 0) {
-
-    setRows([]);
-    return;
-
-  }
-
-  try {
-
-    setTableLoading(true);
-
-    const result =
-      await getAssetByRows(
-        pageRows
-      );
-
-    setRows(result);
-
-  } catch (error) {
-
-    console.error(
-      "loadPageData error",
-      error
+    return filteredIds.slice(
+      start,
+      start +
+      paginationModel.pageSize
     );
 
-    setRows([]);
+  }, [
+    filteredIds,
+    paginationModel,
+  ]);
 
-  } finally {
+  // useEffect(() => {
+  //   setRows([]);
+  //   setTableLoading(true);
+  //   loadPageData();
 
-    setTableLoading(false);
+  //   // }, [org, pageRows]);
+  // }, [
+  //   org,
+  //   paginationModel.page,
+  //   paginationModel.pageSize,
+  //   filteredIds.length,
+  // ]);
 
-  }
+  useEffect(() => {
 
-};
+    if (
+      pageRows.length >= 0
+    ) {
+      loadPageData();
+    }
+
+  }, [
+    org,
+    pageRows.join(",")
+  ]);
+
+  useEffect(() => {
+
+    setPaginationModel(prev => ({
+      ...prev,
+      page: 0,
+    }));
+
+    setSearch("");
+    setStatus("ALL");
+
+  }, [org]);
+
+  // useEffect(() => {
+
+  //   const timer =
+  //     setTimeout(() => {
+
+  //       setSearchKeyword(
+  //         search
+  //       );
+
+  //     }, 500);
+
+  //   return () =>
+  //     clearTimeout(timer);
+
+  // }, [search]);
+
+  // const loadPageData = async () => {
+
+  //   if (pageRows.length === 0) {
+
+  //     setRows([]);
+  //     setTableLoading(false);
+  //     return;
+
+  //   }
+
+  //   try {
+
+  //     setTableLoading(true);
+
+  //     const result =
+  //       await getAssetByRows(
+  //         pageRows
+  //       );
+
+  //     setRows(result);
+
+  //   } catch (error) {
+
+  //     console.error(
+  //       "loadPageData error",
+  //       error
+  //     );
+
+  //     setRows([]);
+
+  //   } finally {
+
+  //     setTableLoading(false);
+
+  //   }
+
+  // };
+
+  //   const loadPageData = async () => {
+
+  //   if (pageRows.length === 0) {
+
+  //     setRows([]);
+  //     setTableLoading(false);
+
+  //     return;
+
+  //   }
+
+  //   try {
+
+  //     setTableLoading(true);
+
+  //     const result =
+  //       await getAssetByRows(pageRows);
+
+  //     setRows(result);
+
+  //   } catch (error) {
+
+  //     console.error(
+  //       "loadPageData error",
+  //       error
+  //     );
+
+  //     setRows([]);
+
+  //   } finally {
+
+  //     setTableLoading(false);
+
+  //   }
+
+  // };
+
+  // const loadPageData = async () => {
+
+  //   console.log(
+  //     "filteredIds",
+  //     filteredIds.length
+  //   );
+
+  //   console.log(
+  //     "pageRows",
+  //     pageRows
+  //   );
+
+  //   if (pageRows.length === 0) {
+
+  //     setRows([]);
+  //     setTableLoading(false);
+
+  //     return;
+
+  //   }
+
+  //   try {
+
+  //     setTableLoading(true);
+
+  //     // console.time("getAssetByRows");
+
+  //     console.log(
+  //       "pageRows before api",
+  //       pageRows
+  //     );
+
+  //     const result =
+  //       await getAssetByRows(pageRows);
+
+  //     // console.timeEnd("getAssetByRows");
+  //     console.log(
+  //       "result rows",
+  //       result.length
+  //     );
+
+  //     setRows(result);
+
+  //   } catch (error) {
+
+  //     // console.error(
+  //     //   "loadPageData error",
+  //     //   error
+  //     // );
+
+  //     setRows([]);
+
+  //   } finally {
+
+  //     setTableLoading(false);
+
+  //   }
+
+  // };
+
+  const loadPageData = async () => {
+
+    const requestId =
+      ++requestRef.current;
+
+    if (
+      pageRows.length === 0
+    ) {
+
+      setRows([]);
+      setTableLoading(false);
+
+      return;
+
+    }
+
+    try {
+
+      setTableLoading(true);
+
+      const result =
+        await getAssetByRows(
+          pageRows
+        );
+
+      if (
+        requestId !==
+        requestRef.current
+      ) {
+        return;
+      }
+
+      setRows(result);
+
+    } catch (error) {
+
+      console.error(error);
+
+      if (
+        requestId ===
+        requestRef.current
+      ) {
+        setRows([]);
+      }
+
+    } finally {
+
+      if (
+        requestId ===
+        requestRef.current
+      ) {
+        setTableLoading(false);
+      }
+
+    }
+
+  };
+
+
+  useEffect(() => {
+
+    setPaginationModel(prev => ({
+      ...prev,
+      page: 0,
+    }));
+
+  }, [org]);
 
   /*
   const columns = [
@@ -460,41 +718,49 @@ const loadPageData = async () => {
     },
   ];
 
-// if (
-//   loading ||
-//   assetIndex.length === 0
-// ) {
-//   return (
-//     <Box
-//       sx={{
-//         height: "70vh",
-//         display: "flex",
-//         flexDirection: "column",
-//         justifyContent: "center",
-//         alignItems: "center",
-//         gap: 2,
-//       }}
-//     >
-//       <CircularProgress />
+  // if (
+  //   loading ||
+  //   assetIndex.length === 0
+  // ) {
+  //   return (
+  //     <Box
+  //       sx={{
+  //         height: "70vh",
+  //         display: "flex",
+  //         flexDirection: "column",
+  //         justifyContent: "center",
+  //         alignItems: "center",
+  //         gap: 2,
+  //       }}
+  //     >
+  //       <CircularProgress />
 
-//       <Typography>
-//         กำลังโหลดข้อมูลครุภัณฑ์...
-//       </Typography>
+  //       <Typography>
+  //         กำลังโหลดข้อมูลครุภัณฑ์...
+  //       </Typography>
 
-//     </Box>
-//   );
-// }
+  //     </Box>
+  //   );
+  // }
 
-useEffect(() => {
-  if (assetIndex.length > 0) {
-    console.log(
-      [...new Set(assetIndex.map(x => x.org_owner))]
-    );
-  }
-}, [assetIndex]);
+  useEffect(() => {
+    if (assetIndex.length > 0) {
+      // console.log(
+      //   [...new Set(assetIndex.map(x => x.org_owner))]
+      // );
+    }
+  }, [assetIndex]);
 
-console.log(assetIndex[0]);
-console.log(Object.keys(assetIndex[0] || {}));
+  // console.log(assetIndex[0]);
+  // console.log(Object.keys(assetIndex[0] || {}));
+  // console.log(
+  //   "assetIndex",
+  //   assetIndex.length,
+  //   "loading",
+  //   loading
+  // );
+
+
 
   return (
     <Paper
@@ -526,53 +792,49 @@ console.log(Object.keys(assetIndex[0] || {}));
           >
             {
               loading
-              ? "กำลังโหลดรายการครุภัณฑ์ล่าสุด......"
-              : `รายการครุภัณฑ์ล่าสุด`
+                ? "กำลังโหลดรายการครุภัณฑ์ล่าสุด......"
+                : `รายการครุภัณฑ์ล่าสุด`
             }
-            
+
           </Typography>
 
           <Typography
-          variant="body2"
-          color="text.secondary"
-        >
-          {loading
-              ? (<> <center><CircularProgress /> </center> </>)
+            variant="body2"
+            color="text.secondary"
+          >
+            {(tableLoading || loading)
+              ? (<> <center>กำลังโหลดข้อมูล.......<CircularProgress /> </center> </>)
               // ? (<><div>กำลังโหลดข้อมูล..... </div> </>)
               : `จำนวน ${filteredIds.length.toLocaleString()} รายการ`}
-        </Typography>
+          </Typography>
         </Box>
 
-        {/* <Button
-          disabled={filteredIds.length === 0}
-          variant="contained"
-          startIcon={<Download />}
-          onClick={handleExportExcel}
-        >
-          Export Excel ({filteredIds.length})
-        </Button> */}
         <Button
           variant="contained"
           onClick={handleExportExcel}
-          disabled={exportLoading}
+          disabled={exportLoading || tableLoading}
           startIcon={
             exportLoading
               ? (
-                  <CircularProgress
-                    size={18}
-                    color="inherit"
-                  />
-                )
+                <CircularProgress
+                  size={18}
+                  color="inherit"
+                />
+              )
               : (
-                  <Download />
-                )
+                <Download />
+              )
           }
         >
           {exportLoading ? (
             "กำลัง Export..."
-            ) : (
-            <>Export Excel ({filteredIds.length.toLocaleString()} รายการ) </>
-            )}
+          ) : (
+            <>
+              {tableLoading
+                ? "กำลังโหลด..."
+                : `Export Excel (${filteredIds.length.toLocaleString()} รายการ)`}
+            </>
+          )}
         </Button>
 
       </Box>
@@ -610,11 +872,11 @@ console.log(Object.keys(assetIndex[0] || {}));
           mb: 3,
           flexWrap: "wrap",
           pointerEvents: exportLoading
-          ? "none"
-          : "auto",
+            ? "none"
+            : "auto",
           opacity: exportLoading
-          ? 0.6
-          : 1,
+            ? 0.6
+            : 1,
         }}
       >
         <TextField
@@ -626,13 +888,13 @@ console.log(Object.keys(assetIndex[0] || {}));
           //   setSearch(e.target.value)
           // }
           onChange={(e) => {
-          setPaginationModel((prev) => ({
-            ...prev,
-            page: 0,
-          }));
+            setPaginationModel((prev) => ({
+              ...prev,
+              page: 0,
+            }));
 
-          setSearch(e.target.value);
-        }}
+            setSearch(e.target.value);
+          }}
           sx={{ flex: 1 }}
           InputProps={{
             startAdornment: (
@@ -643,7 +905,7 @@ console.log(Object.keys(assetIndex[0] || {}));
           }}
         />
 
-        <TextField
+        {/* <TextField
           select
           size="small"
           value={orgOwner}
@@ -667,38 +929,25 @@ console.log(Object.keys(assetIndex[0] || {}));
           <MenuItem value="ศล.">ศล.</MenuItem>
           <MenuItem value="ศน.">ศน.</MenuItem>
           <MenuItem value="ศอ.">ศอ.</MenuItem>
-        </TextField>
+        </TextField> */}
 
         <TextField
           select
           size="small"
           value={status}
-          // onChange={(e) =>
-          //   setStatus(e.target.value)
-          // }
-
           onChange={(e) => {
-          setPaginationModel((prev) => ({
-            ...prev,
-            page: 0,
-          }));
+            setPaginationModel((prev) => ({
+              ...prev,
+              page: 0,
+            }));
 
-          setStatus(e.target.value);
-          // setOrgOwner(e.target.value);
-        }}
+            setStatus(e.target.value);
+          }}
           sx={{ width: 180 }}
         >
           <MenuItem value="ALL">
             ทุกสถานะ
           </MenuItem>
-
-          {/* <MenuItem value="ตรวจแล้ว">
-            ตรวจแล้ว
-          </MenuItem>
-
-          <MenuItem value="รอตรวจ">
-            รอตรวจ
-          </MenuItem> */}
 
           <MenuItem value="ใช้งานปกติ">
             ใช้งานปกติ
@@ -706,13 +955,13 @@ console.log(Object.keys(assetIndex[0] || {}));
 
           <MenuItem value="ชำรุด">
             ชำรุด
-          </MenuItem> 
+          </MenuItem>
 
           <MenuItem value="รอจำหน่าย">
             รอจำหน่าย
-          </MenuItem> 
+          </MenuItem>
 
-          
+
         </TextField>
       </Box>
 
@@ -764,8 +1013,8 @@ console.log(Object.keys(assetIndex[0] || {}));
 
         onRowClick={(params) => {
           console.log("params.row", params.row);
-        setSelectedAsset(params.row);
-        setDrawerOpen(true);
+          setSelectedAsset(params.row);
+          setDrawerOpen(true);
         }}
 
         rowCount={filteredIds.length}
@@ -794,16 +1043,16 @@ console.log(Object.keys(assetIndex[0] || {}));
         ]}
 
         loading={tableLoading || loading}
-        // loading={tableLoading}
+      // loading={tableLoading}
 
       />
 
       <AssetDetailDrawer
-      open={drawerOpen}
-      onClose={() => setDrawerOpen(false)}
-      asset={selectedAsset}
-    />
-      
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        asset={selectedAsset}
+      />
+
     </Paper>
   );
 }

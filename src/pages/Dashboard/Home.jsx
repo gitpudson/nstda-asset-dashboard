@@ -4,12 +4,14 @@ import {
   Typography,
   IconButton,
   Tooltip,
+  Skeleton,
+  CircularProgress
 } from "@mui/material";
 
 import RefreshIcon from "@mui/icons-material/Refresh";
 
 import { useEffect, useState } from "react";
-import { getDashboardSummary } from "../../services/dashboardService";
+import { getDashboardSummary, getCenterSummary } from "../../services/dashboardService";
 
 import {
   Inventory2,
@@ -25,6 +27,9 @@ import AssetPieChart from "../../components/charts/AssetPieChart";
 import VerifyPieChart from "../../components/charts/VerifyPieChart";
 
 import AssetTable from "../../components/tables/AssetTable";
+import { useAsset } from "../../contexts/AssetContext";
+import dayjs from "dayjs";
+import "dayjs/locale/th";
 
 import {
   centers,
@@ -32,36 +37,144 @@ import {
   dashboardSummary
 } from "../../data/mockData";
 
-export default function Home() {
-  const handleRefresh = () => {
-    console.log("refresh");
+export default function Home({
+  org = "",
+}) {
+
+  const selectedCenter = centers.find(
+    (center) => center?.name === org
+  );
+
+  // const title = org
+  //   ? `รายการครุภัณฑ์ทั้งหมดของศูนย์ ${logo}`
+  //   : "รายการครุภัณฑ์ทั้งหมดของทุกศูนย์ สวทช.";
+
+  // const handleRefresh = () => {
+  //   await loadDashboardSummary();
+  //   await loadCenterSummary();
+  // };
+  const handleRefresh = async () => {
+
+    try {
+
+      setLoadingSummary(true);
+
+      await loadCenterSummary();
+
+      const data =
+        await getDashboardSummary(
+          org
+        );
+
+      setSummary(data);
+
+    } catch (error) {
+
+      console.error(
+        "Refresh Error",
+        error
+      );
+
+    } finally {
+
+      setLoadingSummary(false);
+
+    }
+
   };
 
-  const [summary, setSummary] = useState({
-    totalAssets: 0,
-    checkedAssets: 0,
-    pendingAssets: 0,
-    damagedAssets: 0,
-  });
+  // const [summary, setSummary] = useState({
+  //   totalAssets: 0,
+  //   checkedAssets: 0,
+  //   pendingAssets: 0,
+  //   damagedAssets: 0,
+  // });
+  const [summary, setSummary] = useState(null);
+
+  const [centerSummary, setCenterSummary] = useState([]);
+  const [loadingSummary, setLoadingSummary] = useState(true);
+  const { loading: assetLoading, } = useAsset();
 
   useEffect(() => {
-    loadDashboardSummary();
+    loadCenterSummary();
   }, []);
+
+  const loadCenterSummary =
+    async () => {
+
+      const result =
+        await getCenterSummary();
+
+      setCenterSummary(result);
+      // console.log("getCenterSummary", result);
+      // setLoadingSummary(false);
+    };
+
+  useEffect(() => {
+
+    const loadData = async () => {
+
+      // setSummary({
+      //   totalAssets: 0,
+      //   checkedAssets: 0,
+      //   pendingAssets: 0,
+      //   damagedAssets: 0,
+      // });
+      setLoadingSummary(true);
+      setSummary(null);
+
+      try {
+
+        const data =
+          await getDashboardSummary(org);
+
+        console.log(
+          "ORG",
+          org
+        );
+
+        // console.log(
+        //   "Dashboard Summary",
+        //   data
+        // );
+
+        setSummary(data);
+
+      } catch (error) {
+
+        console.error(error);
+
+      } finally {
+
+        setLoadingSummary(false);
+
+      }
+
+    };
+
+    loadData();
+
+  }, [org]);
 
   const loadDashboardSummary = async () => {
     try {
-      const data = await getDashboardSummary();
+      setLoadingSummary(true);
+      const data = await getDashboardSummary(org);
 
       console.log("Dashboard Summary:", data);
 
       setSummary(data);
+      setLoadingSummary(false);
     } catch (error) {
       console.error(error);
+    }
+    finally {
+      setLoadingSummary(false);
     }
   };
 
   const checkedPercent =
-    summary.totalAssets > 0
+    summary?.totalAssets > 0
       ? (
         (summary.checkedAssets /
           summary.totalAssets) *
@@ -70,7 +183,7 @@ export default function Home() {
       : "0.00";
 
   const pendingPercent =
-    summary.totalAssets > 0
+    summary?.totalAssets > 0
       ? (
         (summary.pendingAssets /
           summary.totalAssets) *
@@ -79,7 +192,7 @@ export default function Home() {
       : "0.00";
 
   const damagedPercent =
-    summary.totalAssets > 0
+    summary?.totalAssets > 0
       ? (
         (summary.damagedAssets /
           summary.totalAssets) *
@@ -87,7 +200,47 @@ export default function Home() {
       ).toFixed(2)
       : "0.00";
 
+  // console.log("centerSummary", centerSummary);
+  if (!org && assetLoading) {
+
+    return (
+      <Box
+        sx={{
+          height: "70vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 2,
+        }}
+      >
+        <CircularProgress />
+
+        <Typography variant="h4">
+          กำลังเตรียมข้อมูลระบบ...
+        </Typography>
+
+        {/* <Typography>
+          กำลังโหลดข้อมูลครุภัณฑ์สำหรับการค้นหา (มากกว่า 70,000 รายการ)
+        </Typography> */}
+        {/* <Typography>
+          กำลังโหลดข้อมูลครุภัณฑ์สำหรับการค้นหา...
+        </Typography> */}
+
+        <Typography
+          variant="h4"
+          color="text.secondary"
+        >
+          กรุณารอสักครู่
+        </Typography>
+
+      </Box>
+    );
+
+  }
+
   return (
+
     <Box sx={{ width: "100%" }}>
       {/* Header */}
       <Box
@@ -100,10 +253,30 @@ export default function Home() {
       >
         <Box>
           <Typography
-            variant="h4"
-            fontWeight="bold"
+            variant="h3"
+            fontWeight={700}
           >
-            ระบบตรวจสอบครุภัณฑ์ สวทช.
+            {/* ระบบตรวจสอบครุภัณฑ์ สวทช. */}
+            {
+              selectedCenter && (
+                <img
+                  src={selectedCenter.logo}
+                  alt={selectedCenter.title}
+                  style={{
+                    height: 50,
+                    objectFit: "contain",
+                    marginBottom: -10,
+                    marginRight: 40,
+                  }}
+                />
+
+              )
+            }
+
+            {org
+              ? `สรุปข้อมูลครุภัณฑ์ของศูนย์ ${selectedCenter.initial_name}`
+              : "สรุปข้อมูลครุภัณฑ์ทั้งหมดของทุกศูนย์"}
+
           </Typography>
 
           <Typography color="text.secondary">
@@ -111,37 +284,68 @@ export default function Home() {
           </Typography>
         </Box>
 
-        {/* <Box
+        <Box
           sx={{
             display: "flex",
             alignItems: "center",
             gap: 1,
           }}
         >
-          <Typography
+          {/* <Typography
             variant="body2"
             color="text.secondary"
           >
             อัปเดตล่าสุด :
             24 พ.ค. 2569 10:30 น.
+          </Typography> */}
+
+          <Typography
+            variant="body2"
+            color="text.secondary"
+          >
+            อัปเดตล่าสุด :{" "}
+            {
+              summary?.lastUpdate
+                ? dayjs(summary.lastUpdate)
+                  .locale("th")
+                  .format(
+                    "D MMM YYYY HH:mm น."
+                  )
+                : "-"
+            }
           </Typography>
 
-          <Tooltip title="รีเฟรชข้อมูล">
+          {/* <Tooltip title="รีเฟรชข้อมูล">
             <IconButton
               onClick={handleRefresh}
               size="small"
             >
               <RefreshIcon />
             </IconButton>
+          </Tooltip> */}
+
+          <Tooltip title="รีเฟรชข้อมูล">
+            <IconButton
+              onClick={handleRefresh}
+              size="small"
+              disabled={loadingSummary}
+            >
+              {
+                loadingSummary
+                  ? <CircularProgress size={18} />
+                  : <RefreshIcon />
+              }
+            </IconButton>
           </Tooltip>
-        </Box> */}
+
+        </Box>
 
       </Box>
 
-      
+
       {/* KPI */}
 
-      {/* <Box
+      <Box
         sx={{
           display: "grid",
           gridTemplateColumns:
@@ -152,23 +356,66 @@ export default function Home() {
       >
         <SummaryCard
           title="ครุภัณฑ์ทั้งหมด"
-          value={summary.totalAssets.toLocaleString()}
+          // value={summary.totalAssets.toLocaleString()}
+          value={
+            loadingSummary
+              ? (
+                <Skeleton
+                  width={100}
+                  height={50}
+                />
+              )
+              : (
+                // summary.totalAssets.toLocaleString()
+                summary?.totalAssets
+                  ?.toLocaleString() || "-"
+              )
+          }
           subtitle="รายการ"
           bgColor="#1976D2"
           icon={<Inventory2 />}
         />
 
+
         <SummaryCard
           title="ตรวจสอบแล้ว"
-          value={summary.checkedAssets.toLocaleString()}
+          // value={summary.checkedAssets.toLocaleString()}
+          value={
+            loadingSummary
+              ? (
+                <Skeleton
+                  width={100}
+                  height={50}
+                />
+              )
+              : (
+                // summary.checkedAssets.toLocaleString()
+                summary?.checkedAssets
+                  ?.toLocaleString() || "-"
+              )
+          }
           subtitle={`${checkedPercent}%`}
           bgColor="#22C55E"
           icon={<CheckCircle />}
         />
 
         <SummaryCard
-          title="รอการตรวจสอบ"
-          value={summary.pendingAssets.toLocaleString()}
+          title="รอจำหน่าย"
+          // value={summary.pendingAssets.toLocaleString()}
+          value={
+            loadingSummary
+              ? (
+                <Skeleton
+                  width={100}
+                  height={50}
+                />
+              )
+              : (
+                // summary.pendingAssets.toLocaleString()
+                summary?.pendingAssets
+                  ?.toLocaleString() || "-"
+              )
+          }
           subtitle={`${pendingPercent}%`}
           bgColor="#F59E0B"
           icon={<Warning />}
@@ -176,16 +423,30 @@ export default function Home() {
 
         <SummaryCard
           title="ชำรุด / เสียหาย"
-          value={summary.damagedAssets.toLocaleString()}
+          // value={summary.damagedAssets.toLocaleString()}
+          value={
+            loadingSummary
+              ? (
+                <Skeleton
+                  width={100}
+                  height={50}
+                />
+              )
+              : (
+                // summary.damagedAssets.toLocaleString()
+                summary?.damagedAssets
+                  ?.toLocaleString() || "-"
+              )
+          }
           subtitle={`${damagedPercent}%`}
           bgColor="#EF4444"
           icon={<Error />}
         />
-      </Box> */}
+      </Box>
 
       {/* Cards + Charts */}
-      
-      {/* <Box
+
+      <Box
         sx={{
           display: "flex",
           gap: 2,
@@ -193,38 +454,82 @@ export default function Home() {
           mb: 3,
         }}
       >
-        {centers.map((center, index) => {
-          // console.log("logo", center);
+        {!org && (
+          <>
+            {/* {centerSummary.map((center, index) => {
+              // console.log("logo", center);
+              const centerInfo =
+                centers.find(
+                  x => x?.name === center?.org
+                );
 
-          return (
-            <CenterCard
-              key={center.name}
-              title={center.name}
-              logo={center.logo}
-              total={center.total}
-              active={index === 0}
-            />
-          );
-        })}
+              return (
+                <CenterCard
+                  key={center.name}
+                  title={center.name}
+                  logo={centerInfo?.logo}
+                  total={center.total}
+                  active={false}
+                />
+              );
+            })} */}
+            {
+              centerSummary.length === 0
+                ? (
+                  <>
+                    {[1, 2, 3, 4, 5, 6].map((i) => (
+                      <Skeleton
+                        key={i}
+                        variant="rounded"
+                        width={120}
+                        height={140}
+                      />
+                    ))}
+                  </>
+                )
+                : (
+                  centerSummary.map((center) => {
 
-        <Paper
-          sx={{
-            width: 380,
-            height: 220,
-            p: 2,
-            borderRadius: 3,
-            flexShrink: 0,
-          }}
-        >
-          <Typography
-            fontWeight={700}
-            mb={2}
-          >
-            ครุภัณฑ์แยกตามหน่วยงาน
-          </Typography>
+                    const centerInfo =
+                      centers.find(
+                        x => x?.name === center?.org
+                      );
 
-          <AssetPieChart />
-        </Paper>
+                    return (
+                      <CenterCard
+                        key={center.org}
+                        title={center.org}
+                        logo={centerInfo?.logo}
+                        total={center.total}
+                        active={false}
+                      />
+                    );
+
+                  })
+                )
+            }
+
+            <Paper
+              sx={{
+                width: 380,
+                height: 220,
+                p: 2,
+                borderRadius: 3,
+                flexShrink: 0,
+              }}
+            >
+              <Typography
+                fontWeight={700}
+                mb={2}
+              >
+                ครุภัณฑ์แยกตามหน่วยงาน
+              </Typography>
+
+              <AssetPieChart data={centerSummary} loading={loadingSummary} />
+            </Paper>
+
+          </>
+        )}
 
         <Paper
           sx={{
@@ -242,13 +547,14 @@ export default function Home() {
             ความคืบหน้าการตรวจสอบ
           </Typography>
 
-          <VerifyPieChart />
+          <VerifyPieChart summary={summary} loading={loadingSummary} />
         </Paper>
-      </Box> */}
-      
+
+      </Box>
+
 
       {/* Table */}
-      <AssetTable rows={assetRows} />
+      {/* <AssetTable rows={assetRows} /> */}
     </Box>
   );
 }

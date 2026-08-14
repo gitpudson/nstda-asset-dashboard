@@ -25,8 +25,32 @@ export function AssetProvider({
   const lastUpdateRef =
     useRef(null);
 
+  // const loadSearchIndex =
+  //   async () => {
+  //     try {
+
+  //       const data =
+  //         await getAssetSearchIndex();
+
+  //       setAssetIndex(data);
+
+  //     } catch (error) {
+
+  //       console.error(
+  //         "loadSearchIndex",
+  //         error
+  //       );
+
+  //     }
+  //   };
+
   const loadSearchIndex =
     async () => {
+
+      console.time(
+        "loadSearchIndex"
+      );
+
       try {
 
         const data =
@@ -34,14 +58,14 @@ export function AssetProvider({
 
         setAssetIndex(data);
 
-      } catch (error) {
+      } finally {
 
-        console.error(
-          "loadSearchIndex",
-          error
+        console.timeEnd(
+          "loadSearchIndex"
         );
 
       }
+
     };
 
   const loadInitialData =
@@ -79,15 +103,60 @@ export function AssetProvider({
 
   }, []);
 
+  // useEffect(() => {
+
+  //   const timer =
+  //     setInterval(async () => {
+
+  //       try {
+  //         console.log(
+  //           "loadSearchIndex check update"
+  //         );
+  //         const result =
+  //           await getAssetLastUpdate();
+
+  //         if (
+  //           result.updated_at !==
+  //           lastUpdateRef.current
+  //         ) {
+
+  //           console.log(
+  //             "Asset Index Updated"
+  //           );
+
+  //           lastUpdateRef.current =
+  //             result.updated_at;
+
+  //           await loadSearchIndex();
+
+  //         }
+
+  //       } catch (error) {
+
+  //         console.error(
+  //           "check update error",
+  //           error
+  //         );
+
+  //       }
+
+  //     }, 10000); // ทำงานทุก 60 วินาที (1 นาที)
+
+  //   return () =>
+  //     clearInterval(timer);
+
+  // }, []);
+
   useEffect(() => {
+
+    const CHECK_INTERVAL =
+      5 * 60 * 1000; // 5 นาที
 
     const timer =
       setInterval(async () => {
 
         try {
-          console.log(
-              "loadSearchIndex check update"
-            );
+
           const result =
             await getAssetLastUpdate();
 
@@ -116,7 +185,7 @@ export function AssetProvider({
 
         }
 
-      }, 10000); // ทำงานทุก 60 วินาที (1 นาที)
+      }, CHECK_INTERVAL);
 
     return () =>
       clearInterval(timer);
@@ -129,7 +198,7 @@ export function AssetProvider({
         assetIndex,
         loading,
         reloadSearchIndex:
-        loadSearchIndex,
+          loadSearchIndex,
       }}
     >
       {children}

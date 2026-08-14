@@ -8,34 +8,58 @@ import {
 import {
   Box,
   Typography,
+  Skeleton
 } from "@mui/material";
 
-const data = [
-  {
-    name: "ตรวจสอบแล้ว",
-    value: 10980,
-    color: "#22c55e",
-  },
-  {
-    name: "รอตรวจ",
-    value: 1250,
-    color: "#f59e0b",
-  },
-  {
-    name: "ชำรุด",
-    value: 220,
-    color: "#ef4444",
-  },
-];
+export default function VerifyPieChart({
+  summary,
+  loading,
+}) {
 
-export default function VerifyPieChart() {
-  const verified = 10980;
-  const total = 12450;
+  if (loading|| !summary) {
+    return (
+      <Skeleton
+        variant="rounded"
+        width="100%"
+        height={170}
+      />
+    );
+  }
 
-  const percent = (
-    (verified / total) *
-    100
-  ).toFixed(1);
+  const data = [
+    {
+      name: "ตรวจสอบแล้ว",
+      value:
+        summary?.checkedAssets || 0,
+      color: "#22c55e",
+    },
+    {
+      name: "รอจำหน่าย",
+      value:
+        summary?.pendingAssets || 0,
+      color: "#f59e0b",
+    },
+    {
+      name: "ชำรุด",
+      value:
+        summary?.damagedAssets || 0,
+      color: "#ef4444",
+    },
+  ];
+
+  const verified =
+    summary?.checkedAssets || 0;
+
+  const total =
+    summary?.totalAssets || 0;
+
+  const percent =
+    total > 0
+      ? (
+        (verified / total) *
+        100
+      ).toFixed(2)
+      : "0.0";
 
   return (
     <Box
@@ -45,7 +69,6 @@ export default function VerifyPieChart() {
         height: 180,
       }}
     >
-      {/* Chart */}
       <Box
         sx={{
           flex: 1,
@@ -77,7 +100,6 @@ export default function VerifyPieChart() {
           </PieChart>
         </ResponsiveContainer>
 
-        {/* Center Text */}
         <Box
           sx={{
             position: "absolute",
@@ -105,7 +127,6 @@ export default function VerifyPieChart() {
         </Box>
       </Box>
 
-      {/* Legend Right */}
       <Box
         sx={{
           width: 180,
@@ -139,9 +160,7 @@ export default function VerifyPieChart() {
                 }}
               />
 
-              <Typography
-                variant="body2"
-              >
+              <Typography variant="body2">
                 {item.name}
               </Typography>
             </Box>
