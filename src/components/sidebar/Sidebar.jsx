@@ -27,37 +27,37 @@ import { Link, useLocation } from "react-router-dom";
 const menus = [
   {
     text: "หน้าหลัก",
-    path: "/",
+    path: "/nstda-asset-dashboard",
     icon: <Home />,
   },
   {
     text: "NSTDA",
-    path: "/org/NSTDA",
+    path: "/nstda-asset-dashboard/org/NSTDA",
     icon: <Domain htmlColor="#2B7FFF" />,
   },
   {
     text: "NECTEC",
-    path: "/org/NECTEC",
+    path: "/nstda-asset-dashboard/org/NECTEC",
     icon: <Domain htmlColor="#FB2C36" />,
   },
   {
     text: "BIOTEC",
-    path: "/org/BIOTEC",
+    path: "/nstda-asset-dashboard/org/BIOTEC",
     icon: <Domain htmlColor="#31C950" />,
   },
   {
     text: "MTEC",
-    path: "/org/MTEC",
+    path: "/nstda-asset-dashboard/org/MTEC",
     icon: <Domain htmlColor="#FFF085" />,
   },
   {
     text: "NANOTEC",
-    path: "/org/NANOTEC",
+    path: "/nstda-asset-dashboard/org/NANOTEC",
     icon: <Domain htmlColor="orange" />,
   },
   {
     text: "ENTEC",
-    path: "/org/ENTEC",
+    path: "/nstda-asset-dashboard/org/ENTEC",
     icon: <Domain htmlColor="#36BBA7" />,
   },
   // {
