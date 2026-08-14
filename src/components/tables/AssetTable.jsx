@@ -273,6 +273,11 @@ export default function AssetTable({
     const keywordParts =
       keyword.split(/\s+/);
 
+    console.log(
+      "assetIndex sample",
+      assetIndex[0]
+    );
+
     return assetIndex
       .filter(item => {
 
@@ -290,10 +295,23 @@ export default function AssetTable({
                 .includes(part)
             );
 
+        // const matchStatus =
+        //   status === "ALL"
+        //     ? true
+        //     : item.asset_status === status;
+        const currentYear = new Date().getFullYear();
         const matchStatus =
           status === "ALL"
             ? true
-            : item.asset_status === status;
+            : status === "CHECKED"
+              ? (
+                item.updated_at &&
+                new Date(
+                  item.updated_at
+                ).getFullYear() ===
+                currentYear
+              )
+              : item.asset_status === status;
 
         const matchOrg =
           orgOwner === "ALL"
@@ -719,25 +737,14 @@ export default function AssetTable({
     {
       field: "asset_status",
       headerName: "สถานะ",
-      flex: 1.2,
+      flex: 1,
       align: "center",
       headerAlign: "center",
 
       renderCell: (params) => {
 
         const status =
-          params.row.asset_status;
-
-        const updatedAt =
-          params.row.updated_at;
-
-        const currentYear =
-          new Date().getFullYear();
-
-        const isChecked =
-          updatedAt &&
-          new Date(updatedAt)
-            .getFullYear() === currentYear;
+          params.value;
 
         let bgColor =
           "#F3F4F6";
@@ -745,27 +752,18 @@ export default function AssetTable({
         let textColor =
           "#6B7280";
 
-        let label =
-          status;
-
-        // ตรวจสอบแล้ว + ใช้งานปกติ
         if (
-          isChecked &&
           status === "ใช้งานปกติ"
         ) {
 
           bgColor =
-            "#E8F5E9";
+            "#EEF4FF";
 
           textColor =
-            "#2E7D32";
-
-          label =
-            "ตรวจสอบแล้ว";
+            "#1565C0";
 
         }
 
-        // รอจำหน่าย
         else if (
           status === "รอจำหน่าย"
         ) {
@@ -778,7 +776,6 @@ export default function AssetTable({
 
         }
 
-        // ชำรุด / เสียหาย
         else if (
           status === "ชำรุด" ||
           status === "เสียหาย"
@@ -790,32 +787,182 @@ export default function AssetTable({
           textColor =
             "#C62828";
 
-          label =
-            "ชำรุด / เสียหาย";
-
         }
 
         return (
           <Chip
-            label={label}
+            label={status}
             size="small"
             sx={{
               backgroundColor:
                 bgColor,
-
               color:
                 textColor,
-
-              fontWeight: 600,
-
               border:
                 `1px solid ${textColor}`,
+              fontWeight: 600,
             }}
           />
         );
 
       },
     },
+    // {
+    //   field: "asset_status",
+    //   headerName: "สถานะ",
+    //   flex: 1.2,
+    //   align: "center",
+    //   headerAlign: "center",
+
+    //   renderCell: (params) => {
+
+    //     const status =
+    //       params.row.asset_status;
+
+    //     const updatedAt =
+    //       params.row.updated_at;
+
+    //     const currentYear =
+    //       new Date().getFullYear();
+
+    //     const isChecked =
+    //       updatedAt &&
+    //       new Date(updatedAt)
+    //         .getFullYear() === currentYear;
+
+    //     let bgColor =
+    //       "#F3F4F6";
+
+    //     let textColor =
+    //       "#6B7280";
+
+    //     let label =
+    //       status;
+
+    //     // ตรวจสอบแล้ว + ใช้งานปกติ
+    //     if (
+    //       isChecked &&
+    //       status === "ใช้งานปกติ"
+    //     ) {
+
+    //       bgColor =
+    //         "#E8F5E9";
+
+    //       textColor =
+    //         "#2E7D32";
+
+    //       label =
+    //         "ตรวจสอบแล้ว";
+
+    //     }
+
+    //     // รอจำหน่าย
+    //     else if (
+    //       status === "รอจำหน่าย"
+    //     ) {
+
+    //       bgColor =
+    //         "#FFF3E0";
+
+    //       textColor =
+    //         "#EF6C00";
+
+    //     }
+
+    //     // ชำรุด / เสียหาย
+    //     else if (
+    //       status === "ชำรุด" ||
+    //       status === "เสียหาย"
+    //     ) {
+
+    //       bgColor =
+    //         "#FFEBEE";
+
+    //       textColor =
+    //         "#C62828";
+
+    //       label =
+    //         "ชำรุด / เสียหาย";
+
+    //     }
+
+    //     return (
+    //       <Chip
+    //         label={label}
+    //         size="small"
+    //         sx={{
+    //           backgroundColor:
+    //             bgColor,
+
+    //           color:
+    //             textColor,
+
+    //           fontWeight: 600,
+
+    //           border:
+    //             `1px solid ${textColor}`,
+    //         }}
+    //       />
+    //     );
+
+    //   },
+    // },
+    {
+      field: "verify_status",
+      headerName: "สถานะการตรวจสอบ",
+      flex: 1.2,
+      align: "center",
+      headerAlign: "center",
+
+      renderCell: (params) => {
+
+        const currentYear =
+          new Date().getFullYear();
+
+        const isChecked =
+          params.row.updated_at &&
+          new Date(
+            params.row.updated_at
+          ).getFullYear() === currentYear;
+
+        return (
+          <Chip
+            label={
+              isChecked
+                ? "ตรวจสอบแล้ว"
+                : "ยังไม่ตรวจ"
+            }
+            size="small"
+            sx={{
+              backgroundColor:
+                isChecked
+                  ? "#E8F5E9"
+                  : "#F3F4F6",
+
+              color:
+                isChecked
+                  ? "#2E7D32"
+                  : "#6B7280",
+
+              border:
+                isChecked
+                  ? "1px solid #2E7D32"
+                  : "1px solid #9CA3AF",
+
+              fontWeight: 600,
+            }}
+          />
+        );
+
+      },
+    },
+    {
+      field: "updated_at",
+      headerName: "อัปเดตสถานะ",
+      width: 180,
+      align: "center",
+      headerAlign: "center",
+    }
 
   ];
 
@@ -1048,6 +1195,10 @@ export default function AssetTable({
         >
           <MenuItem value="ALL">
             ทุกสถานะ
+          </MenuItem>
+
+          <MenuItem value="CHECKED">
+            ตรวจสอบแล้ว
           </MenuItem>
 
           <MenuItem value="ใช้งานปกติ">

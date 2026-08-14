@@ -56,6 +56,11 @@ export function AssetProvider({
         const data =
           await getAssetSearchIndex();
 
+        console.log(
+          "getAssetSearchIndex result",
+          data[0]
+        );
+
         setAssetIndex(data);
 
       } finally {
