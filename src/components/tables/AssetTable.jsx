@@ -920,6 +920,72 @@ export default function AssetTable({
 
     //   },
     // },
+    // {
+    //   field: "verify_status",
+    //   headerName: "สถานะการตรวจสอบ",
+    //   flex: 1.2,
+    //   align: "center",
+    //   headerAlign: "center",
+
+    //   renderCell: (params) => {
+
+    //     // const currentYear =
+    //     //   new Date().getFullYear();
+
+    //     // const isChecked =
+    //     //   params.row.updated_at &&
+    //     //   new Date(
+    //     //     params.row.updated_at
+    //     //   ).getFullYear() === currentYear;
+    //     const isChecked =
+    //       !!params.row.updated_at;
+
+    //     console.log("*****params.row*****",
+    //       params.row
+    //     );
+
+    //     console.log(
+    //       "****asset******",
+    //       params.row.asset_code,
+    //       "updated_at",
+    //       params.row.updated_at,
+    //       "date",
+    //       new Date(params.row.updated_at),
+    //       "year",
+    //       new Date(params.row.updated_at).getFullYear()
+    //     );
+
+    //     return (
+    //       <Chip
+    //         label={
+    //           isChecked
+    //             ? "ตรวจสอบแล้ว"
+    //             : "ยังไม่ตรวจ"
+    //         }
+    //         size="small"
+    //         sx={{
+    //           backgroundColor:
+    //             isChecked
+    //               ? "#E8F5E9"
+    //               : "#F3F4F6",
+
+    //           color:
+    //             isChecked
+    //               ? "#2E7D32"
+    //               : "#6B7280",
+
+    //           border:
+    //             isChecked
+    //               ? "1px solid #2E7D32"
+    //               : "1px solid #9CA3AF",
+
+    //           fontWeight: 600,
+    //         }}
+    //       />
+    //     );
+
+    //   },
+    // },
     {
       field: "verify_status",
       headerName: "สถานะการตรวจสอบ",
@@ -927,24 +993,19 @@ export default function AssetTable({
       align: "center",
       headerAlign: "center",
 
+      valueGetter: (_, row) =>
+        row.updated_at
+          ? "ตรวจสอบแล้ว"
+          : "ยังไม่ตรวจ",
+
       renderCell: (params) => {
 
-        const currentYear =
-          new Date().getFullYear();
-
         const isChecked =
-          params.row.updated_at &&
-          new Date(
-            params.row.updated_at
-          ).getFullYear() === currentYear;
+          params.value === "ตรวจสอบแล้ว";
 
         return (
           <Chip
-            label={
-              isChecked
-                ? "ตรวจสอบแล้ว"
-                : "ยังไม่ตรวจ"
-            }
+            label={params.value}
             size="small"
             sx={{
               backgroundColor:
@@ -954,7 +1015,7 @@ export default function AssetTable({
 
               color:
                 isChecked
-                  ? "#2E7D32"
+                  ? "#06910d"
                   : "#6B7280",
 
               border:
