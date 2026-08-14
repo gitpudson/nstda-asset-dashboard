@@ -97,10 +97,11 @@ export default function AssetDetailDrawer({
             <Avatar
               src={asset?.image_person}
               sx={{
-                width: 90,
-                height: 90,
-                border: "1px solid #FCE7D6",
-                boxShadow: "0 2px 6px"
+                width: 120,
+                height: 120,
+                bgcolor: "#ff6b00",
+                // border: "1px solid #FCE7D6",
+                // boxShadow: "0 2px 6px"
               }}
             />
             {/* <Avatar

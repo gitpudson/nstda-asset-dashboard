@@ -19,6 +19,7 @@ import {
   Update,
   Warning,
   Error,
+  WarningAmber
 } from "@mui/icons-material";
 
 import SummaryCard from "../../components/cards/SummaryCard";
@@ -379,7 +380,7 @@ export default function Home({
           bgColor="#1976D2"
           icon={<Inventory2 sx={{
             fontSize: 40
-          }}/>}
+          }} />}
         />
 
 
@@ -450,8 +451,8 @@ export default function Home({
           }
           subtitle={`${damagedPercent}%`}
           bgColor="#EF4444"
-          icon={<Error sx={{
-            fontSize: 40
+          icon={<WarningAmber sx={{
+            fontSize: 35
           }} />}
         />
       </Box>
@@ -468,23 +469,6 @@ export default function Home({
       >
         {!org && (
           <>
-            {/* {centerSummary.map((center, index) => {
-              // console.log("logo", center);
-              const centerInfo =
-                centers.find(
-                  x => x?.name === center?.org
-                );
-
-              return (
-                <CenterCard
-                  key={center.name}
-                  title={center.name}
-                  logo={centerInfo?.logo}
-                  total={center.total}
-                  active={false}
-                />
-              );
-            })} */}
             {
               centerSummary.length === 0
                 ? (
@@ -540,10 +524,29 @@ export default function Home({
               <AssetPieChart data={centerSummary} loading={loadingSummary} />
             </Paper>
 
+            <Paper
+              sx={{
+                width: 390,
+                height: 220,
+                p: 2,
+                borderRadius: 3,
+                flexShrink: 0,
+              }}
+            >
+              <Typography
+                fontWeight={700}
+                mb={2}
+              >
+                ความคืบหน้าการตรวจสอบ
+              </Typography>
+
+              <VerifyPieChart summary={summary} loading={loadingSummary} />
+            </Paper>
+
           </>
         )}
 
-        <Paper
+        {/* <Paper
           sx={{
             width: 390,
             height: 220,
@@ -560,7 +563,7 @@ export default function Home({
           </Typography>
 
           <VerifyPieChart summary={summary} loading={loadingSummary} />
-        </Paper>
+        </Paper> */}
 
       </Box>
 

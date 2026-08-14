@@ -1010,12 +1010,12 @@ export default function AssetTable({
             sx={{
               backgroundColor:
                 isChecked
-                  ? "#E8F5E9"
+                  ? "#1e9b05"
                   : "#F3F4F6",
 
               color:
                 isChecked
-                  ? "#06910d"
+                  ? "#f4f8f4"
                   : "#6B7280",
 
               border:
