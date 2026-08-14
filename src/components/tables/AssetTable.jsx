@@ -300,18 +300,31 @@ export default function AssetTable({
         //     ? true
         //     : item.asset_status === status;
         const currentYear = new Date().getFullYear();
+        // const matchStatus =
+        //   status === "ALL"
+        //     ? true
+        //     : status === "CHECKED"
+        //       ? (
+        //         item.updated_at &&
+        //         new Date(
+        //           item.updated_at
+        //         ).getFullYear() ===
+        //         currentYear
+        //       )
+        //       : item.asset_status === status;
         const matchStatus =
           status === "ALL"
             ? true
             : status === "CHECKED"
               ? (
                 item.updated_at &&
-                new Date(
-                  item.updated_at
-                ).getFullYear() ===
+                new Date(item.updated_at)
+                  .getFullYear() ===
                 currentYear
               )
-              : item.asset_status === status;
+              : status === "UNCHECKED"
+                ? !item.updated_at
+                : item.asset_status === status;
 
         const matchOrg =
           orgOwner === "ALL"
@@ -1199,6 +1212,10 @@ export default function AssetTable({
 
           <MenuItem value="CHECKED">
             ตรวจสอบแล้ว
+          </MenuItem>
+
+          <MenuItem value="UNCHECKED">
+            ยังไม่ตรวจ
           </MenuItem>
 
           <MenuItem value="ใช้งานปกติ">
