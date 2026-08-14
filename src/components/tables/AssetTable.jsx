@@ -168,7 +168,7 @@ export default function AssetTable({
         //   "_blank"
         // );
 
-        window.location.href =  result.downloadUrl;
+        window.location.href = result.downloadUrl;
 
       }
 
@@ -711,11 +711,112 @@ export default function AssetTable({
       headerName: "ห้อง",
       flex: 1,
     },
+    // {
+    //   field: "asset_status",
+    //   headerName: "สถานะ",
+    //   flex: 1,
+    // },
     {
       field: "asset_status",
       headerName: "สถานะ",
-      flex: 1,
+      flex: 1.2,
+      align: "center",
+      headerAlign: "center",
+
+      renderCell: (params) => {
+
+        const status =
+          params.row.asset_status;
+
+        const updatedAt =
+          params.row.updated_at;
+
+        const currentYear =
+          new Date().getFullYear();
+
+        const isChecked =
+          updatedAt &&
+          new Date(updatedAt)
+            .getFullYear() === currentYear;
+
+        let bgColor =
+          "#F3F4F6";
+
+        let textColor =
+          "#6B7280";
+
+        let label =
+          status;
+
+        // ตรวจสอบแล้ว + ใช้งานปกติ
+        if (
+          isChecked &&
+          status === "ใช้งานปกติ"
+        ) {
+
+          bgColor =
+            "#E8F5E9";
+
+          textColor =
+            "#2E7D32";
+
+          label =
+            "ตรวจสอบแล้ว";
+
+        }
+
+        // รอจำหน่าย
+        else if (
+          status === "รอจำหน่าย"
+        ) {
+
+          bgColor =
+            "#FFF3E0";
+
+          textColor =
+            "#EF6C00";
+
+        }
+
+        // ชำรุด / เสียหาย
+        else if (
+          status === "ชำรุด" ||
+          status === "เสียหาย"
+        ) {
+
+          bgColor =
+            "#FFEBEE";
+
+          textColor =
+            "#C62828";
+
+          label =
+            "ชำรุด / เสียหาย";
+
+        }
+
+        return (
+          <Chip
+            label={label}
+            size="small"
+            sx={{
+              backgroundColor:
+                bgColor,
+
+              color:
+                textColor,
+
+              fontWeight: 600,
+
+              border:
+                `1px solid ${textColor}`,
+            }}
+          />
+        );
+
+      },
     },
+
   ];
 
   // if (
