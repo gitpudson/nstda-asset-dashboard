@@ -21,7 +21,7 @@ import {
 // import { Link } from "react-router-dom";
 import { useAsset } from "../../contexts/AssetContext";
 import { Link, useLocation } from "react-router-dom";
-import { assets } from "../../assets/assets";
+
 
 
 const menus = [
@@ -96,43 +96,13 @@ export default function Sidebar() {
         minHeight: "100vh",
       }}
     >
-      {/* <Typography
-        variant="h5"
+      <Typography
+        variant="h6"
         fontWeight="bold"
         sx={{ p: 3 }}
       >
-        
-        <img
-          src={assets.nstda}
-          alt=""
-          style={{
-            height: 70,
-            objectFit: "contain",
-            marginBottom: -5,
-          }}
-        />
-      </Typography> */}
-
-      <Box
-        sx={{
-          py: 3,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <img
-          src={assets.nstda}
-          alt="NSTDA"
-          style={{
-            width: 120,
-            maxWidth: "100%",
-            objectFit: "contain",
-            marginBottom: -5,
-          }}
-        />
-
-      </Box>
+        ระบบครุภัณฑ์ สวทช.
+      </Typography>
 
       {/* <List>
         {menus.map((item) => (

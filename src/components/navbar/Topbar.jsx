@@ -146,6 +146,26 @@ export default function Topbar() {
           sx={{ flexGrow: 1 }}
         />
 
+        {/* Right */}
+
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+          }}
+        >
+          <Typography
+            sx={{
+              color: "#0e35b4",
+              fontWeight: 700,
+            }}
+          >
+            DEVELOPED BY SMR@NECTEC
+          </Typography>
+
+        </Box>
+
       </Toolbar>
     </AppBar>
   );
