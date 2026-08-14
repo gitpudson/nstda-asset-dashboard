@@ -253,11 +253,11 @@ export default function Home({
       >
         <Box>
           <Typography
-            variant="h3"
+            variant="h5"
             fontWeight={700}
           >
             {/* ระบบตรวจสอบครุภัณฑ์ สวทช. */}
-            {
+            {/* {
               selectedCenter && (
                 <img
                   src={selectedCenter.logo}
@@ -271,7 +271,7 @@ export default function Home({
                 />
 
               )
-            }
+            } */}
 
             {org
               ? `สรุปข้อมูลครุภัณฑ์ของศูนย์ ${selectedCenter.initial_name}`
