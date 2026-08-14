@@ -7,12 +7,26 @@ import "./index.css";
 import { AssetProvider }
   from "./contexts/AssetContext";
 
+const redirect =
+  sessionStorage.redirect;
+
+if (redirect) {
+
+  delete sessionStorage.redirect;
+
+  window.history.replaceState(
+    null,
+    null,
+    redirect
+  );
+
+}
+
 ReactDOM.createRoot(
   document.getElementById("root")
 ).render(
-  // <React.StrictMode>
-    <AssetProvider>
-      <App />
-    </AssetProvider>
-  // </React.StrictMode>
+
+  <AssetProvider>
+    <App />
+  </AssetProvider>
 );
