@@ -1249,7 +1249,7 @@ export default function AssetTable({
           size="small"
           placeholder="ค้นหาครุภัณฑ์..."
           value={search}
-          disabled={tableLoading}
+          // disabled={tableLoading}
           onChange={(e) => {
             setPaginationModel((prev) => ({
               ...prev,
@@ -1298,7 +1298,7 @@ export default function AssetTable({
           select
           size="small"
           value={status}
-          disabled={tableLoading}
+          // disabled={tableLoading}
           onChange={(e) => {
             setPaginationModel((prev) => ({
               ...prev,
