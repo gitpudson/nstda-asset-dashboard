@@ -94,7 +94,7 @@ export default function AssetDetailDrawer({
             }}
           >
 
-            <Avatar
+            {/* <Avatar
               src={asset?.image_person}
               sx={{
                 width: 120,
@@ -103,18 +103,72 @@ export default function AssetDetailDrawer({
                 // border: "1px solid #FCE7D6",
                 // boxShadow: "0 2px 6px"
               }}
-            />
+            /> */}
+
             {/* <Avatar
-              src={asset?.image_person || ""}
-              sx={{
-                width: 90,
-                height: 90,
-                border: "1px solid #FCE7D6",
-                boxShadow: "0 2px 6px"
+              src={asset?.image_person}
+              imgProps={{
+                loading: "eager",
+                referrerPolicy: "no-referrer",
               }}
-            >
-              {asset?.person_name?.charAt(0) || "?"}
-            </Avatar> */}
+              sx={{
+                width: 120,
+                height: 120,
+                "& img": {
+                  objectFit: "cover",
+                  imageRendering: "auto"
+                },
+              }}
+            /> */}
+            {/* <Box
+              component="img"
+              {
+                console.log(
+                "natural",
+                e.target.naturalWidth,
+                e.target.naturalHeight
+              );
+              };
+            src={asset?.image_person}
+            alt=""
+            sx={{
+              width: 120,
+              height: 120,
+              // borderRadius: "50%",
+              objectFit: "cover",
+              transform: "translateZ(0)",
+              backfaceVisibility: "hidden",
+            }}
+            /> */}
+            {/* 
+            <Box
+              component="img"
+              src={asset?.image_person}
+              alt=""
+              onLoad={(e) => {
+                console.log(
+                  asset?.image_person,
+                  e.target.naturalWidth,
+                  e.target.naturalHeight
+                );
+
+              }}
+              sx={{
+                width: 120,
+                height: 120,
+                objectFit: "cover",
+              }}
+            /> */}
+            <Box
+              component="img"
+              src={asset?.image_person}
+              alt=""
+              width={120}
+              height={120}
+              style={{
+                borderRadius: "50%",
+              }}
+            />
 
             <Box
               sx={{

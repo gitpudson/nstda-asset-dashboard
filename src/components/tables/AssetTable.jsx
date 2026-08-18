@@ -265,6 +265,90 @@ export default function AssetTable({
   //   org
   // ]);
 
+  // const filteredIds = useMemo(() => {
+
+  //   const keyword =
+  //     search.trim().toLowerCase();
+
+  //   const keywordParts =
+  //     keyword.split(/\s+/);
+
+  //   console.log(
+  //     "assetIndex sample",
+  //     assetIndex[0]
+  //   );
+
+  //   return assetIndex
+  //     .filter(item => {
+
+  //       const matchSidebarOrg =
+  //         !org
+  //           ? true
+  //           : item.org_owner === ORG_MAP[org];
+
+  //       const matchSearch =
+  //         keyword === ""
+  //           ? true
+  //           : keywordParts.every(part =>
+  //             item.search_text
+  //               .toLowerCase()
+  //               .includes(part)
+  //           );
+
+  //       // const matchStatus =
+  //       //   status === "ALL"
+  //       //     ? true
+  //       //     : item.asset_status === status;
+  //       const currentYear = new Date().getFullYear();
+  //       // const matchStatus =
+  //       //   status === "ALL"
+  //       //     ? true
+  //       //     : status === "CHECKED"
+  //       //       ? (
+  //       //         item.updated_at &&
+  //       //         new Date(
+  //       //           item.updated_at
+  //       //         ).getFullYear() ===
+  //       //         currentYear
+  //       //       )
+  //       //       : item.asset_status === status;
+  //       const matchStatus =
+  //         status === "ALL"
+  //           ? true
+  //           : status === "CHECKED"
+  //             ? (
+  //               item.updated_at &&
+  //               new Date(item.updated_at)
+  //                 .getFullYear() ===
+  //               currentYear
+  //             )
+  //             : status === "UNCHECKED"
+  //               ? !item.updated_at
+  //               : item.asset_status === status;
+
+  //       const matchOrg =
+  //         orgOwner === "ALL"
+  //           ? true
+  //           : item.org_owner === orgOwner;
+
+  //       return (
+  //         matchSearch &&
+  //         matchStatus &&
+  //         matchOrg &&
+  //         matchSidebarOrg
+  //       );
+
+  //     })
+  //     .map(item => item.row_number);
+
+  // }, [
+  //   assetIndex,
+  //   search,
+  //   status,
+  //   orgOwner,
+  //   org,
+  // ]);
+
   const filteredIds = useMemo(() => {
 
     const keyword =
@@ -273,10 +357,8 @@ export default function AssetTable({
     const keywordParts =
       keyword.split(/\s+/);
 
-    console.log(
-      "assetIndex sample",
-      assetIndex[0]
-    );
+    const currentYear =
+      new Date().getFullYear();
 
     return assetIndex
       .filter(item => {
@@ -286,41 +368,30 @@ export default function AssetTable({
             ? true
             : item.org_owner === ORG_MAP[org];
 
+        const isPersonCode =
+          /^\d{6}$/.test(keyword);
+
         const matchSearch =
           keyword === ""
             ? true
-            : keywordParts.every(part =>
-              item.search_text
-                .toLowerCase()
-                .includes(part)
-            );
+            : isPersonCode
+              ? (
+                String(item.person_key)
+                  .padStart(6, "0") === keyword
+              )
+              : keywordParts.every(part =>
+                item.search_text
+                  .toLowerCase()
+                  .includes(part)
+              );
 
-        // const matchStatus =
-        //   status === "ALL"
-        //     ? true
-        //     : item.asset_status === status;
-        const currentYear = new Date().getFullYear();
-        // const matchStatus =
-        //   status === "ALL"
-        //     ? true
-        //     : status === "CHECKED"
-        //       ? (
-        //         item.updated_at &&
-        //         new Date(
-        //           item.updated_at
-        //         ).getFullYear() ===
-        //         currentYear
-        //       )
-        //       : item.asset_status === status;
         const matchStatus =
           status === "ALL"
             ? true
             : status === "CHECKED"
               ? (
                 item.updated_at &&
-                new Date(item.updated_at)
-                  .getFullYear() ===
-                currentYear
+                String(item.updated_at).trim() !== ""
               )
               : status === "UNCHECKED"
                 ? !item.updated_at

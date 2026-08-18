@@ -55,17 +55,63 @@ export default function Home({
   //   await loadDashboardSummary();
   //   await loadCenterSummary();
   // };
+
+  const [summary, setSummary] = useState(null);
+
+  const [centerSummary, setCenterSummary] = useState([]);
+  const [loadingSummary, setLoadingSummary] = useState(true);
+  const { loading: assetLoading, reloadSearchIndex } = useAsset();
+
+
+  // const handleRefresh = async () => {
+
+  //   try {
+
+  //     setLoadingSummary(true);
+
+  //     // Rebuild Dashboard_Summary
+  //     await refreshDashboardSummary();
+
+  //     await loadCenterSummary();
+
+  //     const data =
+  //       await getDashboardSummary(
+  //         org
+  //       );
+
+  //     setSummary(data);
+
+  //   } catch (error) {
+
+  //     console.error(
+  //       "Refresh Error",
+  //       error
+  //     );
+
+  //   } finally {
+
+  //     setLoadingSummary(false);
+
+  //   }
+
+  // };
+
   const handleRefresh = async () => {
 
     try {
 
       setLoadingSummary(true);
 
-      // Rebuild Dashboard_Summary
+      // Rebuild Dashboard Summary
       await refreshDashboardSummary();
 
+      // Reload Search Index
+      await reloadSearchIndex();
+
+      // Reload Center Summary
       await loadCenterSummary();
 
+      // Reload Dashboard Summary
       const data =
         await getDashboardSummary(
           org
@@ -88,17 +134,6 @@ export default function Home({
 
   };
 
-  // const [summary, setSummary] = useState({
-  //   totalAssets: 0,
-  //   checkedAssets: 0,
-  //   pendingAssets: 0,
-  //   damagedAssets: 0,
-  // });
-  const [summary, setSummary] = useState(null);
-
-  const [centerSummary, setCenterSummary] = useState([]);
-  const [loadingSummary, setLoadingSummary] = useState(true);
-  const { loading: assetLoading, } = useAsset();
 
   useEffect(() => {
     loadCenterSummary();
