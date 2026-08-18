@@ -5,6 +5,15 @@ import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import AssetDetailDrawer from "../../pages/Assets/AssetDetailDrawer";
 
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import buddhistEra from "dayjs/plugin/buddhistEra";
+import "dayjs/locale/th";
+
+dayjs.extend(customParseFormat);
+dayjs.extend(buddhistEra);
+dayjs.locale("th");
+
 import {
   Box,
   Chip,
@@ -149,14 +158,14 @@ export default function AssetTable({
           filteredIds
         );
 
-      console.log(result);
-      console.log(
-        JSON.stringify(
-          result.debug,
-          null,
-          2
-        )
-      );
+      // console.log(result);
+      // console.log(
+      //   JSON.stringify(
+      //     result.debug,
+      //     null,
+      //     2
+      //   )
+      // );
 
 
       if (
@@ -360,6 +369,7 @@ export default function AssetTable({
     const currentYear =
       new Date().getFullYear();
 
+
     return assetIndex
       .filter(item => {
 
@@ -385,6 +395,7 @@ export default function AssetTable({
                   .includes(part)
               );
 
+
         const matchStatus =
           status === "ALL"
             ? true
@@ -396,6 +407,7 @@ export default function AssetTable({
               : status === "UNCHECKED"
                 ? !item.updated_at
                 : item.asset_status === status;
+
 
         const matchOrg =
           orgOwner === "ALL"
@@ -420,6 +432,8 @@ export default function AssetTable({
     org,
   ]);
 
+
+
   const pageRows = useMemo(() => {
 
     const start =
@@ -436,6 +450,7 @@ export default function AssetTable({
     filteredIds,
     paginationModel,
   ]);
+
 
   // useEffect(() => {
   //   setRows([]);
@@ -462,6 +477,21 @@ export default function AssetTable({
     org,
     pageRows.join(",")
   ]);
+  // useEffect(() => {
+
+  //   if (
+  //     pageRows.length >= 0
+  //   ) {
+
+  //     loadPageData();
+
+  //   }
+
+  // }, [
+  //   assetIndex,
+  //   org,
+  //   pageRows.join(",")
+  // ]);
 
   useEffect(() => {
 
@@ -891,172 +921,6 @@ export default function AssetTable({
 
       },
     },
-    // {
-    //   field: "asset_status",
-    //   headerName: "สถานะ",
-    //   flex: 1.2,
-    //   align: "center",
-    //   headerAlign: "center",
-
-    //   renderCell: (params) => {
-
-    //     const status =
-    //       params.row.asset_status;
-
-    //     const updatedAt =
-    //       params.row.updated_at;
-
-    //     const currentYear =
-    //       new Date().getFullYear();
-
-    //     const isChecked =
-    //       updatedAt &&
-    //       new Date(updatedAt)
-    //         .getFullYear() === currentYear;
-
-    //     let bgColor =
-    //       "#F3F4F6";
-
-    //     let textColor =
-    //       "#6B7280";
-
-    //     let label =
-    //       status;
-
-    //     // ตรวจสอบแล้ว + ใช้งานปกติ
-    //     if (
-    //       isChecked &&
-    //       status === "ใช้งานปกติ"
-    //     ) {
-
-    //       bgColor =
-    //         "#E8F5E9";
-
-    //       textColor =
-    //         "#2E7D32";
-
-    //       label =
-    //         "ตรวจสอบแล้ว";
-
-    //     }
-
-    //     // รอจำหน่าย
-    //     else if (
-    //       status === "รอจำหน่าย"
-    //     ) {
-
-    //       bgColor =
-    //         "#FFF3E0";
-
-    //       textColor =
-    //         "#EF6C00";
-
-    //     }
-
-    //     // ชำรุด / เสียหาย
-    //     else if (
-    //       status === "ชำรุด" ||
-    //       status === "เสียหาย"
-    //     ) {
-
-    //       bgColor =
-    //         "#FFEBEE";
-
-    //       textColor =
-    //         "#C62828";
-
-    //       label =
-    //         "ชำรุด / เสียหาย";
-
-    //     }
-
-    //     return (
-    //       <Chip
-    //         label={label}
-    //         size="small"
-    //         sx={{
-    //           backgroundColor:
-    //             bgColor,
-
-    //           color:
-    //             textColor,
-
-    //           fontWeight: 600,
-
-    //           border:
-    //             `1px solid ${textColor}`,
-    //         }}
-    //       />
-    //     );
-
-    //   },
-    // },
-    // {
-    //   field: "verify_status",
-    //   headerName: "สถานะการตรวจสอบ",
-    //   flex: 1.2,
-    //   align: "center",
-    //   headerAlign: "center",
-
-    //   renderCell: (params) => {
-
-    //     // const currentYear =
-    //     //   new Date().getFullYear();
-
-    //     // const isChecked =
-    //     //   params.row.updated_at &&
-    //     //   new Date(
-    //     //     params.row.updated_at
-    //     //   ).getFullYear() === currentYear;
-    //     const isChecked =
-    //       !!params.row.updated_at;
-
-    //     console.log("*****params.row*****",
-    //       params.row
-    //     );
-
-    //     console.log(
-    //       "****asset******",
-    //       params.row.asset_code,
-    //       "updated_at",
-    //       params.row.updated_at,
-    //       "date",
-    //       new Date(params.row.updated_at),
-    //       "year",
-    //       new Date(params.row.updated_at).getFullYear()
-    //     );
-
-    //     return (
-    //       <Chip
-    //         label={
-    //           isChecked
-    //             ? "ตรวจสอบแล้ว"
-    //             : "ยังไม่ตรวจ"
-    //         }
-    //         size="small"
-    //         sx={{
-    //           backgroundColor:
-    //             isChecked
-    //               ? "#E8F5E9"
-    //               : "#F3F4F6",
-
-    //           color:
-    //             isChecked
-    //               ? "#2E7D32"
-    //               : "#6B7280",
-
-    //           border:
-    //             isChecked
-    //               ? "1px solid #2E7D32"
-    //               : "1px solid #9CA3AF",
-
-    //           fontWeight: 600,
-    //         }}
-    //       />
-    //     );
-
-    //   },
-    // },
     {
       field: "verify_status",
       headerName: "สถานะการตรวจสอบ",
@@ -1101,55 +965,24 @@ export default function AssetTable({
 
       },
     },
-    // {
-    //   field: "verify_status",
-    //   headerName: "สถานะการตรวจสอบ",
-    //   flex: 1.2,
-    //   align: "center",
-    //   headerAlign: "center",
-
-    //   renderCell: (params) => {
-
-    //     const isChecked =
-    //       !!params.row.updated_at;
-
-    //     return (
-    //       <Chip
-    //         label={
-    //           isChecked
-    //             ? "ตรวจสอบแล้ว"
-    //             : "ยังไม่ตรวจ"
-    //         }
-    //         size="small"
-    //         sx={{
-    //           backgroundColor:
-    //             isChecked
-    //               ? "#E8F5E9"
-    //               : "#F3F4F6",
-
-    //           color:
-    //             isChecked
-    //               ? "#2E7D32"
-    //               : "#6B7280",
-
-    //           border:
-    //             isChecked
-    //               ? "1px solid #2E7D32"
-    //               : "1px solid #9CA3AF",
-
-    //           fontWeight: 600,
-    //         }}
-    //       />
-    //     );
-
-    //   },
-    // },
     {
       field: "updated_at",
       headerName: "อัปเดตสถานะ",
       width: 180,
       align: "center",
       headerAlign: "center",
+      valueFormatter: (value) => {
+
+        if (!value) return "-";
+
+        return dayjs(
+          value,
+          "DD-MM-YYYY HH:mm:ss"
+        ).format(
+          "DD/MM/BBBB HH:mm:ss"
+        );
+
+      },
     }
 
   ];
@@ -1186,16 +1019,6 @@ export default function AssetTable({
       // );
     }
   }, [assetIndex]);
-
-  // console.log(assetIndex[0]);
-  // console.log(Object.keys(assetIndex[0] || {}));
-  // console.log(
-  //   "assetIndex",
-  //   assetIndex.length,
-  //   "loading",
-  //   loading
-  // );
-
 
 
   return (
@@ -1380,6 +1203,32 @@ export default function AssetTable({
           }}
           sx={{ width: 180 }}
         >
+          {/* <TextField
+          select
+          size="small"
+          value={status}
+          onChange={async (e) => {
+
+            setPaginationModel((prev) => ({
+              ...prev,
+              page: 0,
+            }));
+
+            if (
+              e.target.value === "CHECKED" ||
+              e.target.value === "UNCHECKED"
+            ) {
+
+              await reloadSearchIndex();
+
+            }
+
+            setStatus(e.target.value);
+
+          }}
+          sx={{ width: 180 }}
+        > */}
+
           <MenuItem value="ALL">
             ทุกสถานะ
           </MenuItem>
@@ -1455,7 +1304,7 @@ export default function AssetTable({
         getRowId={(row) => row.row_number}
 
         onRowClick={(params) => {
-          console.log("params.row", params.row);
+          // console.log("params.row", params.row);
           setSelectedAsset(params.row);
           setDrawerOpen(true);
         }}

@@ -327,6 +327,36 @@ export default function AssetDetailDrawer({
 
           </Paper>
 
+          {
+            asset?.remark && (
+              <Box
+                sx={{
+                  p: 2,
+                  mt: 2,
+                  borderRadius: 3,
+                  backgroundColor: "#F8F5F2",
+                  border: "1px solid #F4D4BE",
+                }}
+              >
+
+                <Typography
+                  sx={{
+                    color: "#ff6b00",
+                    fontWeight: 600,
+                    mb: 1,
+                  }}
+                >
+                  หมายเหตุ
+                </Typography>
+
+                <Typography>
+                  {asset.remark}
+                </Typography>
+
+              </Box>
+            )
+          }
+
           <Paper
             elevation={0}
             sx={{

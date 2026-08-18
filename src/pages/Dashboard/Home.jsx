@@ -31,6 +31,7 @@ import VerifyPieChart from "../../components/charts/VerifyPieChart";
 import AssetTable from "../../components/tables/AssetTable";
 import { useAsset } from "../../contexts/AssetContext";
 import dayjs from "dayjs";
+import buddhistEra from "dayjs/plugin/buddhistEra";
 import "dayjs/locale/th";
 
 import {
@@ -39,9 +40,14 @@ import {
   dashboardSummary
 } from "../../data/mockData";
 
+  dayjs.extend(buddhistEra);
+  dayjs.locale("th");
+
 export default function Home({
   org = "",
 }) {
+
+
 
   const selectedCenter = centers.find(
     (center) => center?.name === org
@@ -96,22 +102,56 @@ export default function Home({
 
   // };
 
+  // const handleRefresh = async () => {
+
+  //   try {
+
+  //     setLoadingSummary(true);
+
+  //     // Rebuild Dashboard Summary
+  //     await refreshDashboardSummary();
+
+  //     // Reload Search Index
+  //     await reloadSearchIndex();
+
+  //     // Reload Center Summary
+  //     await loadCenterSummary();
+
+  //     // Reload Dashboard Summary
+  //     const data =
+  //       await getDashboardSummary(
+  //         org
+  //       );
+
+  //     setSummary(data);
+
+  //   } catch (error) {
+
+  //     console.error(
+  //       "Refresh Error",
+  //       error
+  //     );
+
+  //   } finally {
+
+  //     setLoadingSummary(false);
+
+  //   }
+
+  // };
+
   const handleRefresh = async () => {
 
     try {
 
       setLoadingSummary(true);
 
-      // Rebuild Dashboard Summary
       await refreshDashboardSummary();
 
-      // Reload Search Index
       await reloadSearchIndex();
 
-      // Reload Center Summary
       await loadCenterSummary();
 
-      // Reload Dashboard Summary
       const data =
         await getDashboardSummary(
           org
@@ -345,13 +385,18 @@ export default function Home({
           >
             อัปเดตล่าสุด :{" "}
             {
+              // summary?.lastUpdate
+              //   ? dayjs(summary.lastUpdate)
+              //     .locale("th")
+              //     .format(
+              //       "D MMM YYYY HH:mm น."
+              //     )
+              //   : "-"
               summary?.lastUpdate
                 ? dayjs(summary.lastUpdate)
-                  .locale("th")
-                  .format(
-                    "D MMM YYYY HH:mm น."
-                  )
+                  .format("D MMMM BBBB HH:mm น.")
                 : "-"
+
             }
           </Typography>
 

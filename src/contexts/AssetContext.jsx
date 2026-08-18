@@ -16,17 +16,48 @@ const AssetContext = createContext();
 export function AssetProvider({
   children,
 }) {
-  const [assetIndex, setAssetIndex] =
-    useState([]);
+  const [assetIndex, setAssetIndex] = useState([]);
 
-  const [loading, setLoading] =
-    useState(true);
+  const [loading, setLoading] = useState(true);
 
-  const lastUpdateRef =
-    useRef(null);
+  const lastUpdateRef = useRef(null);
 
   // const loadSearchIndex =
   //   async () => {
+
+  //     console.time(
+  //       "loadSearchIndex"
+  //     );
+
+  //     try {
+
+  //       const data =
+  //         await getAssetSearchIndex();
+
+  //       console.log(
+  //         "getAssetSearchIndex result",
+  //         data[0]
+  //       );
+
+  //       setAssetIndex(data);
+
+  //     } finally {
+
+  //       console.timeEnd(
+  //         "loadSearchIndex"
+  //       );
+
+  //     }
+
+  //   };
+
+  // const loadSearchIndex =
+  //   async () => {
+
+  //     // console.time(
+  //     //   "loadSearchIndex"
+  //     // );
+
   //     try {
 
   //       const data =
@@ -34,22 +65,19 @@ export function AssetProvider({
 
   //       setAssetIndex(data);
 
-  //     } catch (error) {
+  //       return data;
 
-  //       console.error(
-  //         "loadSearchIndex",
-  //         error
-  //       );
+  //     } finally {
+
+  //       // console.timeEnd(
+  //       //   "loadSearchIndex"
+  //       // );
 
   //     }
-  //   };
 
+  //   };
   const loadSearchIndex =
     async () => {
-
-      console.time(
-        "loadSearchIndex"
-      );
 
       try {
 
@@ -57,17 +85,17 @@ export function AssetProvider({
           await getAssetSearchIndex();
 
         console.log(
-          "getAssetSearchIndex result",
-          data[0]
+          "003309 Assets",
+          data.filter(
+            x => x.person_key === "003309"
+          )
         );
 
         setAssetIndex(data);
 
-      } finally {
+        return data;
 
-        console.timeEnd(
-          "loadSearchIndex"
-        );
+      } finally {
 
       }
 
@@ -170,9 +198,9 @@ export function AssetProvider({
             lastUpdateRef.current
           ) {
 
-            console.log(
-              "Asset Index Updated"
-            );
+            // console.log(
+            //   "Asset Index Updated"
+            // );
 
             lastUpdateRef.current =
               result.updated_at;
