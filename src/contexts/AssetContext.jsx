@@ -143,9 +143,10 @@ export function AssetProvider({
         setLoading(false);
 
         // โหลด Search Index หลัง Dashboard แสดงผลแล้ว
-        setTimeout(() => {
-          loadSearchIndex();
-        }, 500);
+        // setTimeout(() => {
+        //   loadSearchIndex();
+        // }, 500);
+         loadSearchIndex();
       }
     };
 
