@@ -157,7 +157,8 @@ export default function Topbar() {
         >
           <Typography
             sx={{
-              color: "#0e35b4",
+              // color: "#0e35b4",
+              color: "#991b2c",
               fontWeight: 700,
             }}
           >
