@@ -339,10 +339,10 @@ export default function AssetDetailDrawer({
                 }}
               >
 
-                <Typography
+                <Typography variant="caption"
                   sx={{
                     color: "#ff6b00",
-                    fontWeight: 600,
+                    fontWeight: 700,
                     mb: 1,
                   }}
                 >
