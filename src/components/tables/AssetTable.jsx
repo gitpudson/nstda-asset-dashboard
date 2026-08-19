@@ -4,6 +4,7 @@ import * as XLSX from "xlsx";
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import AssetDetailDrawer from "../../pages/Assets/AssetDetailDrawer";
+import CustomPagination from "./CustomPagination";
 
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -26,7 +27,13 @@ import {
   Button,
   Tooltip,
   CircularProgress,
+  Pagination,
+  PaginationItem
 } from "@mui/material";
+
+import {
+  GridPagination
+} from "@mui/x-data-grid";
 
 import {
   Search,
@@ -1412,13 +1419,92 @@ export default function AssetTable({
           25,
           50,
           100,
-          200,
         ]}
 
         loading={tableLoading || loading}
-      // loading={tableLoading}
-
+        // loading={tableLoading}
+        slots={{
+          pagination: () => null
+        }}
       />
+
+      {/* <Box
+        sx={{
+          mt: 2,
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Pagination
+          count={Math.ceil(
+            filteredIds.length /
+            paginationModel.pageSize
+          )}
+          page={
+            paginationModel.page + 1
+          }
+          showFirstButton
+          showLastButton
+          onChange={(_, page) => {
+
+            setPaginationModel(
+              prev => ({
+                ...prev,
+                page: page - 1,
+              })
+            );
+
+          }}
+        />
+      </Box> */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 3,
+          mt: 2,
+          flexWrap: "wrap",
+        }}
+      >
+        <TextField
+          select
+          size="small"
+          value={paginationModel.pageSize}
+          onChange={(e) => {
+            setPaginationModel({
+              page: 0,
+              pageSize: Number(e.target.value),
+            });
+          }}
+          sx={{
+            width: 140,
+          }}
+        >
+          <MenuItem value={10}>10 รายการ</MenuItem>
+          <MenuItem value={25}>25 รายการ</MenuItem>
+          <MenuItem value={50}>50 รายการ</MenuItem>
+          <MenuItem value={100}>100 รายการ</MenuItem>
+        </TextField>
+
+        <Pagination
+          count={Math.ceil(
+            filteredIds.length /
+            paginationModel.pageSize
+          )}
+          page={paginationModel.page + 1}
+          showFirstButton
+          showLastButton
+          onChange={(_, page) => {
+            setPaginationModel((prev) => ({
+              ...prev,
+              page: page - 1,
+            }));
+          }}
+        />
+      </Box>
+
+
 
       <AssetDetailDrawer
         open={drawerOpen}

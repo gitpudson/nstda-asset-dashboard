@@ -211,7 +211,7 @@ export default function AssetDetailDrawer({
               >
                 <Chip
                   label={`สังกัด : ${asset?.org_owner || "-"}`}
-                  color="warning"
+                  color="primary"
                   sx={{
                     fontWeight: 600,
                   }}
