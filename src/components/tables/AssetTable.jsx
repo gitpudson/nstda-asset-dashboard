@@ -48,7 +48,7 @@ export default function AssetTable({
   const [tableLoading, setTableLoading] = useState(false);
   const [exportLoading, setExportLoading] = useState(false);
 
-  const { assetIndex, loading } = useAsset();
+  const { assetIndex, loading, searchIndexLoading, reloadSearchIndex } = useAsset();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedAsset, setSelectedAsset] = useState(null);
@@ -1020,6 +1020,86 @@ export default function AssetTable({
     }
   }, [assetIndex]);
 
+  // useEffect(() => {
+  //   const load = async () => {
+  //     if (
+  //       assetIndex.length === 0
+  //     ) {
+
+  //       await reloadSearchIndex();
+  //     }
+  //   };
+
+  //   load();
+
+  // }, []);
+  useEffect(() => {
+
+    if (
+      assetIndex.length === 0
+    ) {
+
+      reloadSearchIndex();
+
+    }
+
+  }, [org]);
+
+  if (
+    searchIndexLoading &&
+    assetIndex.length === 0
+  ) {
+    return (
+      <Box
+        sx={{
+          py: 4,
+          textAlign: "center",
+        }}
+      >
+        <CircularProgress />
+
+        <Typography variant="h5" color="text.secondary"
+          sx={{ mt: 2 }}
+        >
+          กำลังเตรียมข้อมูลครุภัณฑ์
+        </Typography>
+        <Typography variant="h6" color="text.secondary"
+          sx={{ mt: 2 }}
+        >
+          โหลดครั้งแรกอาจใช้เวลาสักครู่.....
+        </Typography>
+
+      </Box>
+
+      // <Box
+      //   sx={{
+      //     py: 8,
+      //     textAlign: "center",
+      //   }}
+      // >
+      //   <CircularProgress />
+
+      //   <Typography
+      //     sx={{
+      //       mt: 2,
+      //       fontWeight: 600,
+      //     }}
+      //   >
+      //     กำลังเตรียมข้อมูลครุภัณฑ์
+      //   </Typography>
+
+      //   <Typography
+      //     variant="body2"
+      //     color="text.secondary"
+      //     sx={{ mt: 1 }}
+      //   >
+      //     โหลดครั้งแรกอาจใช้เวลาสักครู่
+      //   </Typography>
+      // </Box>
+    );
+  }
+
+
 
   return (
     <Paper
@@ -1060,9 +1140,10 @@ export default function AssetTable({
           <Typography
             variant="body2"
             color="text.secondary"
+            align="center"
           >
             {(tableLoading || loading)
-              ? (<> <center>กำลังโหลดข้อมูล.......<CircularProgress /> </center> </>)
+              ? (<> กำลังโหลดข้อมูล.......<CircularProgress /> </>)
               // ? (<><div>กำลังโหลดข้อมูล..... </div> </>)
               : `จำนวน ${filteredIds.length.toLocaleString()} รายการ`}
           </Typography>

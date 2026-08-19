@@ -280,44 +280,44 @@ export default function Home({
       ).toFixed(2)
       : "0.00";
 
-  // console.log("centerSummary", centerSummary);
-  if (!org && assetLoading) {
 
-    return (
-      <Box
-        sx={{
-          height: "70vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 2,
-        }}
-      >
-        <CircularProgress />
+  // if (!org && assetLoading) {
 
-        <Typography variant="h4">
-          กำลังเตรียมข้อมูลระบบ...
-        </Typography>
+  //   return (
+  //     <Box
+  //       sx={{
+  //         height: "70vh",
+  //         display: "flex",
+  //         flexDirection: "column",
+  //         justifyContent: "center",
+  //         alignItems: "center",
+  //         gap: 2,
+  //       }}
+  //     >
+  //       <CircularProgress />
 
-        {/* <Typography>
-          กำลังโหลดข้อมูลครุภัณฑ์สำหรับการค้นหา (มากกว่า 70,000 รายการ)
-        </Typography> */}
-        {/* <Typography>
-          กำลังโหลดข้อมูลครุภัณฑ์สำหรับการค้นหา...
-        </Typography> */}
+  //       <Typography variant="h4">
+  //         กำลังเตรียมข้อมูลระบบ
+  //       </Typography>
 
-        <Typography
-          variant="h4"
-          color="text.secondary"
-        >
-          กรุณารอสักครู่
-        </Typography>
+  //       {/* <Typography>
+  //         กำลังโหลดข้อมูลครุภัณฑ์สำหรับการค้นหา (มากกว่า 70,000 รายการ)
+  //       </Typography> */}
+  //       {/* <Typography>
+  //         กำลังโหลดข้อมูลครุภัณฑ์สำหรับการค้นหา...
+  //       </Typography> */}
 
-      </Box>
-    );
+  //       <Typography
+  //         variant="h4"
+  //         color="text.secondary"
+  //       >
+  //         กรุณารอสักครู่.....
+  //       </Typography>
 
-  }
+  //     </Box>
+  //   );
+
+  // }
 
   return (
 

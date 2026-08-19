@@ -18,7 +18,8 @@ export function AssetProvider({
 }) {
   const [assetIndex, setAssetIndex] = useState([]);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [searchIndexLoading, setSearchIndexLoading] = useState(false);
 
   const lastUpdateRef = useRef(null);
 
@@ -76,30 +77,43 @@ export function AssetProvider({
   //     }
 
   //   };
-  const loadSearchIndex =
-    async () => {
+  // const loadSearchIndex =
+  //   async () => {
 
-      try {
+  //     try {
 
-        const data =
-          await getAssetSearchIndex();
+  //       setSearchIndexLoading(true);
+  //       const data = await getAssetSearchIndex();
 
-        console.log(
-          "003309 Assets",
-          data.filter(
-            x => x.person_key === "003309"
-          )
-        );
+  //       setAssetIndex(data);
 
-        setAssetIndex(data);
+  //       return data;
 
-        return data;
+  //     } finally {
+  //       setSearchIndexLoading(false);
+  //     }
 
-      } finally {
+  //   };
+  const loadSearchIndex = async () => {
 
-      }
+    try {
 
-    };
+      setSearchIndexLoading(true);
+
+      const data =
+        await getAssetSearchIndex();
+
+      setAssetIndex(data);
+
+      return data;
+
+    } finally {
+
+      setSearchIndexLoading(false);
+
+    }
+
+  };
 
   const loadInitialData =
     async () => {
@@ -114,7 +128,8 @@ export function AssetProvider({
         lastUpdateRef.current =
           updateInfo.updated_at;
 
-        await loadSearchIndex();
+        //  เอาออกไปก่อนเพื่อไม่หน้าแรกโหลดช้า
+        // await loadSearchIndex();
 
       } catch (error) {
 
@@ -127,6 +142,10 @@ export function AssetProvider({
 
         setLoading(false);
 
+        // โหลด Search Index หลัง Dashboard แสดงผลแล้ว
+        setTimeout(() => {
+          loadSearchIndex();
+        }, 500);
       }
     };
 
@@ -230,8 +249,8 @@ export function AssetProvider({
       value={{
         assetIndex,
         loading,
-        reloadSearchIndex:
-          loadSearchIndex,
+        reloadSearchIndex: loadSearchIndex,
+        searchIndexLoading
       }}
     >
       {children}
