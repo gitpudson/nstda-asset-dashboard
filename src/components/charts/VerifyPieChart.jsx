@@ -16,17 +16,21 @@ export default function VerifyPieChart({
   loading,
 }) {
 
-  if (loading|| !summary) {
+  if (loading || !summary) {
     return (
       <Skeleton
-        variant="rounded"
         width="100%"
         height={170}
+        variant="rounded"
+        sx={{
+          borderRadius: 3
+        }}
+        animation="wave"
       />
     );
   }
 
-    const uncheckedAssets =
+  const uncheckedAssets =
     (summary?.totalAssets || 0) -
     (summary?.checkedAssets || 0);
 

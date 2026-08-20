@@ -464,6 +464,12 @@ export default function Home({
                 <Skeleton
                   width={100}
                   height={50}
+                  variant="rounded"
+                  sx={{
+                    borderRadius: 3
+                  }}
+                  animation="wave"
+
                 />
               )
               : (
@@ -489,6 +495,11 @@ export default function Home({
                 <Skeleton
                   width={100}
                   height={50}
+                  variant="rounded"
+                  sx={{
+                    borderRadius: 3
+                  }}
+                  animation="wave"
                 />
               )
               : (
@@ -524,6 +535,11 @@ export default function Home({
                     <Skeleton
                       width={100}
                       height={50}
+                      variant="rounded"
+                      sx={{
+                        borderRadius: 3
+                      }}
+                      animation="wave"
                     />
                   )
                   : (
@@ -551,6 +567,11 @@ export default function Home({
                 <Skeleton
                   width={100}
                   height={50}
+                  variant="rounded"
+                  sx={{
+                    borderRadius: 3
+                  }}
+                  animation="wave"
                 />
               )
               : (
@@ -575,6 +596,11 @@ export default function Home({
                 <Skeleton
                   width={100}
                   height={50}
+                  variant="rounded"
+                  sx={{
+                    borderRadius: 3
+                  }}
+                  animation="wave"
                 />
               )
               : (
@@ -596,7 +622,7 @@ export default function Home({
       <Box
         sx={{
           display: "flex",
-          gap:3,
+          gap: 3,
           alignItems: "stretch",
           mb: 3,
         }}
@@ -610,11 +636,13 @@ export default function Home({
                     {[1, 2, 3, 4, 5, 6].map((i) => (
                       <Skeleton
                         key={i}
-                        variant="rounded"
-                        // width={120}
-                        // height={140}
                         width={350}
                         height={465}
+                        variant="rounded"
+                        sx={{
+                          borderRadius: 3
+                        }}
+                        animation="wave"
                       />
                     ))}
                   </>
@@ -664,7 +692,7 @@ export default function Home({
             <Box
               sx={{
                 display: "flex",
-                flexDirection:"column",
+                flexDirection: "column",
                 gap: 3,
                 alignItems: "stretch",
                 mb: 3,

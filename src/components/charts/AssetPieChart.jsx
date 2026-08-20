@@ -28,9 +28,13 @@ export default function AssetPieChart({
     if (loading) {
         return (
             <Skeleton
-                variant="rounded"
                 width="100%"
                 height={170}
+                variant="rounded"
+                  sx={{
+                    borderRadius: 3
+                  }}
+                  animation="wave"
                 
             />
         );
