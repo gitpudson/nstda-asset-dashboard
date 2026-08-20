@@ -26,12 +26,21 @@ export default function VerifyPieChart({
     );
   }
 
+    const uncheckedAssets =
+    (summary?.totalAssets || 0) -
+    (summary?.checkedAssets || 0);
+
   const data = [
     {
       name: "ตรวจสอบแล้ว",
       value:
         summary?.checkedAssets || 0,
       color: "#22c55e",
+    },
+    {
+      name: "ยังไม่ตรวจสอบ",
+      value: uncheckedAssets,
+      color: "#9CA3AF",
     },
     {
       name: "รอจำหน่าย",

@@ -19,8 +19,10 @@ import {
   Update,
   Warning,
   Error,
-  WarningAmber
+  WarningAmber,
 } from "@mui/icons-material";
+
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 
 import SummaryCard from "../../components/cards/SummaryCard";
 import CenterCard from "../../components/cards/CenterCard";
@@ -39,9 +41,10 @@ import {
   assetRows,
   dashboardSummary
 } from "../../data/mockData";
+import CenterProgressCard from "../../components/cards/CenterProgressCard";
 
-  dayjs.extend(buddhistEra);
-  dayjs.locale("th");
+dayjs.extend(buddhistEra);
+dayjs.locale("th");
 
 export default function Home({
   org = "",
@@ -319,6 +322,19 @@ export default function Home({
 
   // }
 
+  const uncheckedAssets =
+    (summary?.totalAssets || 0) -
+    (summary?.checkedAssets || 0);
+
+  const uncheckedPercent =
+    summary?.totalAssets > 0
+      ? (
+        uncheckedAssets /
+        summary.totalAssets *
+        100
+      ).toFixed(2)
+      : "0.00";
+
   return (
 
     <Box sx={{ width: "100%" }}>
@@ -434,7 +450,7 @@ export default function Home({
         sx={{
           display: "grid",
           gridTemplateColumns:
-            "repeat(4, 1fr)",
+            "repeat(5, 1fr)",
           gap: 3,
           mb: 3,
         }}
@@ -487,6 +503,44 @@ export default function Home({
             fontSize: 40
           }} />}
         />
+
+        <Tooltip
+          arrow
+          placement="top"
+          title={
+            <>
+              ครุภัณฑ์ที่ยังไม่มีการอัปเดตสถานะ
+              <br />
+              ในรอบการตรวจสอบปัจจุบัน
+            </>
+          }
+        >
+          <Box sx={{ cursor: "help" }}>
+            <SummaryCard
+              title="ยังไม่ตรวจสอบ"
+              value={
+                loadingSummary
+                  ? (
+                    <Skeleton
+                      width={100}
+                      height={50}
+                    />
+                  )
+                  : (
+                    uncheckedAssets
+                      .toLocaleString()
+                  )
+              }
+              subtitle={`${uncheckedPercent}%`}
+              bgColor="#9CA3AF"
+              icon={
+                <RadioButtonUncheckedIcon
+                  sx={{ fontSize: 40 }}
+                />
+              }
+            />
+          </Box>
+        </Tooltip>
 
         <SummaryCard
           title="รอจำหน่าย"
@@ -542,7 +596,7 @@ export default function Home({
       <Box
         sx={{
           display: "flex",
-          gap: 2,
+          gap:3,
           alignItems: "stretch",
           mb: 3,
         }}
@@ -557,8 +611,10 @@ export default function Home({
                       <Skeleton
                         key={i}
                         variant="rounded"
-                        width={120}
-                        height={140}
+                        // width={120}
+                        // height={140}
+                        width={350}
+                        height={465}
                       />
                     ))}
                   </>
@@ -572,12 +628,32 @@ export default function Home({
                       );
 
                     return (
-                      <CenterCard
+                      // <CenterCard
+                      //   key={center.org}
+                      //   title={center.org}
+                      //   logo={centerInfo?.logo}
+                      //   total={center.total}
+                      //   active={false}
+                      // />
+                      <CenterProgressCard
                         key={center.org}
                         title={center.org}
+                        centerName={center.org}
                         logo={centerInfo?.logo}
                         total={center.total}
-                        active={false}
+                        checked={center.checked || 0}
+                        pending={center.pending}
+                        damaged={center.damaged}
+                        color={
+                          {
+                            "สก.": "#1976D2",
+                            "ศอ.": "#E53935",
+                            "ศช.": "#7CB342",
+                            "ศว.": "#FBC02D",
+                            "ศล.": "#26A69A",
+                            "ศน.": "#FB8C00",
+                          }[center.org]
+                        }
                       />
                     );
 
@@ -585,71 +661,63 @@ export default function Home({
                 )
             }
 
-            <Paper
+            <Box
               sx={{
-                width: 380,
-                height: 220,
-                p: 2,
-                borderRadius: 3,
-                flexShrink: 0,
+                display: "flex",
+                flexDirection:"column",
+                gap: 3,
+                alignItems: "stretch",
+                mb: 3,
               }}
             >
-              <Typography
-                fontWeight={700}
-                mb={2}
+
+              <Paper
+                sx={{
+                  width: 390,
+                  height: 220,
+                  p: 2,
+                  borderRadius: 3,
+                  flexShrink: 0,
+                }}
               >
-                ครุภัณฑ์แยกตามหน่วยงาน
-              </Typography>
+                <Typography
+                  fontWeight={700}
+                  mb={2}
+                >
+                  ครุภัณฑ์แยกตามหน่วยงาน
+                </Typography>
 
-              <AssetPieChart data={centerSummary} loading={loadingSummary} />
-            </Paper>
+                <AssetPieChart data={centerSummary} loading={loadingSummary} />
+              </Paper>
 
-            <Paper
-              sx={{
-                width: 390,
-                height: 220,
-                p: 2,
-                borderRadius: 3,
-                flexShrink: 0,
-              }}
-            >
-              <Typography
-                fontWeight={700}
-                mb={2}
+              <Paper
+                sx={{
+                  width: 390,
+                  height: 220,
+                  p: 2,
+                  borderRadius: 3,
+                  flexShrink: 0,
+                }}
               >
-                ความคืบหน้าการตรวจสอบ
-              </Typography>
+                <Typography
+                  fontWeight={700}
+                  mb={2}
+                >
+                  ความคืบหน้าการตรวจสอบ
+                </Typography>
 
-              <VerifyPieChart summary={summary} loading={loadingSummary} />
-            </Paper>
+                <VerifyPieChart summary={summary} loading={loadingSummary} />
+              </Paper>
+
+            </Box>
+
+
 
           </>
         )}
 
-        {/* <Paper
-          sx={{
-            width: 390,
-            height: 220,
-            p: 2,
-            borderRadius: 3,
-            flexShrink: 0,
-          }}
-        >
-          <Typography
-            fontWeight={700}
-            mb={2}
-          >
-            ความคืบหน้าการตรวจสอบ
-          </Typography>
-
-          <VerifyPieChart summary={summary} loading={loadingSummary} />
-        </Paper> */}
-
       </Box>
 
-
-      {/* Table */}
-      {/* <AssetTable rows={assetRows} /> */}
     </Box>
   );
 }
