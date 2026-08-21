@@ -74,10 +74,12 @@ import {
   Typography,
   Box,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 
 import { Menu } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
+import { assets } from "../../assets/assets";
 
 export default function Topbar() {
 
@@ -147,25 +149,46 @@ export default function Topbar() {
         />
 
         {/* Right */}
-
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 2,
-          }}
+        <Tooltip
+          arrow
+          placement="left"
+          title={
+            <>
+              <Box
+              component="img"
+              src="https://i.nstda.or.th/lib/search/cache/large/003309.jpg"
+              alt="team"
+              width={50}
+              height={50}
+              style={{
+                borderRadius: "50%",
+              }}
+            />
+            </>
+          }
         >
-          <Typography
+
+          <Box
             sx={{
-              // color: "#0e35b4",
-              color: "#991b2c",
-              fontWeight: 700,
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+              cursor: "help"
             }}
           >
-            DEVELOPED BY SMR@NECTEC
-          </Typography>
+            <Typography
+              sx={{
+                // color: "#0e35b4",
+                color: "#991b2c",
+                fontWeight: 700,
+              }}
+            >
+              DEVELOPED BY SMR@NECTEC
+            </Typography>
 
-        </Box>
+          </Box>
+        </Tooltip>
+
 
       </Toolbar>
     </AppBar>

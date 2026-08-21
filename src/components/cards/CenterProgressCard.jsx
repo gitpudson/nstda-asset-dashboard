@@ -6,6 +6,7 @@ import {
     Box,
     Tooltip,
 } from "@mui/material";
+import VerifyPieChart from "../charts/VerifyPieChart";
 
 export default function CenterProgressCard({
     logo,
@@ -24,6 +25,7 @@ export default function CenterProgressCard({
             : 0;
 
     const unchecked = total - checked;
+
 
     function InfoRow({
         bg,
@@ -65,180 +67,183 @@ export default function CenterProgressCard({
     }
 
     return (
-        <Tooltip
-            arrow
-            placement="top"
-            title={
-                <>
-                    <div>
-                        ทั้งหมด :
-                        {" "}
-                        {total.toLocaleString()}
-                    </div>
+        <>
+            {/* <Tooltip
+                arrow
+                placement="bottom"
+                title={
+                    <>
+                        <div>
+                            ทั้งหมด :
+                            {" "}
+                            {total.toLocaleString()}
+                        </div>
 
-                    <div>
-                        ตรวจแล้ว :
-                        {" "}
-                        {checked.toLocaleString()}
-                    </div>
+                        <div>
+                            ตรวจแล้ว :
+                            {" "}
+                            {checked.toLocaleString()}
+                        </div>
 
-                    <div>
-                        ยังไม่ตรวจ :
-                        {" "}
-                        {unchecked.toLocaleString()}
-                    </div>
-                </>
-            }
-        >
-            {/* <Card sx={{ cursor: "help" }} */}
-            <Card
-                sx={{
-                    borderRadius: 3,
-                    // height: "100%",
-                    height: "465px",
-                    width:"350px",
+                        <div>
+                            ยังไม่ตรวจ :
+                            {" "}
+                            {unchecked.toLocaleString()}
+                        </div>
 
-                    cursor: "help",
-                    transition: "0.2s",
-
-                    // "&:hover": {
-                    //     transform:
-                    //         "translateY(-2px)",
-                    //     boxShadow:
-                    //         "0 4px 16px rgba(0,0,0,0.12)",
-                    // },
-                }}
-            >
-                <CardContent
+                    </>
+                }
+            > */}
+                {/* <Card sx={{ cursor: "help" }} */}
+                <Card
                     sx={{
-                        py: 1.5,
-                        "&:last-child": {
-                            pb: 1.5,
-                        },
+                        borderRadius: 3,
+                        // height: "100%",
+                        height: "465px",
+                        width: "350px",
+
+                        // cursor: "help",
+                        transition: "0.2s",
+
+                        // "&:hover": {
+                        //     transform:
+                        //         "translateY(-2px)",
+                        //     boxShadow:
+                        //         "0 4px 16px rgba(0,0,0,0.12)",
+                        // },
                     }}
                 >
-
-
-                    <Box
+                    <CardContent
                         sx={{
-                            display: "flex",
-                            justifyContent:
-                                "center",
-                            mb: 1,
-                        }}
-                    >
-                        <img
-                            src={logo}
-                            alt={title}
-                            style={{
-                                height: 48,
-                                objectFit: "contain",
-                                marginBottom: 12,
-                            }}
-                        />
-                    </Box>
-
-                    <Typography
-                        align="center"
-                        sx={{
-                            fontSize: 18,
-                            fontWeight: 600,
-                        }}
-                    >
-                        {total.toLocaleString()}
-                    </Typography>
-
-                    <Typography
-                        align="center"
-                        variant="body2"
-                        color="text.secondary"
-                    >
-                        รายการ
-                    </Typography>
-
-                    <Typography
-                        align="center"
-                        variant="body2"
-                        sx={{
-                            mt: 1,
-                            fontWeight: 500,
-                        }}
-                    >
-                        ตรวจแล้ว
-                        {/* {" "}
-                        {checked.toLocaleString()} */}
-                        {" "}
-                        (
-                        {percent.toFixed(2)}
-                        %)
-                    </Typography>
-
-                    <LinearProgress
-                        variant="determinate"
-                        value={percent}
-                        sx={{
-                            mt: 1,
-                            height: 9,
-                            borderRadius: 10,
-                            backgroundColor: "#E5E7EB",
-                            "& .MuiLinearProgress-bar":
-                            {
-                                backgroundColor: color,
+                            py: 1.5,
+                            "&:last-child": {
+                                pb: 1.5,
                             },
                         }}
-                    />
-
-                    <Typography
-                        align="right"
-                        variant="caption"
-                        color="text.secondary"
-                        sx={{
-                            display: "block",
-                            mt: 0.5,
-                        }}
                     >
-                        {/* {percent.toFixed(2)}% */}
-                    </Typography>
 
-                    <Box
-                        sx={{
-                            mt: 3,
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: 4.5,
-                        }}
-                    >
-                        <InfoRow
-                            bg="#F0FDF4"
-                            color="#058b36"
-                            label="ตรวจแล้ว"
-                            value={checked}
+
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent:
+                                    "center",
+                                mb: 1,
+                            }}
+                        >
+                            <img
+                                src={logo}
+                                alt={title}
+                                style={{
+                                    height: 48,
+                                    objectFit: "contain",
+                                    marginBottom: 12,
+                                }}
+                            />
+                        </Box>
+
+                        <Typography
+                            align="center"
+                            sx={{
+                                fontSize: 18,
+                                fontWeight: 600,
+                            }}
+                        >
+                            {total.toLocaleString()}
+                        </Typography>
+
+                        <Typography
+                            align="center"
+                            variant="body2"
+                            color="text.secondary"
+                        >
+                            รายการ
+                        </Typography>
+
+                        <Typography
+                            align="center"
+                            variant="body2"
+                            sx={{
+                                mt: 1,
+                                fontWeight: 500,
+                            }}
+                        >
+                            ตรวจแล้ว
+                            {/* {" "}
+                        {checked.toLocaleString()} */}
+                            {" "}
+                            (
+                            {percent.toFixed(2)}
+                            %)
+                        </Typography>
+
+                        <LinearProgress
+                            variant="determinate"
+                            value={percent}
+                            sx={{
+                                mt: 1,
+                                height: 9,
+                                borderRadius: 10,
+                                backgroundColor: "#E5E7EB",
+                                "& .MuiLinearProgress-bar":
+                                {
+                                    backgroundColor: color,
+                                },
+                            }}
                         />
 
-                        <InfoRow
-                            bg="#F8FAFC"
-                            color="#64748B"
-                            label="ยังไม่ตรวจ"
-                            value={unchecked}
-                        />
+                        <Typography
+                            align="right"
+                            variant="caption"
+                            color="text.secondary"
+                            sx={{
+                                display: "block",
+                                mt: 0.5,
+                            }}
+                        >
+                            {/* {percent.toFixed(2)}% */}
+                        </Typography>
 
-                        <InfoRow
-                            bg="#FFF7ED"
-                            color="#EA580C"
-                            label="รอจำหน่าย"
-                            value={pending}
-                        />
+                        <Box
+                            sx={{
+                                mt: 3,
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: 4.5,
+                            }}
+                        >
+                            <InfoRow
+                                bg="#F0FDF4"
+                                color="#058b36"
+                                label="ตรวจแล้ว"
+                                value={checked}
+                            />
 
-                        <InfoRow
-                            bg="#FEF2F2"
-                            color="#DC2626"
-                            label="ชำรุด"
-                            value={damaged}
-                        />
-                    </Box>
+                            <InfoRow
+                                bg="#F8FAFC"
+                                color="#64748B"
+                                label="ยังไม่ตรวจ"
+                                value={unchecked}
+                            />
 
-                </CardContent>
-            </Card>
-        </Tooltip>
+                            <InfoRow
+                                bg="#FFF7ED"
+                                color="#EA580C"
+                                label="รอจำหน่าย"
+                                value={pending}
+                            />
+
+                            <InfoRow
+                                bg="#FEF2F2"
+                                color="#DC2626"
+                                label="ชำรุด"
+                                value={damaged}
+                            />
+                        </Box>
+
+                    </CardContent>
+                </Card>
+            {/* </Tooltip> */}
+        </>
     );
 }

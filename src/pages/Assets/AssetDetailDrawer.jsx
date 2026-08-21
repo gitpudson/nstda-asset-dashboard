@@ -60,7 +60,7 @@ export default function AssetDetailDrawer({
   asset,
 }) {
 
-  // console.log("asset", asset);
+  console.log("asset", asset);
   // console.log(" asset?.asset_image", asset?.asset_image);
   // console.log("asset_image =", asset?.asset_image);
   // console.log("length =", asset?.asset_image?.length);
