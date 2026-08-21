@@ -50,7 +50,7 @@ const menus = [
     path: "/nstda-asset-dashboard/org/MTEC",
     icon: <Domain htmlColor="#FFF085" />,
   },
-    {
+  {
     text: "ENTEC",
     path: "/nstda-asset-dashboard/org/ENTEC",
     icon: <Domain htmlColor="#36BBA7" />,
@@ -87,10 +87,10 @@ export default function Sidebar() {
   const { loading: assetLoading } = useAsset();
   const location = useLocation();
 
-  console.log(
-    "pathname =",
-    location.pathname
-  );
+  // console.log(
+  //   "pathname =",
+  //   location.pathname
+  // );
 
   return (
     <Box
@@ -132,15 +132,11 @@ export default function Sidebar() {
       <List>
         {menus.map((item) => {
 
-          const isActive =
-            location.pathname ===
-            item.path;
-
-          console.log(
-            item.text,
-            item.path,
-            isActive
-          );
+          // const isActive =
+          //   location.pathname ===
+          //   item.path;
+          const normalize = (path) => path.replace(/\/$/, "");
+          const isActive = normalize(location.pathname) === normalize(item.path);
 
           return (
             <ListItemButton

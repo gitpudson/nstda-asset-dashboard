@@ -211,10 +211,10 @@ export default function Home({
         const data =
           await getDashboardSummary(org);
 
-        console.log(
-          "ORG",
-          org
-        );
+        // console.log(
+        //   "ORG",
+        //   org
+        // );
 
         // console.log(
         //   "Dashboard Summary",
