@@ -50,16 +50,17 @@ const menus = [
     path: "/nstda-asset-dashboard/org/MTEC",
     icon: <Domain htmlColor="#FFF085" />,
   },
+    {
+    text: "ENTEC",
+    path: "/nstda-asset-dashboard/org/ENTEC",
+    icon: <Domain htmlColor="#36BBA7" />,
+  },
   {
     text: "NANOTEC",
     path: "/nstda-asset-dashboard/org/NANOTEC",
     icon: <Domain htmlColor="orange" />,
   },
-  {
-    text: "ENTEC",
-    path: "/nstda-asset-dashboard/org/ENTEC",
-    icon: <Domain htmlColor="#36BBA7" />,
-  },
+
   // {
   //   text: "ตรวจสอบครุภัณฑ์",
   //   icon: <FactCheck />,
