@@ -95,9 +95,8 @@ export function AssetProvider({
 
   //   };
   const loadSearchIndex = async () => {
-
     try {
-
+      setAssetIndex([]);
       setSearchIndexLoading(true);
 
       const data =
@@ -146,7 +145,9 @@ export function AssetProvider({
         // setTimeout(() => {
         //   loadSearchIndex();
         // }, 500);
-         loadSearchIndex();
+
+        loadSearchIndex();
+
       }
     };
 

@@ -86,6 +86,11 @@ export default function Sidebar() {
   const { loading: assetLoading } = useAsset();
   const location = useLocation();
 
+  console.log(
+    "pathname =",
+    location.pathname
+  );
+
   return (
     <Box
       sx={{
@@ -130,6 +135,12 @@ export default function Sidebar() {
             location.pathname ===
             item.path;
 
+          console.log(
+            item.text,
+            item.path,
+            isActive
+          );
+
           return (
             <ListItemButton
               key={item.text}
@@ -144,8 +155,9 @@ export default function Sidebar() {
                 color: "#fff",
 
                 "&.Mui-selected": {
-                  backgroundColor: "#3A79B8",
+                  backgroundColor: "rgba(255,255,255,0.15)",
                   borderLeft: "4px solid #FFD54F",
+                  backdropFilter: "blur(4px)",
 
                   "& .MuiListItemIcon-root": {
                     color: "#FFD54F",
@@ -153,6 +165,7 @@ export default function Sidebar() {
 
                   "& .MuiTypography-root": {
                     fontWeight: 700,
+                    color: "#FFF",
                   },
                 },
 

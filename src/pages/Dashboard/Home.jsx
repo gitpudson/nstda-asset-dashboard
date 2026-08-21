@@ -622,7 +622,7 @@ export default function Home({
       <Box
         sx={{
           display: "flex",
-          gap: 3,
+          gap: 2,
           alignItems: "stretch",
           mb: 3,
         }}

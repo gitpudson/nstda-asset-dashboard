@@ -131,7 +131,7 @@ export default function CenterProgressCard({
                             src={logo}
                             alt={title}
                             style={{
-                                height: 28,
+                                height: 48,
                                 objectFit: "contain",
                                 marginBottom: 12,
                             }}
@@ -202,15 +202,15 @@ export default function CenterProgressCard({
 
                     <Box
                         sx={{
-                            mt: 2,
+                            mt: 3,
                             display: "flex",
                             flexDirection: "column",
-                            gap: 5,
+                            gap: 4.5,
                         }}
                     >
                         <InfoRow
                             bg="#F0FDF4"
-                            color="#12a046"
+                            color="#058b36"
                             label="ตรวจแล้ว"
                             value={checked}
                         />
