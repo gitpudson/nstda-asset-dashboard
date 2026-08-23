@@ -42,6 +42,7 @@ import {
   dashboardSummary
 } from "../../data/mockData";
 import CenterProgressCard from "../../components/cards/CenterProgressCard";
+import OrganizationDashboard from "../../components/cards/OrganizationDashboard";
 
 dayjs.extend(buddhistEra);
 dayjs.locale("th");
@@ -71,77 +72,6 @@ export default function Home({
   const [loadingSummary, setLoadingSummary] = useState(true);
   const { loading: assetLoading, reloadSearchIndex } = useAsset();
 
-
-  // const handleRefresh = async () => {
-
-  //   try {
-
-  //     setLoadingSummary(true);
-
-  //     // Rebuild Dashboard_Summary
-  //     await refreshDashboardSummary();
-
-  //     await loadCenterSummary();
-
-  //     const data =
-  //       await getDashboardSummary(
-  //         org
-  //       );
-
-  //     setSummary(data);
-
-  //   } catch (error) {
-
-  //     console.error(
-  //       "Refresh Error",
-  //       error
-  //     );
-
-  //   } finally {
-
-  //     setLoadingSummary(false);
-
-  //   }
-
-  // };
-
-  // const handleRefresh = async () => {
-
-  //   try {
-
-  //     setLoadingSummary(true);
-
-  //     // Rebuild Dashboard Summary
-  //     await refreshDashboardSummary();
-
-  //     // Reload Search Index
-  //     await reloadSearchIndex();
-
-  //     // Reload Center Summary
-  //     await loadCenterSummary();
-
-  //     // Reload Dashboard Summary
-  //     const data =
-  //       await getDashboardSummary(
-  //         org
-  //       );
-
-  //     setSummary(data);
-
-  //   } catch (error) {
-
-  //     console.error(
-  //       "Refresh Error",
-  //       error
-  //     );
-
-  //   } finally {
-
-  //     setLoadingSummary(false);
-
-  //   }
-
-  // };
 
   const handleRefresh = async () => {
 
@@ -189,20 +119,13 @@ export default function Home({
         await getCenterSummary();
 
       setCenterSummary(result);
-      // console.log("getCenterSummary", result);
-      // setLoadingSummary(false);
+
     };
 
   useEffect(() => {
 
     const loadData = async () => {
 
-      // setSummary({
-      //   totalAssets: 0,
-      //   checkedAssets: 0,
-      //   pendingAssets: 0,
-      //   damagedAssets: 0,
-      // });
       setLoadingSummary(true);
       setSummary(null);
 
@@ -210,16 +133,6 @@ export default function Home({
 
         const data =
           await getDashboardSummary(org);
-
-        // console.log(
-        //   "ORG",
-        //   org
-        // );
-
-        // console.log(
-        //   "Dashboard Summary",
-        //   data
-        // );
 
         setSummary(data);
 
@@ -443,9 +356,7 @@ export default function Home({
 
       </Box>
 
-
       {/* KPI */}
-
       <Box
         sx={{
           display: "grid",
@@ -618,7 +529,6 @@ export default function Home({
       </Box>
 
       {/* Cards + Charts */}
-
       <Box
         sx={{
           display: "flex",
@@ -630,7 +540,8 @@ export default function Home({
         {!org && (
           <>
             {
-              centerSummary.length === 0
+              // centerSummary.length === 0
+                loadingSummary
                 ? (
                   <>
                     {[1, 2, 3, 4, 5, 6].map((i) => (
@@ -745,6 +656,9 @@ export default function Home({
         )}
 
       </Box>
+
+      {/* Organization Dashboard */}
+      {/* <OrganizationDashboard /> */}
 
     </Box>
   );
