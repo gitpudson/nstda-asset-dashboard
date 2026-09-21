@@ -9,7 +9,6 @@ export default function AppRoutes() {
     <BrowserRouter>
       <Routes>
         <Route element={<MainLayout />}>
-        {/* <Route element={<Maintenance />}> */}
           <Route path="/nstda-asset-dashboard" element={<Home />} />
           <Route path="/nstda-asset-dashboard/org/:org" element={<OrgDashboard />} />
         </Route>

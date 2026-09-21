@@ -18,7 +18,7 @@ export default function NetworkGuard({ children }) {
         console.error("Network verification failed:", error);
         setAllowed(false);
       } finally {
-        // setLoading(false);
+        setLoading(false);
       }
     };
 
@@ -26,47 +26,19 @@ export default function NetworkGuard({ children }) {
   }, []);
 
   // ระหว่างตรวจสอบ IP
-  // if (loading) {
-  //   return (
-  //     <div
-  //       style={{
-  //         height: "100vh",
-  //         display: "flex",
-  //         justifyContent: "center",
-  //         alignItems: "center",
-  //         fontSize: "18px",
-  //       }}
-  //     >
-  //       กำลังตรวจสอบเครือข่าย...        
-   
-  //     </div>
-  //   );
-  // }
-
-  //Maintainance mode
   if (loading) {
     return (
       <div
         style={{
-          maxWidth: "600px",
-          margin: "100px auto",
-          textAlign: "center",
-          padding: "24px",
-          border: "1px solid #ddd",
-          borderRadius: "12px",
-          backgroundColor: "#fff",
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          fontSize: "18px",
         }}
       >
-        <h2>🚫 ไม่สามารถเข้าใช้งานได้</h2>
-
-        <p>
-          ระบบอยู่ระหว่างปรับปรุงข้อมูล
-        </p>
-
-        <p>
-          ขออภัยในความไม่สะดวก
-        </p>
-
+        กำลังตรวจสอบเครือข่าย...        
+   
       </div>
     );
   }

@@ -1,24 +1,64 @@
 import React from 'react'
-import { Box } from "@mui/material";
+import {
+    Box,
+    Paper,
+    Typography
+} from "@mui/material";
 
 const Maintenance = () => {
-  return (
-    
+    return (
 
-    <Box
-        sx={{
-            display: "flex",
-            minHeight: "100vh",
-            width: "100%",
-            bgcolor: "#F5F7FB",
-        }}
-    >
-        <div>
-      ระบบอยู่ระหว่างปรับปรุงข้อมูล
-      ขออภัยในความไม่สะดวก
-    </div>
-    </Box>
-  )
+        <Box
+            sx={{
+                minHeight: "100vh",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                bgcolor: "#F5F7FB",
+                marginTop: "-200px",
+            }}
+        >
+
+            <Paper
+                sx={{
+                    p: 5,
+                    borderRadius: 4,
+                    textAlign: "center"
+                }}
+            >
+
+                <Typography
+                    variant="h4"
+                    fontWeight={700}
+                    gutterBottom
+                >
+
+                    ระบบครุภัณฑ์ สวทช.
+
+                </Typography>
+
+                <Typography
+                    variant="h6"
+                    color="error"
+                >
+
+                    อยู่ระหว่างปรับปรุงข้อมูล
+
+                </Typography>
+
+                <Typography
+                    sx={{ mt: 2 }}
+                >
+
+                    ขออภัยในความไม่สะดวก
+
+                </Typography>
+
+            </Paper>
+
+        </Box>
+
+    );
 }
 
 export default Maintenance
