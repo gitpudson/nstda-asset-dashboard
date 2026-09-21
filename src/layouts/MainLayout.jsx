@@ -6,6 +6,7 @@ import Topbar from "../components/navbar/Topbar";
 
 export default function MainLayout() {
   return (
+
     <Box
       sx={{
         display: "flex",
@@ -45,5 +46,8 @@ export default function MainLayout() {
         </Box>
       </Box>
     </Box>
+  
+
   );
 }
+

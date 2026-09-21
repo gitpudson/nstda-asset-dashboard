@@ -5,6 +5,7 @@ import {
   TextField,
   MenuItem,
   Box,
+  Skeleton,
 } from "@mui/material";
 
 import {
@@ -13,22 +14,23 @@ import {
 } from "react";
 
 import {
-  getOrganizationStructure
+  getOrganizationStructure,
+  getOrganizationSummary
 } from "../../services/organizationService";
+import SummaryCard from "./SummaryCard";
+import { Inventory2 } from "@mui/icons-material";
 
 export default function OrganizationDashboard() {
 
-  const [data, setData] =
-    useState(null);
+  const [data, setData] = useState(null);
 
-  const [org, setOrg] =
-    useState("");
+  const [org, setOrg] = useState("");
 
-  const [divisionCode, setDivisionCode] =
-    useState("");
+  const [divisionCode, setDivisionCode] = useState("");
 
-  const [departmentCode, setDepartmentCode] =
-    useState("");
+  const [departmentCode, setDepartmentCode] = useState("");
+
+  const [summary, setSummary] = useState(null);
 
   useEffect(() => {
 
@@ -40,8 +42,7 @@ export default function OrganizationDashboard() {
 
     try {
 
-      const result =
-        await getOrganizationStructure();
+      const result = await getOrganizationStructure();
 
       setData(result);
 
@@ -53,6 +54,42 @@ export default function OrganizationDashboard() {
 
   };
 
+  useEffect(() => {
+
+    if (!org) {
+      return;
+    }
+
+    loadSummary();
+
+  }, [
+    org,
+    divisionCode,
+    departmentCode
+  ]);
+
+  const loadSummary =
+    async () => {
+
+      try {
+
+        const result =
+          await getOrganizationSummary(
+            org,
+            divisionCode,
+            departmentCode
+          );
+
+        setSummary(result);
+
+      } catch (error) {
+
+        console.error(error);
+
+      }
+
+    };
+
   const structure =
     data?.structure || {};
 
@@ -62,18 +99,41 @@ export default function OrganizationDashboard() {
   const divisionList =
     org
       ? Object.values(
-          structure[org] || {}
-        )
+        structure[org] || {}
+      )
       : [];
 
   const departmentList =
     org && divisionCode
       ? (
-          structure[org]
-            ?. [divisionCode]
-            ?.departments || []
-        )
+        structure[org]
+          ?.[divisionCode]
+          ?.departments || []
+      )
       : [];
+
+  function removeTrailingCode(text) {
+
+    return String(text)
+      .replace(/\([^()]*\)$/, "")
+      .trim();
+
+  }
+
+  // console.log(
+  //   "data",
+  //   data
+  // );
+
+  // console.log(
+  //   "organizations",
+  //   organizations
+  // );
+
+  // console.log(
+  //   "structure",
+  //   structure
+  // );
 
   return (
 
@@ -178,9 +238,14 @@ export default function OrganizationDashboard() {
                     }
                   >
 
-                    {
+                    {/* {
                       item.division_code
-                    }
+                    } */}
+                    {item.division_code}
+                    {" - "}
+                    {removeTrailingCode(
+                      item.division_name
+                    )}
 
                   </MenuItem>
 
@@ -227,9 +292,12 @@ export default function OrganizationDashboard() {
                     }
                   >
 
-                    {
+                    {/* {
                       item.department_code
-                    }
+                    } */}
+                    {item.department_code}
+                    {" - "}
+                    {item.department_name.replace(/\([^()]*\)$/, "")}
 
                   </MenuItem>
 
@@ -243,17 +311,92 @@ export default function OrganizationDashboard() {
 
       </Grid>
 
-      <Box mt={3}>
+      {/* <Box mt={3}>
 
         <pre>
 
-{JSON.stringify({
-  org,
-  divisionCode,
-  departmentCode
-}, null, 2)}
+          {JSON.stringify({
+            org,
+            divisionCode,
+            departmentCode
+          }, null, 2)}
 
         </pre>
+
+      </Box> */}
+
+      {/* แสดง KPI */}
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns:
+            "repeat(7,1fr)",
+          gap: 2,
+          mt: 3
+        }}
+      >
+
+        <SummaryCard
+          title="ครุภัณฑ์ทั้งหมดของศูนย์"
+          value={
+            summary?.orgTotalAssets
+              ?.toLocaleString() || "-"
+          }
+          subtitle="รายการ"
+          bgColor="#1565C0"
+        />
+
+        <SummaryCard
+          title="เชื่อมโยงบุคลากรได้"
+          value={
+            summary?.matchedAssets
+              ?.toLocaleString() || "-"
+          }
+          subtitle="รายการ"
+          bgColor="#2E7D32"
+        />
+
+        <SummaryCard
+          title="ไม่พบข้อมูลบุคลากร"
+          value={
+            summary?.noStaffMatch
+              ?.toLocaleString() || "-"
+          }
+          subtitle="รายการ"
+          bgColor="#EF6C00"
+        />
+
+        <SummaryCard
+          title="ตรวจสอบแล้ว"
+          value={
+            summary?.checkedAssets
+              ?.toLocaleString() || "-"
+          }
+        />
+
+        <SummaryCard
+          title="ยังไม่ตรวจ"
+          value={
+            summary?.uncheckedAssets
+              ?.toLocaleString() || "-"
+          }
+        />
+
+        <SummaryCard
+          title="รอจำหน่าย"
+          value={
+            summary?.pendingAssets
+              ?.toLocaleString() || "-"
+          }
+        />
+
+        <SummaryCard
+          title="ชำรุด"
+          value={
+            summary?.damagedAssets
+              ?.toLocaleString() || "-"
+          }
+        />
 
       </Box>
 
