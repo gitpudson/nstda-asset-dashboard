@@ -123,13 +123,6 @@ export default function AssetTable({
         }
       );
 
-      // saveAs(
-      //   file,
-      //   `Asset_${new Date()
-      //     .toISOString()
-      //     .slice(0, 10)}.xlsx`
-      // );
-
       const today = new Date();
 
       const fileName =
@@ -165,24 +158,9 @@ export default function AssetTable({
           filteredIds
         );
 
-      // console.log(result);
-      // console.log(
-      //   JSON.stringify(
-      //     result.debug,
-      //     null,
-      //     2
-      //   )
-      // );
-
-
       if (
         result?.downloadUrl
       ) {
-
-        // window.open(
-        //   result.downloadUrl,
-        //   "_blank"
-        // );
 
         window.location.href = result.downloadUrl;
 
@@ -213,157 +191,6 @@ export default function AssetTable({
     NANOTEC: "ศน.",
     ENTEC: "ศล.",
   };
-
-  // const filteredIds = useMemo(() => {
-
-  //   const keyword = search.trim().toLowerCase();
-
-  //   const keywordParts = keyword.split(/\s+/);
-  //   const matchSearch =
-  //     keyword === ""
-  //       ? true
-  //       : keywordParts.every(part =>
-  //         item.search_text
-  //           .toLowerCase()
-  //           .includes(part)
-  //       );
-
-  //   return assetIndex
-  //     .filter(item => {
-  //       const matchSidebarOrg =
-  //         !org
-  //           ? true
-  //           : item.org_owner === ORG_MAP[org];
-
-  //       const matchSearch =
-  //         keyword === ""
-  //           ? true
-  //           : item.search_text
-  //             .toLowerCase()
-  //             .includes(keyword);
-
-  //       if (
-  //         keyword &&
-  //         matchSearch
-  //       ) {
-  //         console.log(
-  //           "MATCH",
-  //           item.row_number,
-  //           item.search_text
-  //         );
-  //       }
-
-  //       const matchStatus =
-  //         status === "ALL"
-  //           ? true
-  //           : item.asset_status === status;
-
-  //       const matchOrg =
-  //         orgOwner === "ALL"
-  //           ? true
-  //           : item.org_owner === orgOwner;
-
-  //       return (
-  //         matchSearch &&
-  //         matchStatus &&
-  //         matchOrg &&
-  //         matchSidebarOrg
-  //       );
-
-  //     })
-  //     .map(item => item.row_number);
-
-  // }, [
-  //   assetIndex,
-  //   search,
-  //   status,
-  //   orgOwner,
-  //   org
-  // ]);
-
-  // const filteredIds = useMemo(() => {
-
-  //   const keyword =
-  //     search.trim().toLowerCase();
-
-  //   const keywordParts =
-  //     keyword.split(/\s+/);
-
-  //   console.log(
-  //     "assetIndex sample",
-  //     assetIndex[0]
-  //   );
-
-  //   return assetIndex
-  //     .filter(item => {
-
-  //       const matchSidebarOrg =
-  //         !org
-  //           ? true
-  //           : item.org_owner === ORG_MAP[org];
-
-  //       const matchSearch =
-  //         keyword === ""
-  //           ? true
-  //           : keywordParts.every(part =>
-  //             item.search_text
-  //               .toLowerCase()
-  //               .includes(part)
-  //           );
-
-  //       // const matchStatus =
-  //       //   status === "ALL"
-  //       //     ? true
-  //       //     : item.asset_status === status;
-  //       const currentYear = new Date().getFullYear();
-  //       // const matchStatus =
-  //       //   status === "ALL"
-  //       //     ? true
-  //       //     : status === "CHECKED"
-  //       //       ? (
-  //       //         item.updated_at &&
-  //       //         new Date(
-  //       //           item.updated_at
-  //       //         ).getFullYear() ===
-  //       //         currentYear
-  //       //       )
-  //       //       : item.asset_status === status;
-  //       const matchStatus =
-  //         status === "ALL"
-  //           ? true
-  //           : status === "CHECKED"
-  //             ? (
-  //               item.updated_at &&
-  //               new Date(item.updated_at)
-  //                 .getFullYear() ===
-  //               currentYear
-  //             )
-  //             : status === "UNCHECKED"
-  //               ? !item.updated_at
-  //               : item.asset_status === status;
-
-  //       const matchOrg =
-  //         orgOwner === "ALL"
-  //           ? true
-  //           : item.org_owner === orgOwner;
-
-  //       return (
-  //         matchSearch &&
-  //         matchStatus &&
-  //         matchOrg &&
-  //         matchSidebarOrg
-  //       );
-
-  //     })
-  //     .map(item => item.row_number);
-
-  // }, [
-  //   assetIndex,
-  //   search,
-  //   status,
-  //   orgOwner,
-  //   org,
-  // ]);
 
   const filteredIds = useMemo(() => {
 
@@ -459,19 +286,6 @@ export default function AssetTable({
   ]);
 
 
-  // useEffect(() => {
-  //   setRows([]);
-  //   setTableLoading(true);
-  //   loadPageData();
-
-  //   // }, [org, pageRows]);
-  // }, [
-  //   org,
-  //   paginationModel.page,
-  //   paginationModel.pageSize,
-  //   filteredIds.length,
-  // ]);
-
   useEffect(() => {
 
     if (
@@ -484,21 +298,6 @@ export default function AssetTable({
     org,
     pageRows.join(",")
   ]);
-  // useEffect(() => {
-
-  //   if (
-  //     pageRows.length >= 0
-  //   ) {
-
-  //     loadPageData();
-
-  //   }
-
-  // }, [
-  //   assetIndex,
-  //   org,
-  //   pageRows.join(",")
-  // ]);
 
   useEffect(() => {
 
@@ -511,157 +310,6 @@ export default function AssetTable({
     setStatus("ALL");
 
   }, [org]);
-
-  // useEffect(() => {
-
-  //   const timer =
-  //     setTimeout(() => {
-
-  //       setSearchKeyword(
-  //         search
-  //       );
-
-  //     }, 500);
-
-  //   return () =>
-  //     clearTimeout(timer);
-
-  // }, [search]);
-
-  // const loadPageData = async () => {
-
-  //   if (pageRows.length === 0) {
-
-  //     setRows([]);
-  //     setTableLoading(false);
-  //     return;
-
-  //   }
-
-  //   try {
-
-  //     setTableLoading(true);
-
-  //     const result =
-  //       await getAssetByRows(
-  //         pageRows
-  //       );
-
-  //     setRows(result);
-
-  //   } catch (error) {
-
-  //     console.error(
-  //       "loadPageData error",
-  //       error
-  //     );
-
-  //     setRows([]);
-
-  //   } finally {
-
-  //     setTableLoading(false);
-
-  //   }
-
-  // };
-
-  //   const loadPageData = async () => {
-
-  //   if (pageRows.length === 0) {
-
-  //     setRows([]);
-  //     setTableLoading(false);
-
-  //     return;
-
-  //   }
-
-  //   try {
-
-  //     setTableLoading(true);
-
-  //     const result =
-  //       await getAssetByRows(pageRows);
-
-  //     setRows(result);
-
-  //   } catch (error) {
-
-  //     console.error(
-  //       "loadPageData error",
-  //       error
-  //     );
-
-  //     setRows([]);
-
-  //   } finally {
-
-  //     setTableLoading(false);
-
-  //   }
-
-  // };
-
-  // const loadPageData = async () => {
-
-  //   console.log(
-  //     "filteredIds",
-  //     filteredIds.length
-  //   );
-
-  //   console.log(
-  //     "pageRows",
-  //     pageRows
-  //   );
-
-  //   if (pageRows.length === 0) {
-
-  //     setRows([]);
-  //     setTableLoading(false);
-
-  //     return;
-
-  //   }
-
-  //   try {
-
-  //     setTableLoading(true);
-
-  //     // console.time("getAssetByRows");
-
-  //     console.log(
-  //       "pageRows before api",
-  //       pageRows
-  //     );
-
-  //     const result =
-  //       await getAssetByRows(pageRows);
-
-  //     // console.timeEnd("getAssetByRows");
-  //     console.log(
-  //       "result rows",
-  //       result.length
-  //     );
-
-  //     setRows(result);
-
-  //   } catch (error) {
-
-  //     // console.error(
-  //     //   "loadPageData error",
-  //     //   error
-  //     // );
-
-  //     setRows([]);
-
-  //   } finally {
-
-  //     setTableLoading(false);
-
-  //   }
-
-  // };
 
   const loadPageData = async () => {
 
@@ -730,89 +378,6 @@ export default function AssetTable({
     }));
 
   }, [org]);
-
-  /*
-  const columns = [
-    {
-      field: "assetNo",
-      headerName: "รหัสครุภัณฑ์",
-      flex: 1,
-    },
-    {
-      field: "name",
-      headerName: "ชื่อครุภัณฑ์",
-      flex: 2,
-    },
-    {
-      field: "category",
-      headerName: "ประเภท",
-      flex: 1,
-    },
-    {
-      field: "center",
-      headerName: "หน่วยงาน",
-      flex: 1,
-    },
-    {
-      field: "owner",
-      headerName: "ผู้รับผิดชอบ",
-      flex: 1.5,
-    },
-    {
-      field: "status",
-      headerName: "สถานะ",
-      flex: 1,
-      renderCell: (params) => {
-        let color = "default";
-
-        if (params.value === "ตรวจแล้ว")
-          color = "success";
-
-        if (params.value === "รอตรวจ")
-          color = "warning";
-
-        if (params.value === "ชำรุด")
-          color = "error";
-
-        return (
-          <Chip
-            label={params.value}
-            color={color}
-            size="small"
-            variant="filled"
-          />
-        );
-      },
-    },
-    {
-      field: "verifyDate",
-      headerName: "วันที่ตรวจสอบ",
-      flex: 1,
-    },
-    {
-      field: "action",
-      headerName: "จัดการ",
-      sortable: false,
-      filterable: false,
-      flex: 1,
-      renderCell: () => (
-        <Box>
-          <Tooltip title="ดูรายละเอียด">
-            <IconButton color="primary">
-              <Visibility />
-            </IconButton>
-          </Tooltip>
-
-          <Tooltip title="แก้ไขข้อมูล">
-            <IconButton color="warning">
-              <Edit />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      ),
-    },
-  ];
-  */
 
   const columns = [
     {
@@ -994,52 +559,6 @@ export default function AssetTable({
 
   ];
 
-  // if (
-  //   loading ||
-  //   assetIndex.length === 0
-  // ) {
-  //   return (
-  //     <Box
-  //       sx={{
-  //         height: "70vh",
-  //         display: "flex",
-  //         flexDirection: "column",
-  //         justifyContent: "center",
-  //         alignItems: "center",
-  //         gap: 2,
-  //       }}
-  //     >
-  //       <CircularProgress />
-
-  //       <Typography>
-  //         กำลังโหลดข้อมูลครุภัณฑ์...
-  //       </Typography>
-
-  //     </Box>
-  //   );
-  // }
-
-  useEffect(() => {
-    if (assetIndex.length > 0) {
-      // console.log(
-      //   [...new Set(assetIndex.map(x => x.org_owner))]
-      // );
-    }
-  }, [assetIndex]);
-
-  // useEffect(() => {
-  //   const load = async () => {
-  //     if (
-  //       assetIndex.length === 0
-  //     ) {
-
-  //       await reloadSearchIndex();
-  //     }
-  //   };
-
-  //   load();
-
-  // }, []);
   useEffect(() => {
 
     if (
@@ -1078,34 +597,8 @@ export default function AssetTable({
 
       </Box>
 
-      // <Box
-      //   sx={{
-      //     py: 8,
-      //     textAlign: "center",
-      //   }}
-      // >
-      //   <CircularProgress />
-
-      //   <Typography
-      //     sx={{
-      //       mt: 2,
-      //       fontWeight: 600,
-      //     }}
-      //   >
-      //     กำลังเตรียมข้อมูลครุภัณฑ์
-      //   </Typography>
-
-      //   <Typography
-      //     variant="body2"
-      //     color="text.secondary"
-      //     sx={{ mt: 1 }}
-      //   >
-      //     โหลดครั้งแรกอาจใช้เวลาสักครู่
-      //   </Typography>
-      // </Box>
     );
   }
-
 
 
   return (
@@ -1187,29 +680,6 @@ export default function AssetTable({
       </Box>
 
       {/* Summary Status */}
-      {/* <Box
-        sx={{
-          display: "flex",
-          gap: 1,
-          mb: 3,
-          flexWrap: "wrap",
-        }}
-      >
-        <Chip
-          color="success"
-          label="ตรวจแล้ว 10,980"
-        />
-
-        <Chip
-          color="warning"
-          label="รอตรวจ 1,250"
-        />
-
-        <Chip
-          color="error"
-          label="ชำรุด 220"
-        />
-      </Box> */}
 
       {/* Filters */}
       <Box
@@ -1226,12 +696,11 @@ export default function AssetTable({
             : 1,
         }}
       >
-        <TextField
+        {/* <TextField
           fullWidth
           size="small"
           placeholder="ค้นหาครุภัณฑ์..."
           value={search}
-          // disabled={tableLoading}
           onChange={(e) => {
             setPaginationModel((prev) => ({
               ...prev,
@@ -1248,39 +717,36 @@ export default function AssetTable({
               </InputAdornment>
             ),
           }}
-        />
-
-        {/* <TextField
-          select
+        /> */}
+        <TextField
+          fullWidth
           size="small"
-          value={orgOwner}
+          placeholder="ค้นหาครุภัณฑ์..."
+          value={search}
           onChange={(e) => {
             setPaginationModel((prev) => ({
               ...prev,
               page: 0,
             }));
 
-            setOrgOwner(e.target.value);
+            setSearch(e.target.value);
           }}
-          sx={{ width: 180 }}
-        >
-          <MenuItem value="ALL">
-            ทุกศูนย์
-          </MenuItem>
-
-          <MenuItem value="สก.">สก.</MenuItem>
-          <MenuItem value="ศช.">ศช.</MenuItem>
-          <MenuItem value="ศว.">ศว.</MenuItem>
-          <MenuItem value="ศล.">ศล.</MenuItem>
-          <MenuItem value="ศน.">ศน.</MenuItem>
-          <MenuItem value="ศอ.">ศอ.</MenuItem>
-        </TextField> */}
+          sx={{ flex: 1 }}
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              ),
+            },
+          }}
+        />
 
         <TextField
           select
           size="small"
           value={status}
-          // disabled={tableLoading}
           onChange={(e) => {
             setPaginationModel((prev) => ({
               ...prev,
@@ -1291,31 +757,6 @@ export default function AssetTable({
           }}
           sx={{ width: 180 }}
         >
-          {/* <TextField
-          select
-          size="small"
-          value={status}
-          onChange={async (e) => {
-
-            setPaginationModel((prev) => ({
-              ...prev,
-              page: 0,
-            }));
-
-            if (
-              e.target.value === "CHECKED" ||
-              e.target.value === "UNCHECKED"
-            ) {
-
-              await reloadSearchIndex();
-
-            }
-
-            setStatus(e.target.value);
-
-          }}
-          sx={{ width: 180 }}
-        > */}
 
           <MenuItem value="ALL">
             ทุกสถานะ
@@ -1346,44 +787,6 @@ export default function AssetTable({
       </Box>
 
       {/* DataGrid */}
-      {/* <DataGrid
-        rows={filteredRows}
-        columns={columns}
-        autoHeight
-        disableRowSelectionOnClick
-        pageSizeOptions={[50, 100, 200]}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 50,
-            },
-          },
-        }}
-        sx={{
-          border: "1px solid #E5E7EB",
-          borderRadius: 3,
-
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: "#F8FAFC",
-            fontWeight: 700,
-            fontSize: 14,
-          },
-
-          "& .MuiDataGrid-row:hover": {
-            backgroundColor: "#F8FAFC",
-          },
-
-          "& .MuiDataGrid-cell": {
-            borderBottom:
-              "1px solid #F1F5F9",
-          },
-
-          "& .MuiDataGrid-footerContainer": {
-            borderTop:
-              "1px solid #E5E7EB",
-          },
-        }}
-      /> */}
 
       <DataGrid
         key={`${filteredIds.length}-${search}-${status}`}
@@ -1392,7 +795,6 @@ export default function AssetTable({
         getRowId={(row) => row.row_number}
 
         onRowClick={(params) => {
-          // console.log("params.row", params.row);
           setSelectedAsset(params.row);
           setDrawerOpen(true);
         }}
@@ -1422,41 +824,11 @@ export default function AssetTable({
         ]}
 
         loading={tableLoading || loading}
-        // loading={tableLoading}
         slots={{
           pagination: () => null
         }}
       />
 
-      {/* <Box
-        sx={{
-          mt: 2,
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <Pagination
-          count={Math.ceil(
-            filteredIds.length /
-            paginationModel.pageSize
-          )}
-          page={
-            paginationModel.page + 1
-          }
-          showFirstButton
-          showLastButton
-          onChange={(_, page) => {
-
-            setPaginationModel(
-              prev => ({
-                ...prev,
-                page: page - 1,
-              })
-            );
-
-          }}
-        />
-      </Box> */}
       <Box
         sx={{
           display: "flex",
@@ -1514,4 +886,6 @@ export default function AssetTable({
 
     </Paper>
   );
+
+
 }

@@ -176,14 +176,6 @@ export default function Sidebar() {
               }}
 
             >
-              {/* <ListItemIcon
-                sx={{
-                  color: "#fff",
-                  minWidth: 40,
-                }}
-              >
-                {item.icon}
-              </ListItemIcon> */}
               <ListItemIcon
                 sx={{
                   color: "#fff",
@@ -193,7 +185,7 @@ export default function Sidebar() {
                 {item.icon}
               </ListItemIcon>
 
-              <ListItemText
+              {/* <ListItemText
                 primary={item.text}
                 primaryTypographyProps={{
                   fontWeight:
@@ -201,6 +193,19 @@ export default function Sidebar() {
                       ? 700
                       : 400,
                 }}
+              /> */}
+              <ListItemText
+                primary={
+                  <Typography
+                    fontWeight={
+                      isActive
+                        ? 700
+                        : 400
+                    }
+                  >
+                    {item.text}
+                  </Typography>
+                }
               />
             </ListItemButton>
           );

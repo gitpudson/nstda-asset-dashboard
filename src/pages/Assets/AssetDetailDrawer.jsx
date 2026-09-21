@@ -70,6 +70,9 @@ export default function AssetDetailDrawer({
       anchor="right"
       open={open}
       onClose={onClose}
+      ModalProps={{
+        keepMounted: true
+      }}
     >
       <Box
         sx={{

@@ -339,7 +339,8 @@ export default function Home({
           </Tooltip> */}
 
           <Tooltip title="รีเฟรชข้อมูล">
-            <IconButton
+            <span>
+              <IconButton
               onClick={handleRefresh}
               size="small"
               disabled={loadingSummary}
@@ -350,6 +351,8 @@ export default function Home({
                   : <RefreshIcon />
               }
             </IconButton>
+            </span>
+            
           </Tooltip>
 
         </Box>
