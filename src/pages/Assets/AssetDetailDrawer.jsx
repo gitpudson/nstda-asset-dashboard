@@ -60,19 +60,14 @@ export default function AssetDetailDrawer({
   asset,
 }) {
 
-  // console.log("asset", asset);
-  // console.log(" asset?.asset_image", asset?.asset_image);
-  // console.log("asset_image =", asset?.asset_image);
-  // console.log("length =", asset?.asset_image?.length);
-
   return (
     <Drawer
       anchor="right"
       open={open}
       onClose={onClose}
-      ModalProps={{
-        keepMounted: true
-      }}
+      // ModalProps={{
+      //   keepMounted: true
+      // }}
     >
       <Box
         sx={{
@@ -96,72 +91,6 @@ export default function AssetDetailDrawer({
               alignItems: "center",
             }}
           >
-
-            {/* <Avatar
-              src={asset?.image_person}
-              sx={{
-                width: 120,
-                height: 120,
-                bgcolor: "#ff6b00",
-                // border: "1px solid #FCE7D6",
-                // boxShadow: "0 2px 6px"
-              }}
-            /> */}
-
-            {/* <Avatar
-              src={asset?.image_person}
-              imgProps={{
-                loading: "eager",
-                referrerPolicy: "no-referrer",
-              }}
-              sx={{
-                width: 120,
-                height: 120,
-                "& img": {
-                  objectFit: "cover",
-                  imageRendering: "auto"
-                },
-              }}
-            /> */}
-            {/* <Box
-              component="img"
-              {
-                console.log(
-                "natural",
-                e.target.naturalWidth,
-                e.target.naturalHeight
-              );
-              };
-            src={asset?.image_person}
-            alt=""
-            sx={{
-              width: 120,
-              height: 120,
-              // borderRadius: "50%",
-              objectFit: "cover",
-              transform: "translateZ(0)",
-              backfaceVisibility: "hidden",
-            }}
-            /> */}
-            {/* 
-            <Box
-              component="img"
-              src={asset?.image_person}
-              alt=""
-              onLoad={(e) => {
-                console.log(
-                  asset?.image_person,
-                  e.target.naturalWidth,
-                  e.target.naturalHeight
-                );
-
-              }}
-              sx={{
-                width: 120,
-                height: 120,
-                objectFit: "cover",
-              }}
-            /> */}
             <Box
               component="img"
               src={asset?.image_person}
@@ -251,16 +180,6 @@ export default function AssetDetailDrawer({
             label="ชื่อครุภัณฑ์"
             value={asset?.asset_name}
           />
-          {/* 
-          <InfoCard
-            label="หน่วยงาน"
-            value={asset?.org_owner}
-          /> */}
-
-          {/* <InfoCard
-            label="ผู้รับผิดชอบ"
-            value={asset?.person_name}
-          /> */}
 
           <InfoCard
             label="อาคาร"
@@ -381,71 +300,6 @@ export default function AssetDetailDrawer({
             >
               รูปภาพครุภัณฑ์
             </Typography>
-
-            {/* <img
-  // src="https://lh3.googleusercontent.com/d/1jsk3Tc2-zLhD3rAIkGPtGciNNF2ZBuR_=w1000"
-  src={asset.asset_image}
-  alt="test"
-  style={{
-    width: "100%",
-    maxHeight: "350px",
-    objectFit: "contain",
-  }}
-  onLoad={() => console.log("OK")}
-  onError={() => console.log("ERROR",asset)}
-/> */}
-
-            {/* {asset?.asset_image ? (
-    <Box
-      component="img"
-      src={asset.asset_image}
-      alt={asset?.asset_name}
-      sx={{
-        width: "100%",
-        maxHeight: 350,
-        objectFit: "contain",
-        borderRadius: 2,
-        border: "1px solid #ddd",
-      }}
-    />
-  ) : (
-    <Typography color="text.secondary">
-      ไม่มีรูปภาพครุภัณฑ์
-    </Typography>
-  )} */}
-            {/* <img
-  src="https://drive.google.com/thumbnail?id=1jsk3Tc2-zLhD3rAIkGPtGciNNF2ZBuR_&sz=w400-h300"
-  alt="asset"
-  style={{
-    width: "100%",
-    maxHeight: "350px",
-    objectFit: "contain",
-  }}
-/> */}
-
-            {/* <img src="https://drive.google.com/thumbnail?id=0B6wwyazyzml-OGQ3VUo0Z2thdmc&sz=w1000" alt="asset" style={{
-  width: "100%",
-  maxHeight: "350px",
-  objectFit: "contain",
-  marginTop: "10px"
-}} /> */}
-
-            {/* {asset?.asset_image && asset.asset_image.length > 0 ? (
-
-              <img src={asset?.asset_image} 
-                alt="ไม่สามารถโหลดรูปภาพได้" 
-                style={{
-                width: "100%",
-                height: "auto",
-                display: "block",
-                marginTop: "10px",
-                borderRadius: "8px"
-              }} />
-            ) : (
-              <Typography color="text.secondary">
-                ไม่มีรูปภาพครุภัณฑ์
-              </Typography>
-            )} */}
 
             {asset?.asset_image?.trim() ? (
 
