@@ -183,7 +183,7 @@ export default function Topbar() {
                 fontWeight: 700,
               }}
             >
-              DEVELOPED BY SMR@NECTEC
+              DEVELOPED BY IIARG/SMR@NECTEC
             </Typography>
 
           </Box>

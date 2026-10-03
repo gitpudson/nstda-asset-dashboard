@@ -92,6 +92,8 @@ export default function Home({
 
       setSummary(data);
 
+      // console.log("Dashboard Summary:", data);
+
     } catch (error) {
 
       console.error(
@@ -314,6 +316,7 @@ export default function Home({
           >
             อัปเดตล่าสุด :{" "}
             {
+              
               // summary?.lastUpdate
               //   ? dayjs(summary.lastUpdate)
               //     .locale("th")
@@ -325,7 +328,7 @@ export default function Home({
                 ? dayjs(summary.lastUpdate)
                   .format("D MMMM BBBB HH:mm น.")
                 : "-"
-
+                
             }
           </Typography>
 
