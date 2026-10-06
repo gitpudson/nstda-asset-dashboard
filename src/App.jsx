@@ -12,11 +12,11 @@ function App() {
   }
 
   return (
-    // <NetworkGuard>
-    //   <AppRoutes />
-    // </NetworkGuard>
+    <NetworkGuard>
+      <AppRoutes />
+    </NetworkGuard>
 
-    <AppRoutes />
+    // <AppRoutes />
   );
 }
 

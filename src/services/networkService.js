@@ -1,5 +1,5 @@
 const ALLOW_ADMIN_IP = [
-  "27.145.124.242"
+  "27.145.138.64"
   ];
 
 export const ALLOWED_NETWORKS = [
