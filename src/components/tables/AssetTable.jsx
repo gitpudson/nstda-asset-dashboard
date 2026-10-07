@@ -537,6 +537,7 @@ export default function AssetTable({
 
       },
     },
+    
     {
       field: "updated_at",
       headerName: "อัปเดตสถานะ",
@@ -556,6 +557,8 @@ export default function AssetTable({
 
       },
     }
+    
+    
 
   ];
 
