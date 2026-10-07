@@ -16,19 +16,6 @@ export const ALLOWED_NETWORKS = [
     ALLOW_ADMIN_IP
 ];
 
-export async function getPublicIP1() {
-    const response = await fetch(
-        "https://api.ipify.org?format=json"
-    );
-
-    if (!response.ok) {
-        throw new Error("Unable to get public IP");
-    }
-
-    const data = await response.json();
-
-    return data.ip;
-}
 
 export async function getPublicIP() {
 
@@ -52,11 +39,6 @@ export async function getPublicIP() {
 
 }
 
-function isOfficeNetwork1(ip) {
-    return ALLOWED_NETWORKS.some(network =>
-        ip.startsWith(network)
-    );
-}
 
 function isOfficeNetwork(
     ip,
@@ -73,25 +55,6 @@ function isOfficeNetwork(
 }
 
 export async function checkNetworkAccess1() {
-    try {
-        const ip = await getPublicIP();
-        // console.log("Current IP:", ip);
-        return {
-            allowed: isOfficeNetwork(ip),
-            ip,
-            error: false
-        };
-    } catch (error) {
-        console.error(error);
-        return {
-            allowed: false,
-            ip: null,
-            error: true
-        };
-    }
-}
-
-export async function checkNetworkAccess() {
 
     try {
 
@@ -147,6 +110,65 @@ export async function checkNetworkAccess() {
 
 }
 
+export async function checkNetworkAccess() {
+
+    try {
+
+        const ip =
+            await getPublicIP();
+
+        const networks =
+            await getAllowedNetwork();
+
+        //  console.log(
+        //     "Current IP:",
+        //     ip
+        // );
+
+        const matched =
+            networks.find(
+                item =>
+                    ip.startsWith(
+                        item.ip
+                    )
+            );
+
+        if (
+            matched &&
+            matched.allow === "Y"
+        ) {
+
+            return {
+                allowed: true,
+                ip,
+                error: false
+            };
+
+        }
+
+        // บันทึก IP ใหม่เข้า Sheet
+        await addUnknownIP(ip);
+
+        return {
+            allowed: false,
+            ip,
+            error: false
+        };
+
+    } catch (error) {
+
+        console.error(error);
+
+        return {
+            allowed: false,
+            ip: null,
+            error: true
+        };
+
+    }
+
+}
+
 export async function getAllowedNetwork() {
 
     const post = {
@@ -170,5 +192,30 @@ export async function getAllowedNetwork() {
     // return response.data.data;
 
     return response.data.data || [];
+
+}
+
+export async function addUnknownIP(ip) {
+
+    const response =
+        await axios.post(
+            assets.API_URL,
+            {
+                function:
+                    "addUnknownIP",
+
+                payload: {
+                    ip
+                }
+            },
+            {
+                headers: {
+                    "Content-Type":
+                        "text/plain",
+                },
+            }
+        );
+
+    return response.data;
 
 }
