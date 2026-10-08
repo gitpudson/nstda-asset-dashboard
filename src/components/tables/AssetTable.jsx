@@ -403,17 +403,129 @@ export default function AssetTable({
       headerName: "หน่วยงาน",
       flex: 1,
     },
+
     // {
     //   field: "person_name",
+
     //   headerName: "ผู้รับผิดชอบ",
-    //   flex: 1.5,
+
+    //   width: 100,
+
+    //   align: "center",
+
+    //   headerAlign: "center",
+
+    //   sortable: false,
+
+    //   renderCell: (params) => (
+
+    //     <Tooltip
+    //       title={params.row.person_name}
+    //     >
+    // <Box
+    //   component="img"
+    //   src={params.row.image_person}
+    //   alt=""
+    //   width={55}
+    //   height={55}
+    //   style={{
+    //     borderRadius: "50%",
+    //   }}
+    // />
+
+    //     </Tooltip>
+
+    //   )     
+
+
     // },
+
+    // {
+    //   field: "person_name",
+
+    //   headerName: "ผู้รับผิดชอบ",
+
+    //   width: 140,
+
+    //   align: "center",
+
+    //   headerAlign: "center",
+
+    //   sortable: false,
+
+    //   renderCell: (params) => {
+
+    //     const image =
+    //       params.row.image_person;
+
+    //     const name =
+    //       params.row.person_name || "-";
+
+    //     const hasImage =
+    //       image &&
+    //       String(image).trim() !== "";
+
+    //     return (
+
+    //       <Tooltip title={name}>
+
+    //         <Box
+    //           sx={{
+    //             width: "100%",
+    //             display: "flex",
+    //             justifyContent: "center",
+    //             alignItems: "center",
+    //             height: "100%"
+    //           }}
+    //         >
+
+    //           {
+    //             hasImage ? (
+
+    //               <Box
+    //                 component="img"
+    //                 src={image}
+    //                 alt=""
+    //                 width={55}
+    //                 height={55}
+    //                 style={{
+    //                   borderRadius: "50%",
+    //                 }}
+    //               />
+
+    //             ) : (
+
+    //               <Typography
+    //                 variant="body2"
+    //                 sx={{
+    //                   fontSize: "0.75rem",
+    //                   textAlign: "center",
+    //                   lineHeight: 1.2,
+    //                   px: 1
+    //                 }}
+    //               >
+    //                 {name}
+    //               </Typography>
+
+    //             )
+    //           }
+
+    //         </Box>
+
+    //       </Tooltip>
+
+    //     );
+
+    //   }
+
+    // },
+
     {
       field: "person_name",
 
       headerName: "ผู้รับผิดชอบ",
 
-      width: 100,
+      width: 150,
 
       align: "center",
 
@@ -421,35 +533,109 @@ export default function AssetTable({
 
       sortable: false,
 
-      renderCell: (params) => (
+      renderCell: (params) => {
 
-        <Tooltip
-          title={params.row.person_name}
-        >
-          {/* <Avatar
-            src={params.row.image_person}
-            sx={{
-              width: 55,
-              height: 55,
-              bgcolor: "#ff6b00",
-            }}
-          /> */}
-          <Box
-            component="img"
-            src={params.row.image_person}
-            alt=""
-            width={55}
-            height={55}
-            style={{
-              borderRadius: "50%",
-            }}
-          />
+        const image =
+          params.row.image_person;
 
-        </Tooltip>
+        const name =
+          params.row.person_name;
 
-      )
+        const hasImage =
+          image &&
+          String(image).trim() !== "";
+
+        const hasName =
+          name &&
+          String(name).trim() !== "";
+
+        let bgColor =
+          "#F3F4F6";
+
+        let textColor =
+          "#EF6C00";
+
+        return (
+
+          <Tooltip
+            title={
+              hasName
+                ? name
+                : "ไม่ระบุผู้ถือครอง"
+            }
+          >
+
+            <Box
+              sx={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+            >
+
+              {
+
+                hasName ? (
+
+                  hasImage ? (
+
+                    <Box
+                      component="img"
+                      src={params.row.image_person}
+                      alt=""
+                      width={55}
+                      height={55}
+                      style={{
+                        borderRadius: "50%",
+                      }}
+                    />
+
+                  ) : (
+
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        fontSize: "0.75rem",
+                        lineHeight: 1.2,
+                        textAlign: "center"
+                      }}
+                    >
+                      {name}
+                    </Typography>)
+
+                ) : (
+
+                  <Chip
+                    label="ยังไม่ระบุผู้ถือครอง"
+                    size="small"
+                    sx={{
+                      backgroundColor:
+                        bgColor,
+                      color:
+                        textColor,
+                      border:
+                        `1px solid ${textColor}`,
+                      fontWeight: 600,
+                    }}
+                  />
+
+                )
+
+
+              }
+
+            </Box>
+
+          </Tooltip>
+
+        );
+
+      }
 
     },
+
     {
       field: "build",
       headerName: "อาคาร",
