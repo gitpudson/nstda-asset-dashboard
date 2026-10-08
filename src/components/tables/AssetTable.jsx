@@ -6,6 +6,13 @@ import { saveAs } from "file-saver";
 import AssetDetailDrawer from "../../pages/Assets/AssetDetailDrawer";
 import CustomPagination from "./CustomPagination";
 
+import PhotoCameraIcon
+  from "@mui/icons-material/PhotoCamera";
+
+import NoPhotographyIcon
+  from "@mui/icons-material/NoPhotography";
+
+
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import buddhistEra from "dayjs/plugin/buddhistEra";
@@ -16,6 +23,7 @@ dayjs.extend(buddhistEra);
 dayjs.locale("th");
 
 import {
+  Avatar,
   Box,
   Chip,
   IconButton,
@@ -395,10 +403,52 @@ export default function AssetTable({
       headerName: "หน่วยงาน",
       flex: 1,
     },
+    // {
+    //   field: "person_name",
+    //   headerName: "ผู้รับผิดชอบ",
+    //   flex: 1.5,
+    // },
     {
       field: "person_name",
+
       headerName: "ผู้รับผิดชอบ",
-      flex: 1.5,
+
+      width: 100,
+
+      align: "center",
+
+      headerAlign: "center",
+
+      sortable: false,
+
+      renderCell: (params) => (
+
+        <Tooltip
+          title={params.row.person_name}
+        >
+          {/* <Avatar
+            src={params.row.image_person}
+            sx={{
+              width: 55,
+              height: 55,
+              bgcolor: "#ff6b00",
+            }}
+          /> */}
+          <Box
+            component="img"
+            src={params.row.image_person}
+            alt=""
+            width={55}
+            height={55}
+            style={{
+              borderRadius: "50%",
+            }}
+          />
+
+        </Tooltip>
+
+      )
+
     },
     {
       field: "build",
@@ -537,28 +587,564 @@ export default function AssetTable({
 
       },
     },
-    
+
+    // {
+    //   field: "updated_at",
+    //   headerName: "อัปเดตสถานะ",
+    //   width: 180,
+    //   align: "center",
+    //   headerAlign: "center",
+    //   valueFormatter: (value) => {
+
+    //     if (!value) return "-";
+
+    //     return dayjs(
+    //       value,
+    //       "DD-MM-YYYY HH:mm:ss"
+    //     ).format(
+    //       "DD/MM/BBBB HH:mm:ss"
+    //     );
+
+    //   },
+    // }
+
+    // {
+    //   field: "updated_at",
+
+    //   headerName: "อัปเดตสถานะ",
+
+    //   width: 250,
+
+    //   align: "center",
+
+    //   headerAlign: "center",
+
+    //   renderCell: (params) => {
+
+    //     const hasImage =
+    //       params.row.asset_image &&
+    //       String(
+    //         params.row.asset_image
+    //       ).trim() !== "";
+
+    //     return (
+
+    //       <Box
+    //         sx={{
+    //           display: "flex",
+    //           alignItems: "center",
+    //           gap: 1
+    //         }}
+    //       >
+
+    //         {
+    //           hasImage
+    //             ? (
+    //               <PhotoCameraIcon
+    //                 color="success"
+    //                 fontSize="small"
+    //               />
+    //             )
+    //             : (
+    //               <NoPhotographyIcon
+    //                 color="disabled"
+    //                 fontSize="small"
+    //               />
+    //             )
+    //         }
+
+    //         <Typography
+    //           variant="caption"
+    //         >
+    //           {
+    //             params.value
+    //               ? dayjs(
+    //                 params.value
+    //               ).format(
+    //                 "DD/MM/BBBB HH:mm:ss"
+    //               )
+    //               : "-"
+    //           }
+    //         </Typography>
+
+    //       </Box>
+
+    //     );
+
+    //   }
+
+    // }
+
+    // {
+    //   field: "updated_at",
+
+    //   headerName: "อัปเดตสถานะ",
+
+    //   width: 230,
+
+    //   align: "center",
+
+    //   headerAlign: "center",
+
+    //   renderCell: (params) => {
+
+    //     const hasImage =
+    //       params.row.asset_image &&
+    //       String(
+    //         params.row.asset_image
+    //       ).trim() !== "";
+
+    //     return (
+
+    //       <Box
+    //         sx={{
+    //           display: "flex",
+    //           justifyContent: "center",
+    //           alignItems: "center",
+    //           gap: 1,
+    //           width: "100%",
+    //           height: "100%"
+    //         }}
+    //       >
+
+    //         {
+    //           hasImage
+    //             ? (
+    //               <PhotoCameraIcon
+    //                 color="success"
+    //                 fontSize="small"
+    //               />
+    //             )
+    //             : (
+    //               <NoPhotographyIcon
+    //                 color="disabled"
+    //                 fontSize="small"
+    //               />
+    //             )
+    //         }
+
+    //         <Typography
+    //           variant="caption"
+    //         >
+    //           {
+    //             params.value
+    //               ? dayjs(
+    //                 params.value
+    //               ).format(
+    //                 "DD/MM/BBBB HH:mm:ss"
+    //               )
+    //               : "-"
+    //           }
+    //         </Typography>
+
+    //       </Box>
+
+    //     );
+
+    //   }
+
+    // }
+
+    // {
+    //   field: "updated_at",
+
+    //   headerName: "อัปเดตสถานะ",
+
+    //   width: 230,
+
+    //   align: "center",
+
+    //   headerAlign: "center",
+
+    //   renderCell: (params) => {
+
+    //     const hasImage =
+    //       params.row.asset_image &&
+    //       String(
+    //         params.row.asset_image
+    //       ).trim() !== "";
+
+    //     let formattedDate = "-";
+
+    //     if (params.value) {
+
+    //       const date =
+    //         dayjs(params.value);
+
+    //       if (date.isValid()) {
+
+    //         formattedDate =
+    //           date.format(
+    //             "DD/MM/BBBB HH:mm:ss"
+    //           );
+
+    //       }
+
+    //     }
+
+    //     return (
+
+    //       <Box
+    //         sx={{
+    //           display: "flex",
+    //           justifyContent: "center",
+    //           alignItems: "center",
+    //           gap: 1,
+    //           width: "100%",
+    //           height: "100%"
+    //         }}
+    //       >
+
+    //         {
+    //           hasImage
+    //             ? (
+    //               <PhotoCameraIcon
+    //                 color="success"
+    //                 fontSize="small"
+    //               />
+    //             )
+    //             : (
+    //               <NoPhotographyIcon
+    //                 color="disabled"
+    //                 fontSize="small"
+    //               />
+    //             )
+    //         }
+
+    //         <Typography
+    //           variant="caption"
+    //         >
+    //           {formattedDate}
+    //         </Typography>
+
+    //       </Box>
+
+    //     );
+
+    //   }
+
+    // }
+
+    // {
+    //   field: "updated_at",
+
+    //   headerName: "อัปเดตสถานะ",
+
+    //   width: 230,
+
+    //   align: "center",
+
+    //   headerAlign: "center",
+
+    //   renderCell: (params) => {
+
+    //     const hasImage =
+    //       params.row.asset_image &&
+    //       String(
+    //         params.row.asset_image
+    //       ).trim() !== "";
+
+    //     let formattedDate = "-";
+
+    //     if (params.value) {
+
+    //       const date =
+    //         dayjs(params.value);
+
+    //       if (date.isValid()) {
+
+    //         formattedDate =
+    //           date.format(
+    //             "DD/MM/BBBB HH:mm:ss"
+    //           );
+
+    //       }
+
+    //     }
+
+    //     return (
+
+    //       <Box
+    //         sx={{
+    //           display: "flex",
+    //           alignItems: "center",
+    //           justifyContent: "center",
+    //           gap: 1,
+    //           width: "100%",
+    //           height: "100%"
+    //         }}
+    //       >
+
+    //         {
+    //           hasImage
+    //             ? (
+    //               <Tooltip title="แนบรูปภาพแล้ว">
+    //                 <PhotoCameraIcon
+    //                   color="success"
+    //                   fontSize="small"
+    //                 />
+    //               </Tooltip>
+    //             )
+    //             : (
+    //               <Tooltip title="ยังไม่แนบรูปภาพ">
+    //                 <NoPhotographyIcon
+    //                   color="disabled"
+    //                   fontSize="small"
+    //                 />
+    //               </Tooltip>
+    //             )
+    //         }
+
+    //         <Tooltip
+    //           title={
+    //             formattedDate === "-"
+    //               ? "ไม่มีข้อมูลวันที่ตรวจสอบ หรือเป็นข้อมูลเก่าที่นำเข้าจากการ Copy ข้อมูล"
+    //               : formattedDate
+    //           }
+    //         >
+    //           <Typography
+    //             variant="caption"
+    //             sx={{
+    //               cursor: "help"
+    //             }}
+    //           >
+    //             {formattedDate}
+    //           </Typography>
+    //         </Tooltip>
+
+    //       </Box>
+
+    //     );
+
+    //   }
+
+    // }
+
+    // {
+    //   field: "updated_at",
+
+    //   headerName: "อัปเดตสถานะ",
+
+    //   width: 220,
+
+    //   align: "left",
+
+    //   headerAlign: "center",
+
+    //   renderCell: (params) => {
+
+    //     const hasImage =
+    //       params.row.asset_image &&
+    //       String(
+    //         params.row.asset_image
+    //       ).trim() !== "";
+
+    //     let formattedDate = "-";
+
+    //     if (params.value) {
+
+    //       const date =
+    //         dayjs(params.value);
+
+    //       if (date.isValid()) {
+
+    //         formattedDate =
+    //           date.format(
+    //             "DD/MM/BBBB HH:mm:ss"
+    //           );
+
+    //       }
+
+    //     }
+
+    //     return (
+
+    //       <Box
+    //         sx={{
+    //           display: "flex",
+    //           alignItems: "center",
+    //           width: "100%",
+    //           height: "100%",
+    //           pl: 3
+    //         }}
+    //       >
+
+    //         <Box
+    //           sx={{
+    //             width: 24,
+    //             minWidth: 24,
+    //             display: "flex",
+    //             justifyContent: "center",
+    //           }}
+    //         >
+
+    //           {
+    //             hasImage
+    //               ? (
+    //                 <Tooltip title="แนบรูปภาพแล้ว">
+    //                   <PhotoCameraIcon
+    //                     color="success"
+    //                     fontSize="small"
+    //                   />
+    //                 </Tooltip>
+    //               )
+    //               : (
+    //                 <Tooltip title="ยังไม่แนบรูปภาพ">
+    //                   <NoPhotographyIcon
+    //                     color="disabled"
+    //                     fontSize="small"
+    //                   />
+    //                 </Tooltip>
+    //               )
+    //           }
+
+    //         </Box>
+
+    //         <Tooltip
+    //           title={
+    //             formattedDate === "-"
+    //               ? "ไม่มีข้อมูลวันที่ตรวจสอบ หรือเป็นข้อมูลเก่าที่นำเข้าจากการ Copy ข้อมูล"
+    //               : formattedDate
+    //           }
+    //         >
+    //           <Typography
+    //             variant="caption"
+    //             sx={{
+    //               ml: 1
+    //             }}
+    //           >
+    //             {formattedDate}
+    //           </Typography>
+    //         </Tooltip>
+
+    //       </Box>
+
+    //     );
+
+    //   }
+
+    // }
+
     {
       field: "updated_at",
+
       headerName: "อัปเดตสถานะ",
-      width: 180,
+
+      width: 240,
+
       align: "center",
+
       headerAlign: "center",
-      valueFormatter: (value) => {
 
-        if (!value) return "-";
+      sortable: true,
 
-        return dayjs(
-          value,
-          "DD-MM-YYYY HH:mm:ss"
-        ).format(
-          "DD/MM/BBBB HH:mm:ss"
+      renderCell: (params) => {
+
+        const hasImage =
+          params.row.asset_image &&
+          String(
+            params.row.asset_image
+          ).trim() !== "";
+
+        let formattedDate = "-";
+
+        if (
+          params.value &&
+          String(params.value).trim() !== ""
+        ) {
+
+          const date =
+            dayjs(
+              String(params.value),
+              "DD-MM-YYYY HH:mm:ss",
+              true
+            );
+
+          if (
+            date.isValid()
+          ) {
+
+            formattedDate =
+              date.format(
+                "DD/MM/BBBB HH:mm:ss"
+              );
+
+          }
+
+        }
+
+        return (
+
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              height: "100%",
+              width: "100%",
+              pl: 3
+            }}
+          >
+
+            <Box
+              sx={{
+                width: 24,
+                minWidth: 24,
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+
+              {
+                hasImage
+                  ? (
+                    <Tooltip
+                      title="แนบรูปภาพแล้ว"
+                    >
+                      <PhotoCameraIcon
+                        color="success"
+                        fontSize="small"
+                      />
+                    </Tooltip>
+                  )
+                  : (
+                    <Tooltip
+                      title="ยังไม่แนบรูปภาพ"
+                    >
+                      <NoPhotographyIcon
+                        color="disabled"
+                        fontSize="small"
+                      />
+                    </Tooltip>
+                  )
+              }
+
+            </Box>
+
+            <Tooltip
+              title={
+                formattedDate === "-"
+                  ? "ไม่มีข้อมูลวันที่ตรวจสอบ หรือเป็นข้อมูลเก่าที่นำเข้าจากการ Copy ข้อมูล"
+                  : formattedDate
+              }
+            >
+              <Typography
+                variant="caption"
+                sx={{
+                  ml: 1,
+                  cursor: "help"
+                }}
+              >
+                {formattedDate}
+              </Typography>
+            </Tooltip>
+
+          </Box>
+
         );
 
-      },
+      }
+
     }
-    
-    
 
   ];
 
