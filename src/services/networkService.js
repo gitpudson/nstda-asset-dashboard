@@ -255,6 +255,7 @@ async function isNSTDAVPN() {
 
         await fetch(
             "https://ehr.nstda.or.th",
+            // "https://i.nstda.or.th",
             {
                 mode: "no-cors"
             }
