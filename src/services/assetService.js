@@ -102,6 +102,11 @@ export const getAssetByRows = async (
             }
         );
 
+    //  console.log(
+    //         "***getAssetByRows response***",
+    //         response.data.data
+    //     );
+
     return response.data.data;
 };
 

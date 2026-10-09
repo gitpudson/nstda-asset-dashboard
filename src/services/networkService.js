@@ -110,7 +110,7 @@ export async function checkNetworkAccess1() {
 
 }
 
-export async function checkNetworkAccess() {
+export async function checkNetworkAccessxx() {
 
     try {
 
@@ -219,3 +219,220 @@ export async function addUnknownIP(ip) {
     return response.data;
 
 }
+
+
+//ตรวจสอบว่าเชื่อมต่อ VPN ของ NSTDA หรือไม่
+async function isNSTDAVPN1() {
+
+    try {
+
+        await fetch(
+            "https://ehr.nstda.or.th",
+            {
+                mode: "no-cors"
+            }
+        );
+
+        console.log(
+            "***vpnConnected***");
+
+        return true;
+
+    }
+
+    catch {
+        console.log(
+            "***vpn Not Connected***");
+        return false;
+
+    }
+
+}
+// ตรวจสอบว่าเชื่อมต่อ VPN NSTDA หรือไม่
+async function isNSTDAVPN() {
+
+    try {
+
+        await fetch(
+            "https://ehr.nstda.or.th",
+            {
+                mode: "no-cors"
+            }
+        );
+
+        // console.log(
+        //     "*** VPN Connected ***"
+        // );
+
+        return true;
+
+    }
+
+    catch (error) {
+
+        // console.log(
+        //     "*** VPN Not Connected ***"
+        // );
+
+        return false;
+
+    }
+
+}
+
+
+
+export async function
+    checkNetworkAccess3() {
+
+    const ip =
+        await getPublicIP();
+
+    const networks =
+        await getAllowedNetwork();
+
+    const matched =
+        networks.find(
+            item =>
+                ip.startsWith(
+                    item.ip
+                )
+        );
+
+    if (
+        matched &&
+        matched.allow === "Y"
+    ) {
+
+        return {
+            allowed: true
+        };
+
+    }
+
+    const vpnConnected =
+        await isNSTDAVPN();
+
+    if (
+        vpnConnected
+    ) {          
+        return {
+            allowed: true
+        };
+
+    }
+
+    await addUnknownIP(ip);
+
+    return {
+        allowed: false
+    };
+
+}
+
+export async function checkNetworkAccess() {
+
+    try {
+
+        //--------------------------------------------------
+        // 1. VPN มาก่อน
+        //--------------------------------------------------
+
+        const vpnConnected =
+            await isNSTDAVPN();
+
+        if (vpnConnected) {
+
+            // console.log(
+            //     "Access Granted : NSTDA VPN"
+            // );
+
+            return {
+                allowed: true,
+                type: "VPN",
+                error: false
+            };
+
+        }
+
+        //--------------------------------------------------
+        // 2. ตรวจ Public IP
+        //--------------------------------------------------
+
+        const ip =
+            await getPublicIP();
+
+        const networks =
+            await getAllowedNetwork();
+
+        const matched =
+            networks.find(
+                item =>
+                    ip.startsWith(
+                        item.ip
+                    )
+            );
+
+        if (
+            matched &&
+            (
+                matched.allow === "Y" ||
+                matched.allow === "YES"
+            )
+        ) {
+
+            // console.log(
+            //     "Access Granted : Allow List"
+            // );
+
+            return {
+                allowed: true,
+                type: "ALLOW_LIST",
+                ip,
+                error: false
+            };
+
+        }
+
+        //--------------------------------------------------
+        // 3. ไม่พบ -> Block และบันทึก IP
+        //--------------------------------------------------
+
+        await addUnknownIP(ip);
+
+        // console.log(
+        //     "Blocked IP:",
+        //     ip
+        // );
+
+        return {
+            allowed: false,
+            type: "BLOCKED",
+            ip,
+            error: false
+        };
+
+    }
+
+    catch (error) {
+
+        console.error(
+            error
+        );
+
+        return {
+
+            allowed: false,
+
+            type: "ERROR",
+
+            ip: null,
+
+            error: true
+
+        };
+
+    }
+
+}
+

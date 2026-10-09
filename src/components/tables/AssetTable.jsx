@@ -538,6 +538,9 @@ export default function AssetTable({
         const image =
           params.row.image_person;
 
+          const person_id =
+          params.row.person_key;
+
         const name =
           params.row.person_name;
 
@@ -560,7 +563,7 @@ export default function AssetTable({
           <Tooltip
             title={
               hasName
-                ? name
+                ? (person_id + " - " + name)
                 : "ไม่ระบุผู้ถือครอง"
             }
           >
